@@ -1,0 +1,141 @@
+.comments-wrapper {
+    .positive-chart_wrapper{
+      box-sizing: content-box;
+      width: 100%;
+      height: 400px;
+
+      /* 
+      border: solid;
+      border-width: 0.5px;
+      border-color: rgb(24, 23, 23);
+      border-radius: 0.5rem;
+      */
+
+      margin-top: -450px;
+      margin-left: 485px;
+    } 
+
+    .wordcloud_wrapper{
+      box-sizing: content-box;
+      width: 900px;
+      height: 300px;
+
+      border: solid;
+      border-width: 0.5px;
+      border-color: rgb(24, 23, 23);
+      border-radius: 0.5rem;
+
+      margin-top: 50px;
+    }
+
+    .enquiry_button_wrapper{
+      margin-Top: 10px;
+    }
+   
+    .comments-header {
+      margin: 1rem 0;
+      display: flex;
+      width: 900px;
+  
+      .comments-header_textarea {
+        flex: 1;
+  
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+  
+      button {
+        margin-left: 0.5rem;
+        font-size: 1.1rem;
+      }
+    }
+  
+    .comments-body {
+      .comments-comment {
+        margin: 0.5rem 0;
+
+        .comment-username {
+          flex-direction: row-reverse;
+          align-items: baseline;
+          font-weight: 600;
+        }
+
+        .comment-user_image{
+          box-sizing: content-box;
+          width: 100px;
+          height: 100px;
+        
+          border-radius: 0.5rem;
+          margin-left: 20px;
+        
+          img{
+            width: 70px;
+            height: 70px;
+        
+            margin-top: 10px;
+            margin-left: -30px;
+        
+            border-radius: 0.5rem;
+          }
+        }
+
+        .comment-content {
+          // \n(엔터)를 태그 안의 텍스트에 적용
+          width: 830px;
+          white-space: pre-wrap;
+          word-break: break-all;
+          margin: 0.4rem
+          auto;
+
+          margin-top: -90px;
+          margin-left: 70px;
+        }
+  
+        .comment-username_date {
+          box-sizing: content-box;
+          width: 180px;
+
+          margin-top: 50px;
+
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+
+          .comment_date {
+            color: lightgray;
+          }
+        }
+
+        .comment-edit-delete_button{
+          display: flex;
+          flex-direction: row-reverse;
+          margin-bottom: 0.7rem;
+
+          width: 170px;
+
+          margin-top: -35px;
+          margin-left: 730px;
+          
+          button{
+            font-size: 1.2rem;
+          }
+
+          .comment-delete_button{
+            margin-left: 0.5rem;
+          }
+        }
+
+        .comment_hr{
+          width: 900px;
+        }
+      }
+    }
+
+    .comments-footer{
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+      align-items: center;
+    }
+  }

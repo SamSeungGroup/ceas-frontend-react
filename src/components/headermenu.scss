@@ -1,0 +1,83 @@
+/* <삼승 CEAS 스타일러 - '헤더 메뉴' 스타일링> */
+//   - 설명: '헤더 메뉴' 스타일링
+
+// 1. a: '헤더 메뉴 전체' 디자인 -> <a> 태그: '하이퍼링크'를 걸어줌
+a {
+    list-style: none;                        /* list-style: '항목 모양의 종류' 설정 */
+    margin: 0;                               /* margin: '페이지 외부 여백' 설정 */
+    padding: 0;                              /* padding: '페이지 내부 여백' 설정 */
+    text-decoration-line: none;              /* text-decoration-line: '선'으로 '텍스트'를 꾸밀 수 있게 해주는 설정 */
+    font-weight: bold;                       /* font-weight: '글자 굵기' 설정 */
+    color: rgb(255, 255, 255);             /* color: '글자색' 설정 */
+    &:hover { color: rgb(122, 122, 122); } /* &:hover: '이용자'가 '마우스'를 올렸을 때 처리 */
+  }
+  
+  // 1-1. headermenu-wrapper: '헤더 메뉴 전체'를 감싸는 부분
+  .headermenu-wrapper {
+    z-index: 10;                          /* z-index: '요소'를 '순서대로' 배치 */
+    position: fixed;                      /* position: '요소가 배치되는 방식' 설정 */
+    top: 0;                               /* top: */
+    left: 0;                              /* left: */
+    right: 0;                             /* right: */
+    padding: 0.9rem 4rem;                 /* padding: '요소 내부 여백' 설정 */
+    color: #282c34;                     /* color: '글자색' 설정 */
+    display: flex;                        /* display: '화면 요소' 크기 설정 */
+    justify-content: space-between;       /* justify-content: '화면 요소'를 '가로 정렬' */
+    align-items: center;                  /* align-items: '화면 요소'를 '세로 정렬' */
+    flex-wrap: wrap;                      /* flex-wrap: '화면 요소 정렬' -> 화면이 작아져도 'flex 요소'들이 아래로 내려가게 설정 */
+    background-color: rgb(64, 13, 230); /* background-color: '배경색' 설정 */
+    box-shadow: 5px 5px 5px 1px #dadce0;
+
+    // 1-1-1. headermenu-title: '헤더 메뉴'의 '삼승 CEAS' 로고
+    .headermenu-title{
+      a {
+        font-size: 3rem;                         /* font-size: '글자 크기' 설정 */
+        display: flex;                           /* display: '화면 요소' 크기 설정 */
+        align-items: center;                     /* align-items: '화면 요소' 정렬 */
+        font-family: '고딕'; // cursive;         /* font-family: '글꼴' 설정 */
+        // margin-left: 450px;                   /* margin-left: '페이지 왼쪽 외부 여백' 설정 */
+      }
+    }
+
+    // 1-1-2. headermenu-menu: '헤더 메뉴'의 '헤더 메뉴'
+    .headermenu-menu{
+      a {
+        font-size: 1.5rem;                       /* font-size: 글자 크기 */
+        font-family: 'Noto Sans KR', sans-serif; /* font-family: '글꼴' 설정 */
+        flex-shrink: 0;                          /* flex-shrink: 'Flex Container'에 공간이 부족해질 때까지 'Flex Item의 방향 크기'가 얼마나 줄어들 수 있는지 지정 */
+        margin: 0 1rem;                          /* margin: '요소 외부 여백' 설정 */
+      }
+
+      .headermenu-menu_image{
+        box-sizing: content-box;
+        width: 80px;
+        height: 75px;
+      
+        border-radius: 0.5rem;
+
+        margin-top: -20px;
+        margin-left: 70px;
+      
+        img{
+          width: 30px;
+          height: 30px;
+      
+          margin-top: 10px;
+      
+          border-radius: 0.5rem;
+      
+          cursor: pointer;
+        }
+      }
+
+      .myinformation_link{
+        margin-top: -60px;
+        margin-left: 150px;
+      }
+
+      .logout_link{
+        margin-top: -35px;
+        margin-left: 300px;
+      }
+    }
+  }

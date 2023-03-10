@@ -1,0 +1,40 @@
+/* <삼승 CEAS 스타일러 - '상품 정보 작성' 스타일링> */
+//   - 설명: '상품 정보 작성' 스타일링
+
+// 1. textarea_wrapper: '상품 정보 작성'을 감싸는 부분
+.myinformation-textarea_wrapper {
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+
+    margin-top: -10px;
+    
+    // 1-1. product-name: '상품 이름'
+    .user-name {
+      margin-bottom: 0.7rem;
+    }
+
+    // 1-2. input: '입력창', textarea: '여러 줄을 입력할 수 있는 창' 
+    input, textarea {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+  
+      resize: none;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'Noto Sans KR', sans-serif;
+      border: 1px solid whitesmoke;
+      border-radius: 5px;
+      transition: border 1s;
+      padding: 5px;
+      box-sizing: border-box;
+
+      border-color: black;
+  
+      &:focus {
+        outline: none;
+        border: 3px solid skyblue;
+      }
+    }
+  }

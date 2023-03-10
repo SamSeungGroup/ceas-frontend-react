@@ -1,0 +1,36 @@
+/* <삼승 CEAS 스타일러 - '이미지 업로더' 스타일링> */
+//   - 설명: '이미지 업로더' 스타일링
+
+// 1. uploader-wrapper: '이미지 업로더 전체'를 감싸는 부분
+.myinformation-uploader_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+    
+    // 1-1. img-wrapper: '이미지 부분'을 감싸는 부분
+    .myinformation-img_wrapper {
+      margin-left: -300px;
+
+      // 1-1-1. img: '이미지 표시' 부분
+      img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        
+        border-radius: 0.5rem;
+      }
+    }
+
+    // 1-2. upload-button: '이미지 업로드 부분'을 감싸는 부분
+    .myinformation-upload_button {
+      margin-left: -300px;
+      
+      // 1-2-1. button: '이미지 업로드' 버튼
+      button {
+        margin: 10px 5px;
+        font-size: 1.0rem;
+      }
+    }
+  }

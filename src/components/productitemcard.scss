@@ -1,0 +1,112 @@
+/* <삼승 CEAS 상품 아이템 카드 스타일러> */
+//   - 설명: '상품 아이템 카드' 스타일링
+
+// 1. '상품 정보 카드' 전체를 감싸는 부분 애니메이션 효과
+// 1-1. '애니메이션 효과' 설정(1)
+@media all and (min-width: 1024px) {
+    // [1] 크기 설정(1)
+    .product-item-card_wrapper {
+      width: 180px;
+      height: 300px;
+
+      // [2] 마우스를 올렸을 때(1)
+      &:hover {
+        width: 190px;
+        height: 310px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+      }
+    }
+  }
+  
+  // 1-1-1. '애니메이션 효과' 설정(2)
+  @media all and (max-width: 1024px) {
+    // [1] 크기 설정(2)
+    .product-item-card_wrapper {
+      width: 180px;
+      height: 300px;
+  
+      // [2] 마우스를 올렸을 때(2)
+      &:hover {
+        width: 190px;
+        height: 310px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+      }
+    }
+  }
+  
+  // 1-1-2. '애니메이션 효과' 설정(3)
+  @media all and (max-width: 768px) {
+    // [1] 크기 설정(3)
+    .product-item-card_wrapper {
+      width: 180px;
+      height: 300px;
+  
+      // [2] 마우스를 올렸을 때(3)
+      &:hover {
+        width: 190px;
+        height: 310px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+      }
+    }
+  }
+  
+  // 1-2. '상품 정보 카드' 전체를 감싸는 부분
+  .product-item-card_wrapper {
+    flex-shrink: 0;
+    margin: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 1s, height 1s, box-shadow 1s;
+    cursor: pointer;
+  
+    // [1] '이미지' 표시 부분
+    .product-item-card-body_img {
+      width: 100%;
+      height: 50%;
+
+      // (1-1) '이미지' 스타일링
+      img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  
+    // [2] '글자' 표시 부분
+    .product-item-card-body_text {
+      flex-grow: 1;
+      word-break: break-all;
+      overflow: auto;
+      padding: 0.6rem;
+  
+      // (2-1) 
+      &::-webkit-scrollbar {
+        display: none;
+      }
+  
+      // (2-2) '상품 이름'
+      .product-item-card-body_text_name {
+        font-size: 1.3rem;
+        color: darkslategray;
+        font-weight: bold;
+      }
+    }
+  
+    // [3] '상품 등록일' 표시 부분
+    .product-item-card_footer {
+      border-top: 0.5px solid black;
+      padding: 0.6rem;
+      font-weight: 200;
+      display: flex;
+      color: #282c34;
+      font-size: 1.0rem;
+      justify-content: left;
+    }
+  }

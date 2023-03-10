@@ -1,0 +1,117 @@
+/* <삼승 CEAS 스타일러 - '판매자 1:1 문의' 스타일링> */
+//   - 설명: '판매자 1:1 문의' 스타일링
+
+/* 1. 화면 스타일링 */
+
+// [1] media 쿼리:
+      /* media 쿼리란? */
+      /* -> 'CSS'에서 '어떤 스타일'을 '선택적으로 적용'하고 싶을 때 사용 */
+
+      /* media 쿼리 형식'에 대한 이해 */
+      /* -> @media: media 쿼리의 '시작' */
+      /* -> all: media 쿼리를 해석해야 할 대상 media. 모든 media가 구문 해석. 생략했을 경우 '기본값'으로 처리 */
+      /* -> and: 논리적 'AND' 연산을 수행하여, 앞과 뒤의 조건을 모두 만족해야 한다는 것을 의미. */
+      /* -> (조건문): '브라우저'는 '조건문'이 '참'일 때 '{실행문}' 처리, '거짓'일 때는 '무시' */
+      /* -> {실행문}: 일반적인 'CSS 코드' 작성 */
+
+      @media all and (min-width: 1024px) {  /* min-width: 뷰 영역에서의 최소 너비 */
+        /* 입력폼 */
+        .input-forms {
+          padding: 70px;
+    
+          /* 입력 부분 */
+          input{
+            width: 400px;
+          }
+        }
+      
+      }
+      @media all and (max-width: 1024px) { /* min-width: 뷰 영역에서의 최소 너비 */
+        /* 입력폼 */
+        .input-forms {
+          padding: 60px;
+         
+          /* 입력 부분 */
+          input{
+            width: 330px;
+          }
+        }
+      }
+      
+      @media all and (max-width: 768px) {  /* min-width: 뷰 영역에서의 최소 너비 */
+        /* 입력폼 */
+        .input-forms {
+          padding: 50px;
+    
+          /* 입력 부분 */
+          input{
+            width: 300px;
+          }
+        }
+      }
+    
+      /* [2] enquiry-to-seller-wrapper: '판매자 1:1 문의 전체'를 감싸는 부분 */
+      .enquiry-to-seller-wrapper {
+        font-family: 'Noto Sans KR', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    
+        margin-top: -650px;
+        margin-left: 170px;
+    
+        .enquiry-to-seller_image{
+          box-sizing: content-box;
+          width: 80px;
+          height: 80px;
+        
+          border-radius: 0.5rem;
+    
+          margin-left: -230px;
+        
+          img{
+            width: 190px;
+            height: 50px;
+        
+            margin-top: 10px;
+        
+            border-radius: 0.5rem;
+        
+            cursor: pointer;
+          }
+        }
+    
+        .enquiry-to-seller-title{
+          margin-top: -65px;
+          margin-left: 70px;
+        }
+      
+        // (2-1) input-forms: '입력폼' 
+        .input-forms {
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+    
+          margin-top: -50px;
+      
+          // (2-1-1) input-label: '입력 안내' 글자
+          .input-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #282c34;
+          }
+      
+          // (2-1-2) input-forms-item: '하나의 입력폼'
+          .input-forms-item {
+            padding: 5px 0;
+    
+            // (2-1-2-1) error-message: '하나의 입력폼'에 대한 '에러 메세지' 
+            .error-message {
+              font-size: 1rem;
+              color: blue;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+      

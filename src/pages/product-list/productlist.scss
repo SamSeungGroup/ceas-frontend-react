@@ -1,0 +1,151 @@
+/* <삼승 CEAS 상품 목록 스타일러> */
+//   - 설명: '상품 목록 페이지' 스타일링
+@keyframes smoothAppear {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateZ(0);
+    }
+  }
+
+  .product-list_wrapper{
+    opacity: 0;
+    animation: smoothAppear 1.5s forwards;
+    animation-delay: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 950px;
+    
+    margin-top: -650px;
+    margin-left: 330px;
+
+    .product-list_header{
+      color: midnightblue;
+      font-weight: bold;
+      font-size: 2rem;
+
+      .product-list_image{
+        box-sizing: content-box;
+        width: 80px;
+        height: 75px;
+      
+        border-radius: 0.5rem;
+        
+        margin-left: 10px;
+      
+        img{
+          width: 100px;
+          height: 50px;
+      
+          border-radius: 0.5rem;
+      
+          cursor: pointer;
+        }
+      }
+
+      .product-list-title{
+        margin-top: -75px;
+        margin-left: 100px;
+      }
+    }
+
+    .search-product_wrapper{
+      width: 800px;
+      height: 100px;
+
+      margin-top: 20px;
+      margin-left: 200px;
+
+      .search-product_textarea{
+        box-sizing: content-box;
+        width: 500px;
+  
+        margin-top: 20px;
+        margin-left: 90px;
+      }
+
+      .search-button_image{
+        box-sizing: content-box;
+        width: 100px;
+        height: 100px;
+
+        margin-top: -60px;
+        margin-left: 15px;
+
+        img{
+          width: 60px;
+          height: 60px;
+      
+          border-radius: 0.5rem;
+        }
+      }
+    }
+
+    .hot-product-list-instruction{
+      margin-left: 100px;
+
+      .hot-product_image{
+        box-sizing: content-box;
+        width: 80px;
+        height: 75px;
+      
+        border-radius: 0.5rem;
+        
+        margin-left: -100px;
+      
+        img{
+          width: 100px;
+          height: 50px;
+      
+          border-radius: 0.5rem;
+      
+          cursor: pointer;
+        }
+      }
+
+      .hot-product-list-title{
+        margin-Top: -60px;
+        font-Size: 30px;
+      }
+    }
+
+    .hot-product-list_body{
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      flex-wrap: wrap;
+
+      margin-left: 70px;
+
+      .no-hot-product-list{
+        margin-left: 30px;
+      }
+    }
+
+    .product-list_body{
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      flex-wrap: wrap;
+
+      margin-left: 100px;
+
+      .no-product-list{
+        margin-left: 30px;
+      }
+
+      .no-myproduct-list{
+        margin-top: 50px;
+        margin-left: -50px;
+      }
+    }
+
+    .product-list_footer{
+      margin: 1.5rem;
+    }
+  }

@@ -1,13 +1,64 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* <삼승 CEAS 스타일러 - '기본 화면' 스타일링> */
+
+/* 1. 모듈 추가 */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+/* 2. 화면 스타일링 */
+/* [1] media 쿼리: 크로스 브라우징 - '페이지 최대 넓이'마다 '다른 rem'을 사용할 수 있도록 설정 */
+
+      /* media 쿼리란? */
+      /* -> 'CSS'에서 '어떤 스타일'을 '선택적으로 적용'하고 싶을 때 사용 */
+
+      /* media 쿼리 형식'에 대한 이해 */
+      /* -> @media: media 쿼리의 '시작' */
+      /* -> all: media 쿼리를 해석해야 할 대상 media. 모든 media가 구문 해석. 생략했을 경우 '기본값'으로 처리 */
+      /* -> and: 논리적 'AND' 연산을 수행하여, 앞과 뒤의 조건을 모두 만족해야 한다는 것을 의미. */
+      /* -> (조건문): '브라우저'는 '조건문'이 '참'일 때 '{실행문}' 처리, '거짓'일 때는 '무시' */
+      /* -> {실행문}: 일반적인 'CSS 코드' 작성 */
+
+@media all and (min-width: 1024px){ /* min-width: 뷰 영역에서의 최소 너비 */
+  /* HTML 영역 */
+  html{
+    font-size: 100%                 /* font-size: 글자 크기 */
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@media all and (max-width: 1024px) { /* min-width: 뷰 영역에서의 최소 너비 */
+  /* HTML 영역 */
+  html{
+    font-size: 85%;                  /* font-size: 글자 크기 */
+  }
+}
+@media all and (max-width: 768px) {  /* min-width: 뷰 영역에서의 최소 너비 */
+  /* HTML 영역 */
+  html {
+    font-size: 70%;                  /* font-size: 글자 크기 */
+  }
+}
+@media all and (max-width: 500px) {  /* min-width: 뷰 영역에서의 최소 너비 */
+  /* HTML 영역 */
+  html {
+    font-size: 55%;                  /* font-size: 글자 크기 */
+  }
+}
+
+@media all and (max-width: 400px) {  /* min-width: 뷰 영역에서의 최소 너비 */
+  /* HTML 영역 */
+  html {
+    font-size: 45%;                  /* font-size: 글자 크기 */
+  }
+}
+
+/* [2] 모든 화면 */
+/* Body 영역 */
+body {
+  margin: 0;                                                                       /* margin: '요소 외부 여백' 설정 */
+  padding-top: 10rem;                                                              /* padding-top: '요소 내부 상단 여백' 설정, 'HeaderMenu'를 '상단'에 '고정'하여 적용 */
+  background-color: rgb(255, 255, 255);                                          /* background-color: '배경색' 설정 - '모든 화면'에서 적용할 '배경색' */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',  /* font-family: '글꼴' 설정 */
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;                                             /* -webkit-font-smoothing: */
+  -moz-osx-font-smoothing: grayscale;                                              /* -moz-osx-font-smoothing: */
 }

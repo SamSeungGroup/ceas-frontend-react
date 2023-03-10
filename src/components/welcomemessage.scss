@@ -1,0 +1,49 @@
+.welcome-message{
+    text-align: center;
+    margin-top: -60px;
+    margin-left: 560px;
+    font-Size: 20px;
+    font-weight: bolder;
+
+    box-sizing: content-box;
+    width: 470px;
+    height: 65px;
+}
+
+.welcome_image1{
+    box-sizing: content-box;
+    width: 20px;
+    height: 20px;
+  
+    border-radius: 0.5rem;
+
+    margin-left: 0px;
+  
+    img{
+      width: 90px;
+      height: 90px;
+  
+      margin-top: 10px;
+  
+      border-radius: 0.5rem;
+    }
+}
+
+.welcome_image2{
+  box-sizing: content-box;
+  width: 20px;
+  height: 20px;
+
+  border-radius: 0.5rem;
+
+  margin-left: 0px;
+
+  img{
+    width: 90px;
+    height: 90px;
+
+    margin-top: 10px;
+
+    border-radius: 0.5rem;
+  }
+}
