@@ -34,7 +34,7 @@ import axios from "axios";                                       // axios 모듈
 
 // 1-6. 'Redux' 사용을 위한 컴포넌트 추가
 import { useDispatch } from "react-redux";                       // react-redux 모듈: '컴포넌트의 데이터'들을 'redux store'에서 '상태' 관리 
-                                                                 // - useDispatch 훅 컴포넌트: 'redux store'에 '변경된 상태값' 저장
+                                                                 // - useDispatch 훅 컴포넌트: 'redux store'에 '변경된 상태값' 저장                                                          
 import { setToken } from "../../redux/reducers/AuthReducer";     // AuthReducer 모듈: '토큰'을 반환하는 'reducer' 생성 
                                                                  // - setToken 컴포넌트: '토큰' 설정
 import { setId } from "../../redux/reducers/IdReducer";          // IdReducer 모듈: 'id(회원 식별 코드)'를 반환하는 'reducer' 생성
@@ -56,8 +56,8 @@ const Login = () => {
   // [1] 상태 관리 설정
   // [1-1] '비회원 입력 데이터' 관리
   const [ searchParams, setSearchParams ] = useSearchParams(); 
-  const [ userEmail, setUserEmail ] = useState("");                      // '이용자 이메일 주소 입력' 상태 관리 -> userEmail 변수: '입력된 이메일 주소' 저장, setUserEmail 함수: '입력된 이메일 주소' 조작
-  const [ userId, setUserId ] = useState("");                            // '이용자 아이디 입력' 상태 관리 -> userId 변수: '입력된 아이디' 저장, setUserId 함수: '입력된 아이디' 조작
+  const [ userEmail, setUnUserEmail ] = useState("");                      // '이용자 이메일 주소 입력' 상태 관리 -> userEmail 변수: '입력된 이메일 주소' 저장, setUserEmail 함수: '입력된 이메일 주소' 조작
+  const [ userId, setUnUserId ] = useState("");                            // '이용자 아이디 입력' 상태 관리 -> userId 변수: '입력된 아이디' 저장, setUserId 함수: '입력된 아이디' 조작
 
   // [1-2] '모달창 표시' 관리
   const [ findPwModalVisible, setFindPwModalVisible ] = useState(false); // '비밀번호 찾기 모달창 표시 여부' 상태 관리 -> findPwModalVisible 변수: '모달창 표시 여부' 저장, setFindPwModalVisible 함수: '모달창 표시 여부' 조작
@@ -106,7 +106,7 @@ const Login = () => {
       // (2-1-2) '서버'에서 '토큰/id'를 받아 'redux store'에 저장 후 'redux persist' 모듈을 이용해 '토큰/id을 가진 로그인 데이터'를 'local storage'에 저장
       dispatch(setToken(data.token));   // '현재 로그인한 회원'의 '토큰' 저장
       dispatch(setId(data.id));         // '현재 로그인한 회원'의 'id' 저장
-      // dispatch(setUserId(loginData.userId)); // '현재 로그인한 회원'의 'userId' 저장
+      dispatch(setUserId(data.userId)); // '현재 로그인한 회원'의 'userId' 저장
       
       // (2-1-3) '페이지'를 '리다이렉트' 할 수 있는 기능 설정
       const redirectUrl = searchParams.get("redirectUrl");                     // redirectUrl 변수: '페이지 주소'에서 '쿼리 파라미터'를 검색해 '페이지'를 '리다이렉트'할 수 있는 기능 저장
@@ -279,7 +279,7 @@ const Login = () => {
             <Input
               value = { userEmail }
               onChange = {(e) => {
-                setUserEmail(e.target.value);
+                setUnUserEmail(e.target.value);
               }}
             />
 
@@ -287,7 +287,7 @@ const Login = () => {
             <Input
               value = { userId }
               onChange = {(e) => {
-                setUserId(e.target.value);
+                setUnUserId(e.target.value);
               }}
             />
           </Modal>
