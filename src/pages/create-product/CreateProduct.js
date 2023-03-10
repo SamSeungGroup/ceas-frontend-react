@@ -26,8 +26,8 @@ import ImageUploader from "../../components/ImageUploader"; // ImageUploader 컴
 import TextArea from "../../components/TextArea";           // TextArea 컴포넌트: '상품 이름', '상품 가격', '상품 설명' 작성 기능
 
 // 1-5. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
-import api from "../../utils/api";                          // api 컴포넌트: '인터셉터' 기능 
-import axios from "axios";                                       // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
+import api from "../../utils/api";                          // api 컴포넌트: '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능 
+import axios from "axios";                                  // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
 
 // 1-6. 'SCSS' 모듈 추가
 import "./createproduct.scss";                              // createproduct 모듈: '상품 등록' 페이지 스타일링
@@ -54,8 +54,8 @@ const CreateProduct = () => {
     // canSubmit 함수: '상품 정보 데이터'를 서버에 '송신'할 수 있는지 검사 -> '입력란'이 '공백'이 아닌지 검사
     //                 -> 상품 정보 데이터 목록: '상품 이미지', '상품 이름', '상품 가격', '상품 설명'
     const canSubmit = useCallback(() => {
-        return /* product_image.image_file !== "" && */ product_name !== "" && product_price !== "" && product_description !== "" ;
-    },[ /* product_image*/, product_name, product_price, product_description ]);
+        return product_image.image_file !== "" && product_name !== "" && product_price !== "" && product_description !== "" ;
+    },[ product_image, product_name, product_price, product_description ]);
     
     // handleSubmit 함수: '비동기(async) 함수', '상품 정보 데이터'를 '서버'에 송신
     const handleSubmit = useCallback(async () => {
@@ -65,15 +65,14 @@ const CreateProduct = () => {
             const formData = new FormData();                             // formData 변수: '입력된 상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '상품 정보 데이터' 추가
-            // formData.append("product_img", product_image.image_file);    // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
+            formData.append("product_img", product_image.image_file);   // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
             formData.append("productPrice", product_price);             // append 메소드: '데이터' 추가 -> '상품 가격' 추가
             formData.append("productName", product_name);               // append 메소드: '데이터' 추가 -> '상품 이름' 추가
             formData.append("productDescription", product_description); // append 메소드: '데이터' 추가 -> '상품 설명' 추가
 
             // (3) '상품 정보 데이터'를 '서버'에 송신
-            await axios.post("http://localhost:8080/products", formData, { headers: { "Authorization": `Bearer ${token}`, "Content-Type":"application/json"}});                       // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
-                                                                         //                  : product_img, product_name, product_price, product_description 
-
+            await axios.post("http://localhost:8080/products", formData, { headers: { "Authorization": `Bearer ${token}`, "Content-Type":"application/json"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
+                                                                                                                                                                //                  : product_img, product_name, product_price, product_description 
             // (4) '상품 등록 완료' 알림창 표시
             alert("상품이 등록되었습니다.");                             // alert 메소드: '화면 상단'에 '알림창' 표시 
 
@@ -122,7 +121,7 @@ const CreateProduct = () => {
 
             <div className = "createproduct_body">
                 <ImageUploader 
-                    // setProductImage = { setProductImage } 
+                    setProductImage = { setProductImage } 
                     preview_URL = { product_image.preview_URL } />
                 
                 <TextArea 
