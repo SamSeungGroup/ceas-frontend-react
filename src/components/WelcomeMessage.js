@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";                                    
                                                                                       // - useState 훅 컴포넌트: '상태 관리'
 
 // 1-2. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
-import axios from "axios";                                                            // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
+import axios from "axios";                                                            // axios 모듈: '비동기 HTTP 통신' 이용 -> 'REST API' 호출
+import api from "../utils/api";                                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능 
 import { jwtUtils } from "../utils/jwtUtils";                                         // jwtUtils 컴포넌트: '토큰'을 이용한 '이용자 계정' 보안
 
 // 1-3. 'Redux' 사용을 위한 컴포넌트 추가
@@ -24,7 +25,7 @@ import "./welcomemessage.scss";                                                 
 const WelcomeMessage = () => {
     // [1] 변수 설정
     const token = useSelector(state => state.Auth.token); // token 변수: 'redux store'에서 '토큰'을 받아 저장 
-    const id = useSelector(state => state.Id.Id);         // id 변수: 'redux store'에서 'id'를 받아 저장    
+    const id = useSelector(state => state.Id.id);         // id 변수: 'redux store'에서 'id'를 받아 저장    
 
     // [2] 상태 관리
     const [ isLogin, setIsLogin ] = useState(false);      // '로그인 여부' 상태 관리 -> isLogin 변수: '로그인 여부' 저장, setIsLogin 함수: '로그인 여부' 조작
@@ -38,16 +39,17 @@ const WelcomeMessage = () => {
             // (1) '회원 이름 데이터'를 '서버'로부터 수신
             // getUserName 함수: '비동기(async)' 함수, '회원 이름 데이터' 저장
             const getUserName = async () => {
-                const { data } = await axios.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName
+                const { data } = await api.get(`/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName
 
                 return data;
             }
 
             // (2) '회원 이름 데이터'를 'setUserName' 함수에 적용 + '로그인'되었다고 설정
             getUserName().then((response) => {
-                setUserName(response.userName); // '내 이름' 설정
-                setIsLogin(true);               // '로그인' 설정
+                setUserName(response.data[0].userName); // '내 이름' 설정
             })
+
+            setIsLogin(true);               // '로그인' 설정
         }
 
         // catch -> '회원 이름 데이터 수신 실패' 처리
