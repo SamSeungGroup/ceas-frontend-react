@@ -48,6 +48,7 @@ const App = () => {
   return (
     <React.Fragment>
       <HeaderMenu/>
+      <WelcomeMessage />
       <SideMenu />
 
       <Routes>
