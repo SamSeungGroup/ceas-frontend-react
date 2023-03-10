@@ -197,7 +197,7 @@ const ProductList = () => {
 
             <div className = "product-list_body">
                 {
-                    onList ? (searchProductList.map((item, index) => (
+                    onList ? (productList.map((item, index) => (
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
