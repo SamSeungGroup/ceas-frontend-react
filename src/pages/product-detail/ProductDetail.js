@@ -210,7 +210,7 @@ const ProductDetail = () => {
 
                     <div className = "product-detail_body">
                         <div className = "product-detail_image">
-                            <img src = "../../image/default_image.png"/>
+                            <img src = { productDetail.productImage }/>
                         </div>
 
                         <div className = "product-detail-title-content">

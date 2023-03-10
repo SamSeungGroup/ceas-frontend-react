@@ -28,7 +28,7 @@ export const IdReducer = (state = IdInitialState, action) => { // state 매개�
         case SET_ID:
             return {
                 ...state,            // ...: '얕은 복사'를 의미 -> '상태값' 반환
-                Id: action.id    // 'id' 반환
+                id: action.id    // 'id' 반환
             }
         
         // 2. 그 이외의 경우
