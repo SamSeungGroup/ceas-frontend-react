@@ -55,7 +55,7 @@
 body {
   margin: 0;                                                                       /* margin: '요소 외부 여백' 설정 */
   padding-top: 10rem;                                                              /* padding-top: '요소 내부 상단 여백' 설정, 'HeaderMenu'를 '상단'에 '고정'하여 적용 */
-  background-color: rgb(255, 255, 255);                                          /* background-color: '배경색' 설정 - '모든 화면'에서 적용할 '배경색' */
+  background-color: #adb9d7;                                          /* background-color: '배경색' 설정 - '모든 화면'에서 적용할 '배경색' */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',  /* font-family: '글꼴' 설정 */
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
