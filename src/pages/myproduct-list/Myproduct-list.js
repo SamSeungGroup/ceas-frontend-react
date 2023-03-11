@@ -26,7 +26,10 @@ import moment from "moment"                                              // mome
 // 1-5. 'UI' 관련 컴포넌트 추가
 import { ProductItemCard } from "../../components/ProductItemCard";      // ProductItemCard 컴포넌트: '상품 목록' 페이지에서 '하나의 상품 정보 카드' 표시
 
-// 1-6. 'SCSS' 모듈 추가
+// 1-6. '비동기 통신'을 위한 모듈 추가
+import api from "../../utils/api";                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 - REST API 호출 + '인터셉터' 기능
+
+// 1-7. 'SCSS' 모듈 추가
 import "../product-list/productlist.scss";                               // productlist scss 모듈: '상품 목록' 스타일링
 
 /* 2. 함수 설정 */
@@ -47,15 +50,44 @@ const MyProductList = () => {
     const [ search_params, setSearchParams ] = useSearchParams(); // '쿼리 파라미터' 상태 관리 -> search_params 변수: '쿼리 파라미터' 저장, setSearchParams 함수: '쿼리 파라미터' 조작
 
     // [2] 변수 설정
-    const token = useSelector(state => state.Auth.token);         // token 변수: 'redux store'에서 '토큰'을 받아 저장
-    const userId = "brodi123" // useSelector(state => state.Id.id);             // userId 변수: 'redux store'에서 'userId'를 받아 저장
+    const userId = useSelector(state => state.Id.id);             // userId 변수: 'redux store'에서 'userId'를 받아 저장
 
     // [2] 함수 설정
+    
+    // [3] 처리
+    // [3-1] '상품 목록 데이터'를 '서버'로부터 수신
+    useEffect(() => {
+        // try -> '상품 목록 데이터 수신 성공' 처리
+        try{
+            // (1) '상품 목록 데이터'를 '서버'로부터 수신
+            // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
+            const getProductList = async () => {
+                const { data } = await api.get(`/products`);   // data 필드: '상품 목록 데이터' 저장
+                                                                                      // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
+                                                                                      //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
+    
+                return data;
+            }
+
+            // (2) '상품 목록 데이터'를 'setProductList 함수'에 설정 + '상품 목록 데이터'가 로드되었다고 설정
+            getProductList().then(response => 
+                setProductList(response.data)); // '상품 목록' 설정
+                setOnList(true);           // '상품 목록 출력' 설정
+        }
+
+        // catch -> '상품 목록 데이터 수신 실패' 처리
+        catch(e){
+            // (1) '상품 목록 데이터'가 로드되지 않았다고 설정
+            setOnList(false);               // '상품 목록 미출력' 설정
+        }
+    }, [])
+
     // MyProductItems 함수: '내 상품 리스트' 저장
     function MyProductItems(productList, userId){        
-                        // <매개변수>
-                        //   - productList: '상품 목록'
-                        //   - userId: '회원 아이디'
+                           // <매개변수>
+                           //   - productList: '상품 목록'
+                           //   - userId: '회원 아이디'
+
         // (1) 변수 설정
         let myProductList = [];                         // MyProductList 리스트: '회원 아이디와 일치하는 상품 목록' 저장
 
@@ -82,35 +114,7 @@ const MyProductList = () => {
     // useMemo 훅: '기능' 재사용
     const myProductList = useMemo(() =>
         MyProductItems(productList, userId), 
-    []);
-    
-    // [3] 처리
-    // [3-1] '상품 목록 데이터'를 '서버'로부터 수신
-    useEffect(() => {
-        // try -> '상품 목록 데이터 수신 성공' 처리
-        try{
-            // (1) '상품 목록 데이터'를 '서버'로부터 수신
-            // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
-            const getProductList = async () => {
-                const { data } = await axios.get(`http://localhost:8080/products`);   // data 필드: '상품 목록 데이터' 저장
-                                                                                      // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
-                                                                                      //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
-    
-                return data;
-            }
-
-            // (2) '상품 목록 데이터'를 'setProductList 함수'에 설정 + '상품 목록 데이터'가 로드되었다고 설정
-            getProductList.then(response => 
-                setProductList(response)); // '상품 목록' 설정
-                setOnList(true);           // '상품 목록 출력' 설정
-        }
-
-        // catch -> '상품 목록 데이터 수신 실패' 처리
-        catch(e){
-            // (1) '상품 목록 데이터'가 로드되지 않았다고 설정
-            setOnList(false);               // '상품 목록 미출력' 설정
-        }
-    })
+    [ productList ]);
 
     // (2) 화면 렌더링
     return (
@@ -125,13 +129,13 @@ const MyProductList = () => {
                     (myProductList.map((item, index) => (
                         <ProductItemCard
                             key = { index } 
-                            product_id = { item.product_id }
-                            product_img = { item.product_img }
-                            product_name = { item.product_name }
-                            product_price = { item.product_price }
-                            product_positive = { item.product_positive }
+                            productId = { item.id }
+                            productImage = { item.productImage }
+                            productName = { item.productName }
+                            productPrice = { item.productPrice }
+                            productPositive = { item.productPositive }
                             userName = { item.userName }
-                            date = { item.product_createDate }
+                            productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
                         />
                 ))) : (
                     <h2 className = "no-myproduct-list">등록한 상품이 없습니다.</h2>

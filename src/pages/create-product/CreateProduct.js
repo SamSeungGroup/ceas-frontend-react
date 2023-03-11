@@ -65,14 +65,15 @@ const CreateProduct = () => {
             const formData = new FormData();                             // formData 변수: '입력된 상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '상품 정보 데이터' 추가
-            formData.append("product_img", product_image.image_file);   // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
+            formData.append("productImage", product_image.image_file);   // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
             formData.append("productPrice", product_price);             // append 메소드: '데이터' 추가 -> '상품 가격' 추가
             formData.append("productName", product_name);               // append 메소드: '데이터' 추가 -> '상품 이름' 추가
             formData.append("productDescription", product_description); // append 메소드: '데이터' 추가 -> '상품 설명' 추가
 
             // (3) '상품 정보 데이터'를 '서버'에 송신
-            await axios.post("http://localhost:8080/products", formData, { headers: { "Authorization": `Bearer ${token}`, "Content-Type":"application/json"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
-                                                                                                                                                                //                  : product_img, product_name, product_price, product_description 
+            await api.post("/products", formData, { headers: {"Content-Type":"application/json"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
+                                                                                                    //                   -> productImage, productName, productPrice, productName, productDescription 
+
             // (4) '상품 등록 완료' 알림창 표시
             alert("상품이 등록되었습니다.");                             // alert 메소드: '화면 상단'에 '알림창' 표시 
 
