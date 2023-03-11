@@ -101,14 +101,6 @@ const SideMenu = () => {
 
                <a>사이트 이용법</a>
           </div>
-
-          <div className = "ceo-welcome" onClick = { () => navigate(`/ceo-welcome`)}>
-              <a>* 대표이사 인사말</a>
-          </div>
-
-          <div className = "executive-instruction" onClick = { () => navigate(`/executive-instruction`)}>
-              <a>* 임원진 소개</a>
-          </div>
       </div>    
     </div>
   )
