@@ -7,13 +7,13 @@
     // [1] 크기 설정(1)
     .product-item-card_wrapper {
       width: 180px;
-      height: 300px;
+      height: 250px;
 
       // [2] 마우스를 올렸을 때(1)
       &:hover {
         width: 190px;
-        height: 310px;
-        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+        height: 260px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 10px 40px 0px;
       }
     }
   }
@@ -23,13 +23,13 @@
     // [1] 크기 설정(2)
     .product-item-card_wrapper {
       width: 180px;
-      height: 300px;
+      height: 250px;
   
       // [2] 마우스를 올렸을 때(2)
       &:hover {
         width: 190px;
-        height: 310px;
-        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+        height: 260px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 10px 40px 0px;
       }
     }
   }
@@ -45,7 +45,7 @@
       &:hover {
         width: 190px;
         height: 310px;
-        box-shadow: rgba(29, 18, 181, 0.9) 0px 22px 70px 4px;
+        box-shadow: rgba(29, 18, 181, 0.9) 0px 10px 40px 0px;
       }
     }
   }
@@ -85,6 +85,7 @@
       word-break: break-all;
       overflow: auto;
       padding: 0.6rem;
+      font-size: 0.8rem;
   
       // (2-1) 
       &::-webkit-scrollbar {
@@ -93,7 +94,7 @@
   
       // (2-2) '상품 이름'
       .product-item-card-body_text_name {
-        font-size: 1.3rem;
+        font-size: 1.0rem;
         color: darkslategray;
         font-weight: bold;
       }
