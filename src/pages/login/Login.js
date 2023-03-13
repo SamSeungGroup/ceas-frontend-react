@@ -98,7 +98,7 @@ const Login = () => {
     try {
       // (2-1-1) '로그인 데이터' 송신
       const { data } = await axios.post("http://localhost:8080/users/login", { // axios.post 메소드: 1. '서버 주소'로 '데이터' 송신 -> '로그인 데이터' 송신: userId, userPassword
-                                                                                    //                    2. '서버 주소'로부터 '데이터' 수신 -> '회원 인증 데이터' 수신: token, id, userId
+                                                                               //                    2. '서버 주소'로부터 '데이터' 수신 -> '회원 인증 데이터' 수신: token, id, userId
         userId,                                                                
         userPassword                                                          
       });
@@ -135,7 +135,7 @@ const Login = () => {
     } catch (e) {
       // (2-2-1) '서버'로부터 받은 '에러' 알림창 표시
       toast.error("로그인에 실패했습니다.", {
-        position: "top-center",                                               // position 필드: 'toast 메시지' 위치 설정 -> '상단 가운데'로 조정
+        position: "top-center",                                                // position 필드: 'toast 메시지' 위치 설정 -> '상단 가운데'로 조정
       });
     }
   };
@@ -153,8 +153,10 @@ const Login = () => {
     // try -> '이메일 존재 여부 검사 성공' 처리
     try {
       // (1) '이메일 입력란'에 입력한 '이메일 데이터' 송신('서버'에서 '이메일 존재 여부' 확인)
-      const { userData } = await axios.put("http://localhost:8080/users", { userId, userEmail });  // axios.put 메소드: 1. '서버 주소'로 '데이터' 송신 -> '회원 인증'을 위해 '이메일' 송신 : userId, userEmail
-                                                                                                   //                   2. '서버 주소'로부터 '데이터' 수신 -> '회원 인증 데이터' 수신: userName, userPassword
+      const  userData   = await axios.put("http://localhost:8080/users", { userId, userEmail });  // axios.put 메소드: 1. '서버 주소'로 '데이터' 송신 -> '회원 인증'을 위해 '이메일' 송신 : userId, userEmail
+                                                                                                //                   2. '서버 주소'로부터 '데이터' 수신 -> '회원 인증 데이터' 수신: userName, userPassword
+                                    
+      console.log(userData);
 
       // (2) '입력한 이메일'로 '비밀번호 발송 성공' 알림창 표시
       toast.success(
@@ -174,6 +176,7 @@ const Login = () => {
       const emailTemplate = {
         userName: userData.userName,          // userName 필드: 이용자 이름
         userPassword: userData.userPassword,  // userPassword 필드: 이용자 비밀번호
+        userEmail: userEmail
       };
 
       // (4) 'emailjs'에 '수신받을 내용 및 관련 정보' 송신
