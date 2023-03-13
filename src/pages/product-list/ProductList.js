@@ -3,7 +3,7 @@
 
 /* 1. 모듈 및 컴포넌트 추가 */
 // 1-1. 'use 훅' 컴포넌트 추가
-import { useEffect, useState, useCallback, useMemo } from "react";       // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리' 
+import { useEffect, useState, useCallback, useMemo } from "react";      // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리' 
                                                                         // - useEffect 훅 컴포넌트: '비동기 통신'
                                                                         // - useState 훅 컴포넌트: '상태 관리'
                                                                         // - useMemo 훅 컴포넌트: '기능 재사용'
@@ -23,6 +23,7 @@ import { Button, TextField } from "@mui/material";                      // Mater
                                                                         // - TextField 컴포넌트: '텍스트 입력창'
 
 // 1-4. '비동기 통신'을 위한 모듈 추가
+import axios from "axios";                                               // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
 import api from "../../utils/api";                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 - REST API 호출 + '인터셉터' 기능 
 
 // 1-5. '날짜 표현' 모듈 추가 
@@ -35,7 +36,7 @@ import "./productlist.scss";                                             // prod
 // ProductList 함수: '상품 목록' 기능 구현 + 화면 표시
 const ProductList = () => {
     // [1] 변수 설정
-    const id = useSelector(state => state.Id.id);                   // id 변수: 'redux store'에서 'id'를 받아 저장
+    const id = useSelector(state => state.Id.id);                    // id 변수: 'redux store'에서 'id'를 받아 저장
 
     // [2] 상태 관리
     // [2-1] '상품 목록 데이터' 관리
@@ -57,8 +58,9 @@ const ProductList = () => {
                                 // <매개변수>
                                 //   - productList: '상품 목록'
                                 //   - searchWord: '검색 단어'
+
         // (1) 변수 설정
-        let searchProductList = [];                       // searchProductList 배열: '검색한 상품 목록' 저장
+        let searchProductList = [];                      // searchProductList 배열: '검색한 상품 목록' 저장
 
         // (2) 처리
         // (2-1) '검색한 상품 목록' 검색
@@ -79,37 +81,55 @@ const ProductList = () => {
         return searchProductList;
     }
 
-    // searchProductlist 함수: '검색 상품 목록' 저장
+    // searchProductlist 배열: '검색 상품 목록' 저장
     // useMemo 훅: '기능' 재사용
     const searchProductList = useMemo(() =>
         searchProductItems(productList, searchWord), 
-    [ searchWord ]);
-
-    /* // HotProductItems 함수: '긍정도가 높은 3개의 상품 목록' 반환
-    function HotProductItems(productList){
-                            // <상품 목록>
-                            //  - productList: '상품 목록'
+    [ productList, searchWord ]);
+    
+    // HotProductItems 함수: '내 상품 리스트' 저장 후 '긍정도'가 높은 '3개의 상품 리스트' 반환
+    function HotProductItems(productList){        
+                             // <매개변수>
+                             //   - productList: '상품 목록'
 
         // (1) 변수 설정
-        let hotroductList = []; // hotProductList 배열: '긍정도가 높은 3개의 상품 목록' 저장
+        let tempProductList = [];   // tempProductList 배열: '임시 저장 배열'
+        let hotProductList = [];    // hotProductList 배열: '긍정도'가 높은 '3개의 상품 리스트' 저장
 
         // (2) 처리
-        // (2-1) '상품 목록'을 '긍정도'가 '높은 순'으로 정렬
-        hotProductList = productList.sort((a, b) => a.productName.localeCompare(b.productName))
+        // (2-1) '상품 목록'을 '임시 저장 배열'에 저장
+        productList.forEach((p)=>{ 
+                            // <매개변수>
+                            //  - p: 'productList'
 
-        // (2-2) '긍정도'가 높은 '3개의 상품 아이템'을 'hotProductList 배열'에 저장
+            // (2-1-1) '회원 아이디'와 일치하는 '상품'이 있을 경우
+            tempProductList.push(p); // '검색한 단어'와 일치하는 '상품 이름'을 가진 '상품'을 '검색 상품 목록' 추가
+        })
+
+        // (2-2) '임시 저장 배열'에 저장된 '상품 목록'을 '긍정도'가 가장 높은 순서대로 '내림차순 정렬'
+        tempProductList.sort((x, y) => x.productName.localeCompare(y.productName))
+
+        // (2-3) '정렬된 임시 저장 배열'에서 '3개의 긍정 상품' 저장
+        for(let i = 0; i < tempProductList.length; i++){
+            // (2-3-1) '3번째 요소'까지 반복
+            if(i === 3){
+                break;
+            }
+
+            // (2-3-2) '긍정도가 높은 3개의 상품 목록' 저장
+            hotProductList[i] = tempProductList[i];
+        }
+
         // (3) 반환
-        // (3-1) '긍정도가 높은 3개의 상품 목록' 반환
+        // (3-1) '긍정도'가 높은 '3개의 상품 목록' 반환
         return hotProductList;
     }
 
-    // HotProductList 함수: '긍정도가 높은 3개의 상품 목록' 저장
+    // hotProductlist 배열: '긍정도'가 높은 '3개의 상품 목록' 저장
     // useMemo 훅: '기능' 재사용
     const hotProductList = useMemo(() =>
-        HotProductItems(productList),
-    [ productList ]); 
-
-    */
+        HotProductItems(productList), 
+    [ productList ]);
 
     // [3] 처리
     // [3-1] '상품 목록 데이터'를 '서버'로부터 수신
@@ -196,7 +216,7 @@ const ProductList = () => {
 
             <div className = "hot-product-list_body">
                 {
-                    onList ? (productList.map((item, index) => (
+                    onList ? (hotProductList.map((item, index) => (
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
@@ -205,7 +225,7 @@ const ProductList = () => {
                             productPrice = { item.productPrice }
                             productPositive = { item.productPositive }
                             userName = { item.userName }
-                            productCreateDate = { item.createdDate }
+                            productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
                         />
                 ))) : (
                     <h2 className = "no-hot-product-list">등록된 인기 상품이 없습니다.</h2>
@@ -219,7 +239,7 @@ const ProductList = () => {
 
             <div className = "product-list_body">
                 {
-                    onList ? (productList.map((item, index) => (
+                    onList ? (searchProductList.map((item, index) => (
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
