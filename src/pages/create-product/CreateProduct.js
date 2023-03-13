@@ -62,10 +62,10 @@ const CreateProduct = () => {
         // try -> '상품 등록 성공' 처리
         try {
             // (1) '폼 데이터' 생성
-            const formData = new FormData();                             // formData 변수: '입력된 상품 정보 데이터'를 저장
+            const formData = new FormData();                            // formData 변수: '입력된 상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '상품 정보 데이터' 추가
-            formData.append("productImage", product_image.image_file);   // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
+            formData.append("productImage", product_image.image_file);  // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
             formData.append("productPrice", product_price);             // append 메소드: '데이터' 추가 -> '상품 가격' 추가
             formData.append("productName", product_name);               // append 메소드: '데이터' 추가 -> '상품 이름' 추가
             formData.append("productDescription", product_description); // append 메소드: '데이터' 추가 -> '상품 설명' 추가
