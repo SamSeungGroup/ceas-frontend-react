@@ -86,18 +86,18 @@ const MyInformation = () => {
             // (1) '내 정보 데이터'를 '서버'로부터 수신
             // getUser 함수: '비동기(async)' 함수, '회원 정보 데이터' 저장
             const getUser = async () => {
-                const { data } = await axios.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
-                                                                                       //                   : userName, userEmail, userImage, userPassword
+                const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
+                                                                                    //                   : userName, userEmail, userImage, userPassword
     
                 return data;
             }
 
             // (2) '내 정보 데이터'를 'setUserName/setUserEmail/setUserImage/setUserPassword' 함수에 설정
-            getUser.then((response) => {
-                setUserName(response.userName);                                 // '내 이름' 설정
-                setUserEmail(response.userEmail);                               // '내 이메일 주소' 설정
-                setUserImage({...userImage, preview_URL: response.userImage});  // '내 프로필 이미지' 설정
-                setUserPassword(response.userPassword);                         // '내 비밀번호' 설정
+            getUser().then((response) => {
+                setUserName(response.data.userName);                            // '내 이름' 설정
+                setUserEmail(response.data.userEmail);                          // '내 이메일 주소' 설정
+                setUserImage({...userImage, preview_URL: "../../../../avator.png" });  // '내 프로필 이미지' 설정
+                setUserPassword(response.data.userPassword);                    // '내 비밀번호' 설정
             });
         }
 
@@ -122,7 +122,7 @@ const MyInformation = () => {
             const formData = new FormData();                                 // formData 변수: '상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '내 정보 데이터' 추가
-            formData.append("image", userImage.image_file, "*");             // append 메소드: '데이터' 추가 -> '회원 이미지' 추가
+            formData.append("image", userImage.image_file);             // append 메소드: '데이터' 추가 -> '회원 이미지' 추가
             formData.append("dto", new Blob([JSON.stringify({                // append 메소드: '데이터' 추가 
                 'id': id,                                                    // -> id: '회원 식별 아이디' 추가
                 'userName': userName,                                        // -> userName: '회원 이름' 추가
@@ -156,6 +156,7 @@ const MyInformation = () => {
             <div className = "myinformation_header">
                 <img className = "myinformation-edit_image" src = "../../image/myinformation-edit_icon.png"/>
                 <div className = "myinformation-edit-title">내 정보 수정</div>
+                <div>{ userPassword }</div>
             </div>
 
             <div className = "myinformation-submit_button">
