@@ -153,11 +153,9 @@ const Login = () => {
     // try -> '이메일 존재 여부 검사 성공' 처리
     try {
       // (1) '이메일 입력란'에 입력한 '이메일 데이터' 송신('서버'에서 '이메일 존재 여부' 확인)
-      const  userData   = await axios.put("http://localhost:8080/users", { userId, userEmail });  // axios.put 메소드: 1. '서버 주소'로 '데이터' 송신 -> '회원 인증'을 위해 '이메일' 송신 : userId, userEmail
+      const  { data }  = await axios.put("http://localhost:8080/users", { userId, userEmail });  // axios.put 메소드: 1. '서버 주소'로 '데이터' 송신 -> '회원 인증'을 위해 '이메일' 송신 : userId, userEmail
                                                                                                 //                   2. '서버 주소'로부터 '데이터' 수신 -> '회원 인증 데이터' 수신: userName, userPassword
-                                    
-      console.log(userData);
-
+                                  
       // (2) '입력한 이메일'로 '비밀번호 발송 성공' 알림창 표시
       toast.success(
         <div>
@@ -174,9 +172,9 @@ const Login = () => {
 
       // (3) '이메일 템플릿' 생성('서버'로부터 받아온 '회원 정보 데이터' 저장)
       const emailTemplate = {
-        userName: userData.userName,          // userName 필드: 이용자 이름
-        userPassword: userData.userPassword,  // userPassword 필드: 이용자 비밀번호
-        userEmail: userEmail
+        userName: data.data.userName,          // userName 필드: 이용자 이름
+        userPassword: data.data.userPassword,  // userPassword 필드: 이용자 비밀번호
+        userEmail: userEmail                   // userEmail 필드: 이용자 이메일
       };
 
       // (4) 'emailjs'에 '수신받을 내용 및 관련 정보' 송신
