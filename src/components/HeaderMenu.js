@@ -120,7 +120,7 @@ const HeaderMenu = () => {
           <>
             <img className = "headermenu-menu_image" src = { userImage }/>
             <div className = "myinformation_link">
-              <Link to = "/myinformation/:id">
+              <Link to = {`/myinformation/${id}`}>
               내 정보 수정
               </Link>
             </div>
