@@ -91,15 +91,7 @@ const SideMenu = () => {
                   <img src = "../../image/purchase_icon.png"/>
                </div>
 
-               <a>결제 관리</a>
-          </div>
-
-          <div className = "sidemenu-menu_text" onClick = { () => navigate("/how-to-use")}>
-               <div className = "sidemenu-menu_image">
-                  <img src = "../../image/how-to-use_icon.png"/>
-               </div>
-
-               <a>사이트 이용법</a>
+               <a>결제 내역</a>
           </div>
       </div>    
     </div>
