@@ -72,7 +72,7 @@ const MyProductList = () => {
             // (2) '상품 목록 데이터'를 'setProductList 함수'에 설정 + '상품 목록 데이터'가 로드되었다고 설정
             getProductList().then(response => 
                 setProductList(response.data)); // '상품 목록' 설정
-                setOnList(true);           // '상품 목록 출력' 설정
+                setOnList(true);                // '상품 목록 출력' 설정
         }
 
         // catch -> '상품 목록 데이터 수신 실패' 처리
