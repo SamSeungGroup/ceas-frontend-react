@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";                      // react-router-do
                                                               // - Link 컴포넌트: 'URL' 이동, '화면'에 '태그'로 렌더링
 
 // 1-4. '비동기 통신'을 위한 컴포넌트 추가
+import api from "../utils/api";    
 import axios from "axios";                                    // axios 모듈: '비동기 HTTP 통신' 이용 - REST API 호출 
 import { jwtUtils } from "../utils/jwtUtils";                 // jwtUtils 모듈: '토큰' 검증 
                                                               // - jwtUtils 컴포넌트: '토큰' 검증
@@ -66,14 +67,14 @@ const HeaderMenu = () => {
       // (1) '내 프로필 이미지 데이터'를 '서버'로부터 수신
       // getUser 함수: '비동기(async)' 함수, '회원 정보 데이터' 저장
       const getUser = async () => {
-        const { data } = await axios.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 프로필 이미지 데이터' 수신: userImage
+        const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 프로필 이미지 데이터' 수신: userImage
 
         return data;
     }
 
     // (2) '내 정보 데이터 중 내 프로필 이미지'를 'setUserImage' 함수에 설정
-    getUser.then((response) => {
-        setUserImage(response.userImage);
+    getUser().then((response) => {
+        setUserImage(response.data.storedFileName);
     });
     }
 
@@ -93,9 +94,9 @@ const HeaderMenu = () => {
   // logout 함수: '비동기(async) 함수', '로그아웃' 기능 설정
   const logout = async () => {
     // (1) '토큰/id'값을 비움 
-    await dispatch(setToken(""));  // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
-    await dispatch(setId(""));     // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
-    await dispatch(setUserId("")); // dispatch 메소드: 'redux store'에 '변경된 값' 저장
+    await dispatch(setToken(""));    // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
+    await dispatch(setId(""));       // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
+    await dispatch(setUserId(""));   // dispatch 메소드: 'redux store'에 '변경된 값' 저장
 
     // (2) '로그아웃' 알림창 표시
     alert("로그아웃 되었습니다."); // alert 메소드: '화면 상단'에 '알림창' 표시
