@@ -46,7 +46,7 @@ const WelcomeMessage = () => {
 
             // (2) '회원 이름 데이터'를 'setUserName' 함수에 적용 + '로그인'되었다고 설정
             getUserName().then((response) => {
-                setUserName(response.data[0].userName); // '내 이름' 설정
+                setUserName(response.data.userName); // '내 이름' 설정
             })
 
             setIsLogin(true);               // '로그인' 설정
@@ -57,7 +57,7 @@ const WelcomeMessage = () => {
         catch(e){
             setIsLogin(false);                  // '비로그인' 설정
         }
-    }, []);
+    }, []); 
 
     // [3-2] 화면 렌더링
     return(
