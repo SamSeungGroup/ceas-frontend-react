@@ -24,11 +24,15 @@ import { toast, ToastContainer } from "react-toastify";      // react-toastify �
 import * as Yup from "yup";                                  // yup 모듈: 'form에서 입력된 값'의 '유효성 검증'
                                                         
 // 1-3. '비동기 통신'을 위한 모듈 추가
-import axios from "axios";                                   // axios 모듈: '비동기 HTTP 통신' 이용 - REST API 호출
+import api from "../../utils/api"; 
 
 // 1-4. 'Redux' 사용을 위한 컴포넌트 추가
-import { setToken } from "../../redux/reducers/AuthReducer"; // AuthReducer 모듈: 'jwt 토큰'을 반환하는 'reducer' 생성 
-                                                             // - setToken 컴포넌트: '토큰' 설정
+import { setToken } from "../../redux/reducers/AuthReducer";     // AuthReducer 모듈: '토큰'을 반환하는 'reducer' 생성
+                                                              // - setToken 컴포넌트: '토큰' 설정
+import { setId } from "../../redux/reducers/IdReducer";          // IdReducer 모듈: 'id(회원 식별 코드)'를 반환하는 'reducer' 생성
+                                                              // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
+import { setUserId } from "../../redux/reducers/UserIdReducer";  // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
+                                                              // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
 
 // 1-5. 'SCSS' 모듈 추가
 import "./changepassword.scss";                              // changepassword 모듈: '비밀번호 변경 페이지' 스타일링 적용
@@ -51,7 +55,7 @@ const ChangePassword = () => {
 
     // (1-3) '변경할 비밀번호 입력 확인' 검증
     userPassword2: Yup.string()
-      .oneOf([Yup.ref("changed_password"), null], "변경할 비밀번호가 일치하지 않습니다.") // oneOf 메소드: '값 일치 여부' 판단, ref 메소드: 'changed_Password' 필드 연결('변경할 비밀번호 확인'을 위함)
+      .oneOf([Yup.ref("userPassword"), null], "변경할 비밀번호가 일치하지 않습니다.") // oneOf 메소드: '값 일치 여부' 판단, ref 메소드: 'changed_Password' 필드 연결('변경할 비밀번호 확인'을 위함)
       .required("필수 입력 값입니다!"),                                                   // required 메소드: '필수 입력 안내 메시지' 표시
   });
 
@@ -69,10 +73,10 @@ const ChangePassword = () => {
     // try -> '비밀번호 변경 성공' 처리
     try {
       // (2-1-1) '변경된 비밀번호 데이터' 송신
-      await axios.post(`http://localhost:8080/users/${id}`, { userPassword }); // axios.post 메소드: 1. '서버 주소'로 '데이터' 송신 -> '변경한 비밀번호 데이터' 송신
-                                                                               //                        : userPassword
-                                                                               //                    2. '서버 주소'로부터 '데이터' 수신 -> '임시 비밀번호 데이터' 송신
-                                                                               //                        : userPassword
+      await api.post(`/users/${id}`, { userPassword }); // axios.post 메소드: 1. '서버 주소'로 '데이터' 송신 -> '변경한 비밀번호 데이터' 송신
+                                                        //                        : userPassword
+                                                        //                    2. '서버 주소'로부터 '데이터' 수신 -> '임시 비밀번호 데이터' 송신
+                                                        //                        : userPassword
 
       // (2-1-2) '비밀번호 변경 성공 알림창' 표시
       toast.success(
@@ -90,9 +94,11 @@ const ChangePassword = () => {
       // (2-1-2) '로그인 페이지'로 이동 + 로그아웃
       // setTimeout 함수: '일정 시간'이 지난 후 '원하는 함수'를 '예약 실행(호출)'할 수 있게 함(호출 스케줄링)
       setTimeout(() => {
+        dispatch(setToken(""));                                           
+        dispatch(setId(""));      
+        dispatch(setUserId(""));  
+
         navigate("/login");                                               // 예악 실행 함수: navigate 함수 -> '로그인 페이지'로 이동
-        dispatch(setToken(""));                                           // dispatch 메소드: 'redux store'에 '변경된 값' 저장
-        window.location.reload();                                         // location.reload 메소드: '현재 페이지'를 다시 불러옴
       }, 2000);                                                           // 일정 시간: 2초
     }               
 
@@ -134,21 +140,21 @@ const ChangePassword = () => {
                       <Form.Item className = "input-form" label = "* 현재 비밀번호">
                           <Input.Password value = { values.nowPassword } name = "nowPassword" onChange = { handleChange } />
                               <div className = "error-message">
-                                  <ErrorMessage name = "password" />
+                                  <ErrorMessage name = "nowPassword" />
                               </div>
                       </Form.Item>
 
                     <Form.Item className = "input-form" label = "* 변경할 비밀번호">
                         <Input.Password value = { values.userPassword } name = "userPassword" onChange = { handleChange } />
                               <div className = "error-message">
-                                  <ErrorMessage name = "changed_password" />
+                                  <ErrorMessage name = "userPassword" />
                               </div>
                     </Form.Item>
 
                     <Form.Item className = "input-form" label = "* 변경할 비밀번호 확인">
                         <Input.Password value = { values.userPassword2 } name = "userPassword2" onChange = { handleChange } />
                               <div className = "error-message">
-                                  <ErrorMessage name = "changed_password2" />
+                                  <ErrorMessage name = "userPassword2" />
                               </div>
                     </Form.Item>
 
