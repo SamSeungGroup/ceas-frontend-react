@@ -54,6 +54,7 @@ import "./myinformation.scss";                                                  
 const MyInformation = () => {
     // [1] 변수 설정
     const { id } = useParams(); // id 필드: '쿼리 파라미터'로 'id'를 받음
+    
 
     // [2] 상태 관리
     // [2-1] '내 정보 수정 입력 데이터' 관리
@@ -118,16 +119,19 @@ const MyInformation = () => {
         // try -> '내 정보 수정 성공' 처리
         try {
             // (1) '폼 데이터' 생성
-            const formData = new FormData();                                  // formData 변수: '상품 정보 데이터'를 저장
+            const formData = new FormData();                                 // formData 변수: '상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '내 정보 데이터' 추가
-            formData.append("userImage", userImage.image_file);               // append 메소드: '데이터' 추가 -> '회원 이미지' 추가
-            formData.append("userName", userName);                            // append 메소드: '데이터' 추가 -> '회원 이름' 추가
-            formData.append("userEmail", userEmail);                          // append 메소드: '데이터' 추가 -> '회원 이메일' 추가
+            formData.append("image", userImage.image_file, "*");             // append 메소드: '데이터' 추가 -> '회원 이미지' 추가
+            formData.append("dto", new Blob([JSON.stringify({                // append 메소드: '데이터' 추가 
+                'id': id,                                                    // -> id: '회원 식별 아이디' 추가
+                'userName': userName,                                        // -> userName: '회원 이름' 추가
+                'userEmail': userEmail                                       // -> userEmail: '회원 이메일' 추가
+            })], { type: "application/json" }));                             // -> application/json 타입으로 전송
 
             // (3) '내 정보 데이터'를 '서버'에 송신
-            await api.put(`/users/${id}`, formData);                          // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '내 정보 데이터' 송신
- 
+            await api.put(`/users/${id}`, formData, { headers: { "Content-Type": "multipart/form-data"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '내 정보 데이터' 송신
+
             // (4) '내 정보 수정 완료' 알림창 표시
             alert("회원정보가 수정되었습니다.");                              // alert 메소드: '화면 상단'에 '알림창' 표시 
 
