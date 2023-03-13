@@ -25,7 +25,7 @@ const persistConfig = {
 const allReducers = combineReducers({
   Auth: AuthReducer,     // Auth 필드: 'redux-persist'와 결합하기 위한 'AuthReducer' 저장
   Id: IdReducer,         // Id 필드: 'redux-persist'와 결합하기 위한 'IdReducer' 저장
-  UserId: UserIdReducer  // UserId 필드: 'redux-persist'와 결합하기 위한 'UserIdReducer' 저장
+  UserId: UserIdReducer, // UserId 필드: 'redux-persist'와 결합하기 위한 'UserIdReducer' 저장
 }); 
 
 // store 함수: 'storage(rudux 데이터 저장소)' 생성

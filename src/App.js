@@ -23,8 +23,6 @@ import EnquiryToSeller from "./pages/enquiry-to-seller/Enquiry-To-Seller";      
 import EditProduct from "./pages/edit-product/EditProduct";                               // 'Edit-Product(상품 수정)' 페이지 추가
 import MyInformation from "./pages/myInformation/MyInformation";                          // 'MyInformation(내 정보 관리)' 페이지 추가
 import ChangePassword from "./pages/change-password/ChangePassword"                       // 'ChangePassword(비밀번호 변경)' 페이지 추가
-import HowToUse from "./pages/how-to-use/How-To-Use";                                     // 'How-to-Use(사이트 이용법)' 페이지 추가
-import ExecutiveInstruction from "./pages/executive-instruction/Executive-Instruction";   // 'ExecutiveInstruction(임원진 소개)' 페이지 추가
 
 // 1-4. '메뉴' 표시를 위한 'components' 컴포넌트 추가
 import HeaderMenu from "./components/HeaderMenu";                                         // 'HeaderMenu(헤더 메뉴)' 컴포넌트 추가
@@ -62,8 +60,6 @@ const App = () => {
         <Route path = "/productdetail/:product_id" element = { <ProductDetail /> }/>
         <Route path = "/enquiry-to-seller/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EnquiryToSeller } /> }/> 
         <Route path = "/edit-product/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EditProduct } /> }/>
-        <Route path = "/how-to-use" element = { <HowToUse /> }/>
-        <Route path = "/executive-instruction" element = { <ExecutiveInstruction /> }/>
       </Routes>
       
     </React.Fragment>
