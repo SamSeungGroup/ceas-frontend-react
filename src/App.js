@@ -22,7 +22,6 @@ import ProductDetail from "./pages/product-detail/ProductDetail";               
 import EnquiryToSeller from "./pages/enquiry-to-seller/Enquiry-To-Seller";                // 'EnquiryToSeller(판매자 1:1 문의)' 페이지 추가
 import EditProduct from "./pages/edit-product/EditProduct";                               // 'Edit-Product(상품 수정)' 페이지 추가
 import MyInformation from "./pages/myInformation/MyInformation";                          // 'MyInformation(내 정보 관리)' 페이지 추가
-import CEOWelcome from "./pages/ceo-welcome/CEO-Welcome";                                 // 'CEOWelcome(대표이사 인사말)' 페이지 추가
 import ChangePassword from "./pages/change-password/ChangePassword"                       // 'ChangePassword(비밀번호 변경)' 페이지 추가
 import HowToUse from "./pages/how-to-use/How-To-Use";                                     // 'How-to-Use(사이트 이용법)' 페이지 추가
 import ExecutiveInstruction from "./pages/executive-instruction/Executive-Instruction";   // 'ExecutiveInstruction(임원진 소개)' 페이지 추가
@@ -59,7 +58,6 @@ const App = () => {
         <Route path = "/product-list" element = { <ProductList /> }/>
         <Route path = "/myproduct-list" element = { <PrivateRoute path = {`${location.pathname}`} component = { MyProductList } /> }/>
         <Route path = "/myInformation/:id" element = { <MyInformation /> } />
-        <Route path = "/ceo-welcome/" element = { <CEOWelcome /> }/>
         <Route path = "/changepassword/:id" element = { <ChangePassword />} />
         <Route path = "/productdetail/:product_id" element = { <ProductDetail /> }/>
         <Route path = "/enquiry-to-seller/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EnquiryToSeller } /> }/> 
