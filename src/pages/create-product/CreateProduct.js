@@ -27,7 +27,6 @@ import TextArea from "../../components/TextArea";           // TextArea 컴포�
 
 // 1-5. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
 import api from "../../utils/api";                          // api 컴포넌트: '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능 
-import axios from "axios";                                  // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
 
 // 1-6. 'SCSS' 모듈 추가
 import "./createproduct.scss";                              // createproduct 모듈: '상품 등록' 페이지 스타일링
@@ -37,6 +36,7 @@ import "./createproduct.scss";                              // createproduct 모
 const CreateProduct = () => {
     // [1] 변수 설정
     const token = useSelector(state => state.Auth.token);  // token 변수: 'redux store'에서 '토큰'을 받아 저장
+    const id = useSelector(state => state.Id.id);          // id 변수: 'redux store'에서 'id'를 받아 저장
 
     // [2] '상태 관리' 설정
     const [ product_name, setProductName ] = useState("");               // '상품 이름' 상태 관리 -> product_name 변수: '상품 이름' 저장, setProductName 함수: '상품 이름' 조작
@@ -62,30 +62,32 @@ const CreateProduct = () => {
         // try -> '상품 등록 성공' 처리
         try {
             // (1) '폼 데이터' 생성
-            const formData = new FormData();                            // formData 변수: '입력된 상품 정보 데이터'를 저장
+            const formData = new FormData();                                                             // formData 변수: '입력된 상품 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '상품 정보 데이터' 추가
-            formData.append("productImage", product_image.image_file);  // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
-            formData.append("productPrice", product_price);             // append 메소드: '데이터' 추가 -> '상품 가격' 추가
-            formData.append("productName", product_name);               // append 메소드: '데이터' 추가 -> '상품 이름' 추가
-            formData.append("productDescription", product_description); // append 메소드: '데이터' 추가 -> '상품 설명' 추가
+            formData.append("image", product_image.image_file);                                          // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
+            formData.append("dto", new Blob([JSON.stringify({                                            // append 메소드: '데이터' 추가 
+                'productPrice': product_price,                                                           // -> productPrice 필드: '상품 가격' 추가
+                'productName': product_name,                                                             // -> productName 필드: '상품 이름' 추가
+                'productDescription': product_description                                                // -> productDescription 필드: '상품 설명' 추가
+            })], { type: "application/json" }));                                                         // -> type 필드: application/json 타입으로 전송
 
             // (3) '상품 정보 데이터'를 '서버'에 송신
-            await api.post("/products", formData, { headers: {"Content-Type":"application/json"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
-                                                                                                    //                   -> productImage, productName, productPrice, productName, productDescription 
+            await api.post("/products", formData, { headers: {"Content-Type" : "multipart/form-data"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '상품 정보 데이터' 송신
+                                                                                                         //                   -> productImage, productName, productPrice, productName, productDescription 
 
             // (4) '상품 등록 완료' 알림창 표시
-            alert("상품이 등록되었습니다.");                             // alert 메소드: '화면 상단'에 '알림창' 표시 
+            alert("상품이 등록되었습니다.");                                                             // alert 메소드: '화면 상단'에 '알림창' 표시 
 
             // (5) '상품 목록 페이지'로 이동
-            navigate("/product-list")                                    // naviagte 함수: '페이지 이동' -> '상품 목록' 페이지로 이동
+            navigate("/product-list")                                                                    // naviagte 함수: '페이지 이동' -> '상품 목록' 페이지로 이동
         }
 
         // catch -> '상품 등록 실패' 처리
         catch (e) {
             // (2-1-1) '서버'로부터 받은 '에러' 알림창 표시
             toast.error("상품 등록에 실패하였습니다.", {
-                position: "top-center"                                   // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
+                position: "top-center"                                                                  // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
             });
         }
     },[ canSubmit ]);
