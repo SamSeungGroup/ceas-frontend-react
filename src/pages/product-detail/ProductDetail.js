@@ -38,9 +38,9 @@ import Comments from "../../components/Comments";                               
 // ProductDetail 함수: '상품 상세 정보' 기능 구현 + 화면 표시
 const ProductDetail = () => {
     // [1] 변수 설정
-    const { product_id } = useParams();                                       // product_id 필드: 'useParams 훅'을 이용해 '상품 상세 정보' 페이지의 'URL 파라미터'인 '상품 상세 정보 아이디(product_id)'를 받아옴
-    const token = useSelector(state => state.Auth.token);       // token 변수: 'redux store'에서 '토큰'을 받아 저장
-    const id = useSelector(state => state.Id.id);
+    const { product_id } = useParams();                                                // product_id 필드: 'useParams 훅'을 이용해 '상품 상세 정보' 페이지의 'URL 파라미터'인 '상품 상세 정보 아이디(product_id)'를 받아옴
+    const token = useSelector(state => state.Auth.token);                              // token 변수: 'redux store'에서 '토큰'을 받아 저장
+    const id = useSelector(state => state.Id.id);         
 
     // [2] 상태 관리
     // [2-1] '상품 상세 정보 데이터' 관리
@@ -70,8 +70,6 @@ const ProductDetail = () => {
                                                                            //                      product_description, product_createDate, userId, product_positive                     
                 return data;
             }
-
-            // console.log(getProductDetail.call())
 
             // (2) '상품 상세 정보 데이터'를 'setProductDetail' 함수에 적용 + '상품이 로드'되었다고 설정
             getProductDetail().then(response => setProductDetail(response.data[0]));
@@ -123,18 +121,18 @@ const ProductDetail = () => {
         // (2) 처리
         // (2-1) '가맹점 식별코드' 설정
         // init 메소드: '가맹점 식별코드' 초기화
-        IMP.init("imp34677742");                                           // init 메소드 매개변수: '본인고유가맹점번호'             
+        IMP.init("imp34677742");                                           // init 메소드 매개변수: '본인고유가맹점번호' // ---> IMP.init(productDetail.IMP)      
 
         // (2-2) '결제할 상품 정보 데이터' 설정
         // purchase_data 객체: '결제할 상품 정보 데이터' 저장
         const purchaseData = {
-            pg: "html5_inicis.INIpayTest",                                 // pg 필드: PG사(필수 항목)
+            pg: "html5_inicis.INIpayTest",                                 // pg 필드: PG사(필수 항목)                   // ---> pg: productDetail.PG
             pay_method: "card",                                            // pay_method 필드: 결제 수단(필수 항목)
             merchant_uid: "20230311",                                      // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
-            amount: "9900",//productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
-            buyer_name: "송정우", //userName,                              // buyer_name 필드: 구매자 이름
-            buyer_email: "sjw9664@naver.com", // userEmail,                // buyer_email 필드: 구매자 이메일 주소
+            amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
+            buyer_name: userName,                                          // buyer_name 필드: 구매자 이름
+            buyer_email: userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
             impUid: "",                                                    // impUid 필드: ???
         };
 
@@ -174,7 +172,7 @@ const ProductDetail = () => {
             {isLoaded && (
                 <div className = "product-detail_wrapper">
                     {
-                        // jwtUtils.isAuth(token) && id === productDetail.userId &&
+                        jwtUtils.isAuth(token) && id === productDetail.userId &&
                         <div className = "edit-delete_button">
                             <Button 
                                 variant = "outlined" 
