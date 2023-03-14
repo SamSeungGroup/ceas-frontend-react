@@ -74,7 +74,7 @@ const HeaderMenu = () => {
 
     // (2) '내 정보 데이터 중 내 프로필 이미지'를 'setUserImage' 함수에 설정
     getUser().then((response) => {
-        setUserImage(response.data.storedFileName);
+        setUserImage( `http://localhost:8080/images/user/${id}`);
     });
     }
 
