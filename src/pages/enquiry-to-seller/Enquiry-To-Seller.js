@@ -3,10 +3,7 @@
 
 /* 1. 모듈 및 컴포넌트 추가 */
 // 1-1. 'use 훅' 컴포넌트 추가
-import { useState } from "react";                                 // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리' 
-                                                                  // - useState 훅 컴포넌트: '상태 관리'
-import { useNavigate, useParams } from "react-router-dom";        // react-router-dom 모듈: '웹'에서의 '라우팅' 
-                                                                  // - useNavigate 훅 컴포넌트: '페이지 이동'
+import { useParams } from "react-router-dom";                     // react-router-dom 모듈: '웹'에서의 '라우팅' 
                                                                   // - useSearchParams 훅 컴포넌트: '현재 URL'에서 '쿼리 파라미터' 검색
 
 // 1-2. 'UI' 컴포넌트 추가
@@ -14,9 +11,6 @@ import { Button, TextField } from "@mui/material";                // Material UI
                                                                   // - Button 컴포넌트: '버튼'
                                                                   // - TextField 컴포넌트: '입력창'
 import "react-toastify/dist/ReactToastify.css";                   // ReactToastify.css 모듈: '알림창' 스타일링
-import { Modal, Input } from "antd";                              // antd 모듈:
-                                                                  // - Modal 컴포넌트: '모달창'
-                                                                  // - Input 컴포넌트: '입력창'
 
 // 1-3. '알림창' 컴포넌트 추가
 import { toast, ToastContainer } from "react-toastify";           // react-toastify 모듈: '알림창' 표시 
@@ -24,29 +18,25 @@ import { toast, ToastContainer } from "react-toastify";           // react-toast
                                                                   // - ToastContainer 컴포넌트: '알림창' 렌더링
 
 // 1-4. '로그인 관리'를 위한 모듈 및 컴포넌트 추가
-import * as Yup from "yup";                                      // yup 모듈: '입력폼(form)에서 입력된 값'의 '유효성 검증'
-import { Formik, ErrorMessage } from "formik";                   // formik 모듈: 입력폼 '상태' 관리 
-                                                                 // - Formik 컴포넌트: 입력폼 'state' 관리
-                                                                 // - ErrorMessage 컴포넌트: 입력폼 '오류 메시지' 렌더링
+import * as Yup from "yup";                                       // yup 모듈: '입력폼(form)에서 입력된 값'의 '유효성 검증'
+import { Formik, ErrorMessage } from "formik";                    // formik 모듈: 입력폼 '상태' 관리 
+                                                                  // - Formik 컴포넌트: 입력폼 'state' 관리
+                                                                  // - ErrorMessage 컴포넌트: 입력폼 '오류 메시지' 렌더링
 
 // 1-5. '비동기 통신'을 위한 컴포넌트 추가
-import axios from "axios";                                       // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
+import api from "../../utils/api";
 
 // 1-6. 'Redux' 사용을 위한 컴포넌트 추가
-import { useDispatch } from "react-redux";                       // react-redux 모듈: '컴포넌트의 데이터'들을 'redux store'에서 '상태' 관리 
-                                                                 // - useDispatch 훅 컴포넌트: 'redux store'에 '변경된 상태값' 저장
-import { setToken } from "../../redux/reducers/AuthReducer";     // AuthReducer 모듈: '토큰'을 반환하는 'reducer' 생성 
-                                                                 // - setToken 컴포넌트: '토큰' 설정
-import { useSelector } from "react-redux";                       // react-redux 모듈: '컴포넌트 바깥'에서 '상태 관리' 
-                                                                // - useSelector 훅 컴포넌트: 'redux store'에 저장된 '상태값'을 찾아 반환
+import { useSelector } from "react-redux";                        // react-redux 모듈: '컴포넌트 바깥'에서 '상태 관리' 
+                                                                  // - useSelector 훅 컴포넌트: 'redux store'에 저장된 '상태값'을 찾아 반환
 
 // 1-7. '이메일' 기능을 위한 모듈 추가
-import emailjs, { init } from "emailjs-com";                     // emailjs-com 모듈: '이용자의 요청'에 따라 '이메일 수신'이 가능한 모듈
-                                                                 // - emailjs 컴포넌트: 'emailjs' 기능 이용
-                                                                 // - init 컴포넌트: 'emailjs'에서 '관리자 정보' 초기화(설정)
+import emailjs, { init } from "emailjs-com";                      // emailjs-com 모듈: '이용자의 요청'에 따라 '이메일 수신'이 가능한 모듈
+                                                                  // - emailjs 컴포넌트: 'emailjs' 기능 이용
+                                                                  // - init 컴포넌트: 'emailjs'에서 '관리자 정보' 초기화(설정)
 
 // 1-8. 'SCSS' 모듈 추가
-import "./enquiry-to-seller.scss";                               // signup 모듈: '회원가입 페이지' 스타일링을 '로그인 스타일링'에 이용
+import "./enquiry-to-seller.scss";                                // signup 모듈: '회원가입 페이지' 스타일링을 '로그인 스타일링'에 이용
 
 /* 2. 함수 설정 */
 // EnquiryToSeller 함수: '회원'이 '상품 판매자'에게 '1:1 문의내용'을 작성하여 '상품 판매자'에게 '이메일'을 보낼 수 있는 기능 구현 + 화면 표시
@@ -64,36 +54,33 @@ const EnquiryToSeller = () => {
     
     // (1) '문의제목 입력' 검증
     enquiryTitle: Yup.string()
-    .required("제목을 입력하세요."),     // required 메소드: '필수 입력 안내 메시지' 표시
+    .required("제목을 입력하세요."),                           // required 메소드: '필수 입력 안내 메시지' 표시
 
     // (2) '문의내용 입력' 검증
     enquiryContent: Yup.string()       
-    .required("문의내용을 입력하세요."), // required 메소드: '필수 입력 안내 메시지' 표시
+    .required("문의내용을 입력하세요."),                       // required 메소드: '필수 입력 안내 메시지' 표시
   }); 
 
   // [2] 함수 설정
-  // navigate 함수: '페이지 이동' 기능 
-  const navigate = useNavigate();    
-             
   // init 메소드: 'emailjs'에서 '관리자 정보' 초기화(설정)
   init("R-PiOT-49i6isZGEQ");
 
   // submit 함수: 비동기(async) 함수, '문의 제출' 여부 검증 
-  const submit = async (values) => {                  // value 매개변수: '회원'이 입력한 '문의제목/문의내용' 데이터를 받아옴
+  const submit = async (values) => {                                    // value 매개변수: '회원'이 입력한 '문의제목/문의내용' 데이터를 받아옴
     // (1) 변수 설정
-    const { enquiryTitle, enquiryContent } = values;  // values 값을 '구조 분해 할당'하여 '인수값' 분리
+    const { enquiryTitle, enquiryContent } = values;                    // values 값을 '구조 분해 할당'하여 '인수값' 분리
 
     // (2) 처리
     // (2-1) '문의 보내기' 처리
     // try -> '문의 보내기 성공' 처리
     try {
         // (1-1) '회원 정보 데이터' 수신
-        const { userData }  = await axios.get(`http://localhost:8080/users/${id}`)              // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName, userEmail
-                                                                                                // userData 객체: userName, userEmail 저장
+        const { userData }  = await api.get(`/users/${id}`)              // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName, userEmail
+                                                                         // userData 객체: userName, userEmail 저장
  
         // (1-2) '상품 상세 정보'에서 '판매자 이메일 데이터' 수신
-        const { sellerData } = await axios.get(`http://localhost:8080/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userEmail
-                                                                                                // sellerData 객체: userEmail 저장
+        const { sellerData } = await api.get(`/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userEmail
+                                                                         // sellerData 객체: userEmail 저장
 
         // (2) '입력한 이메일'로 '비밀번호 발송 성공' 알림창 표시
         toast.success(
@@ -101,16 +88,16 @@ const EnquiryToSeller = () => {
             문의내용을 성공적으로 보냈습니다! 확인 후 빠르게 답변드리겠습니다.
             </div>,
 
-            { 
-                position: "top-center",       // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
-                autoClose: 2000,              // autoClose 필드: toast 메시지가 '자동으로 닫히는 시간' 설정 -> '2초'로 조정
+            {   
+                position: "top-center",             // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
+                autoClose: 2000,                    // autoClose 필드: toast 메시지가 '자동으로 닫히는 시간' 설정 -> '2초'로 조정
             },
         );
 
         // (3) '이메일 템플릿' 생성('서버'로부터 받아온 '회원 정보 데이터' 저장)
         const emailTemplate = {
             userName: userData.data.userName,        // userName 필드: 회원 이름
-            userEmail: userData.data.serEmail,       // userEmail 필드: 회원 이메일   
+            userEmail: userData.data.userEmail,      // userEmail 필드: 회원 이메일   
             sellerEmail: sellerData.data.userEmail,  // sellerData 필드: 판매자 이메일
             equiryTitle: enquiryTitle,               // enquiryTitle 필드: 문의 제목 
             enquiryContent: enquiryContent           // enquiryContent 필드: 문의 내용
@@ -127,15 +114,15 @@ const EnquiryToSeller = () => {
         // (5) setTimeout 함수: '일정 시간'이 지난 후 '원하는 함수'를 '예약 실행(호출)'할 수 있게 함(호출 스케줄링)
         setTimeout(() => {
 
-        }, 2000);                          // 일정 시간: 2초
+        }, 2000);                                      // 일정 시간: 2초
     } 
      
     // catch -> '문의 보내기 실패' 처리
     catch (e) {
       // (2-1-1) '서버'로부터 받은 '에러' 알림창 표시
       toast.error(<div>문의내용 전송에 실패했습니다.</div>, {
-        position: "top-center",            // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
-      });  
+        position: "top-center",                         // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
+      });   
     }
   };
 
