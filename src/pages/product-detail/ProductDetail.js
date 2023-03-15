@@ -45,13 +45,14 @@ const ProductDetail = () => {
     // [2] 상태 관리
     // [2-1] '상품 상세 정보 데이터' 관리
     const [ productDetail, setProductDetail ] = useState([]);                          // '상품 상세 정보' 상태 관리 -> productDetail 변수: '상품 상세 정보' 저장, setProductDetail 함수: '상품 상세 정보' 데이터 조작
+    const [ seller, setSeller ] = useState({});
     const [ isLoaded, setIsLoaded ] = useState(false);                                 // '상품 상세 정보 표시 여부' 상태 관리 -> isLoaded 변수: '상품 상세 정보 표시' 여부 저장, setIsLoaded 함수: '상품 상세 정보 표시 여부 조작
     const [ productDeleteModalShow, setProductdDeleteModalShow ] = useState(false);    // '상품 삭제 모달창' 표시 여부 상태 관리 -> productDeleteModalShow 변수: '모달창이 표시'되었는지 여부 저장, setProductDeleteModalShow 함수: '모달창 표시 여부' 조작 
 
     // [2-2] '구매자 데이터' 관리
     const [ userId, setUserId ] = useState("");                                        // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
-    const [ userName, setUserName ] = useState("");                                    // '회원(구매자) 이름' 상태 관리 -> userName 변수: '회원 이름' 저장, setUserName 함수: '회원 이름' 조작
-    const [ userEmail, setUserEmail ] = useState("");                                  // '회원(구매자) 이메일' 상태 관리 -> userEmail 변수: '회원 이메일' 저장, setUserEmail 함수: '회원 이메일' 조작
+    // const [ userName, setUserName ] = useState("");                                    // '회원(구매자) 이름' 상태 관리 -> userName 변수: '회원 이름' 저장, setUserName 함수: '회원 이름' 조작
+    // const [ userEmail, setUserEmail ] = useState("");                                  // '회원(구매자) 이메일' 상태 관리 -> userEmail 변수: '회원 이메일' 저장, setUserEmail 함수: '회원 이메일' 조작
 
     // [3] 함수 설정
     // navigate 함수: '페이지 이동' 기능 설정
@@ -67,13 +68,18 @@ const ProductDetail = () => {
             const getProductDetail = async () => {
                 const { data } = await api.get(`/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 상세 정보 데이터' 수신
                                                                            //                    : product_id, product_name, product_img, product_price, product_description, product_price,
-                                                                           //                      product_description, product_createDate, userId, product_positive                     
+                                                                           //                      product_description, product_createDate, userId, product_positive 
+                console.log(data);  
+                                                                                             
                 return data;
             }
 
             // (2) '상품 상세 정보 데이터'를 'setProductDetail' 함수에 적용 + '상품이 로드'되었다고 설정
-            getProductDetail().then(response => setProductDetail(response.data[0]));
-
+            getProductDetail().then((response) => {
+                setProductDetail(response.data);
+                setSeller(response.data.seller);
+            });
+            
             setIsLoaded(true);
         }
 
@@ -84,34 +90,7 @@ const ProductDetail = () => {
         }
     }, []);
 
-    // [4-2] '내 정보 데이터'를 '서버'로부터 수신
-    useEffect(() => {
-        // try -> '내 정보 데이터 수신 성공' 처리
-        try{
-            // (1) '내 정보 데이터'를 '서버'로부터 수신
-            // getUser 함수: '비동기(async)' 함수, '내 정보 데이터' 저장
-            const getUser = async () => {
-                const { data } = await axios.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
-                                                                                       //                    : userId, userName, userEmail
-
-                return data;
-            }
-
-            // (2) '내 정보 데이터'를 'setUserId/setUserName/setUserEmail' 함수에 적용 
-            getUser().then((response) => {
-                setUserId(response.data.userId);        // '내 아이디' 설정
-                setUserName(response.data.userName);    // '내 이름' 설정
-                setUserEmail(response.data.userEmail);  // '내 이메일 주소' 설정
-            })
-        }
-
-        // catch -> '내 정보 데이터 수신 실패' 처리
-        catch(e){
-            
-        }
-    }, []); 
-
-    // [4-3] '상품 상세 정보 데이터'를 '결제 정보'에 등록
+    // [4-2] '상품 상세 정보 데이터'를 '결제 정보'에 등록
     // loadPayment 함수: '결제 정보' 등록 + '결제창'을 화면에 표시
     const loadPayment =  () => {
         // (1) 변수 설정
@@ -131,8 +110,8 @@ const ProductDetail = () => {
             merchant_uid: "20230311",                                      // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
             amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
-            buyer_name: userName,                                          // buyer_name 필드: 구매자 이름
-            buyer_email: userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
+            buyer_name: "송정우", //userName,                                          // buyer_name 필드: 구매자 이름
+            buyer_email: "sjw9664@naver.com", // userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
             impUid: "",                                                    // impUid 필드: ???
         };
 
@@ -172,7 +151,7 @@ const ProductDetail = () => {
             {isLoaded && (
                 <div className = "product-detail_wrapper">
                     {
-                        jwtUtils.isAuth(token) && id === productDetail.userId &&
+                        jwtUtils.isAuth(token) && id === seller.id &&
                         <div className = "edit-delete_button">
                             <Button 
                                 variant = "outlined" 
@@ -208,12 +187,12 @@ const ProductDetail = () => {
 
                     <div className = "product-detail_body">
                         <div className = "product-detail_image">
-                            <img src = { productDetail.productImage }/>
+                            <img src = {  `http://localhost:8080/images/product/${product_id}` }/>
                         </div>
 
                         <div className = "product-detail-title-content">
                             <h2 className = "product-detail_description">판매자</h2>
-                            <div className = "product-detail_description">{ productDetail.userName }</div>
+                            <div className = "product-detail_description">{ seller.userName }</div>
 
                             <h2 className = "product-detail_description">상품 가격</h2>
                             <div className = "product-detail_description">{ productDetail.productPrice }원</div>

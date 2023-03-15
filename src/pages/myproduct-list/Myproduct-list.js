@@ -7,29 +7,19 @@ import { useEffect, useState, useMemo } from "react";                   // react
                                                                          // - useEffect 훅 컴포넌트: '비동기 통신' 용도 
                                                                          // - useState 훅 컴포넌트: '상태 관리'
                                                                          // - useMemo 훅 컴포넌트: '기능 재사용'
-import { useSearchParams } from "react-router-dom";                      // react-router-dom 모듈: '라우팅' 적용 
-                                                                         // - useSeacrhParams 훅 컴포넌트: '쿼리 파라미터' 검색
 import { useSelector } from "react-redux";                               // react-redux 모듈: '컴포넌트의 데이터들'을 'redux store'에서 '상태 관리' 
                                                                          // - useSelecter 컴포넌트 훅: 'redux store'에 저장된 '상태값'을 찾아 반환
 
-// 1-2. '페이지 목록 이동'을 위한 컴포넌트 추가
-import { Pagination } from "@mui/material";                              // Material UI: CSS 프레임워크 - Pagination 컴포넌트: '페이지 목록 이동'
-
-// 1-3. '비동기 통신'을 위한 모듈 추가
-import axios from "axios";                                               // axios 모듈: '비동기 HTTP 통신' 이용 - REST API 호출
-import { jwtUtils } from "../../utils/jwtUtils";                         // jwtUtils 모듈: '토큰' 검증 
-                                                                         // - jwtUtils 컴포넌트: '토큰' 검증
-
-// 1-4. '날짜' 관리를 위한 모듈 추가
+// 1-2. '날짜' 관리를 위한 모듈 추가
 import moment from "moment"                                              // moment 모듈: '날짜' 관리
 
-// 1-5. 'UI' 관련 컴포넌트 추가
+// 1-3. 'UI' 관련 컴포넌트 추가
 import { ProductItemCard } from "../../components/ProductItemCard";      // ProductItemCard 컴포넌트: '상품 목록' 페이지에서 '하나의 상품 정보 카드' 표시
 
-// 1-6. '비동기 통신'을 위한 모듈 추가
+// 1-4. '비동기 통신'을 위한 모듈 추가
 import api from "../../utils/api";                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 - REST API 호출 + '인터셉터' 기능
 
-// 1-7. 'SCSS' 모듈 추가
+// 1-5. 'SCSS' 모듈 추가
 import "../product-list/productlist.scss";                               // productlist scss 모듈: '상품 목록' 스타일링
 
 /* 2. 함수 설정 */
@@ -40,17 +30,8 @@ const MyProductList = () => {
     const [ productList, setProductList ] = useState([]);        // '상품 목록' 상태 관리 ->myproduct_list 변수: '상품 리스트' 저장, setMyProductList 함수: '상품 리스트' 조작
     const [ onList, setOnList ] = useState(false);               // '상품 출력 여부' 상태 관리 -> onList 변수: '상품 출력 여부 상태' 저장, setOnList 함수: '상품 출력 여부 상태' 조작
 
-    // [1-2] '상품 목록 페이지 데이터' 관리
-    const [ page_count, setPageCount ] = useState(0);             // '페이지 개수' 상태 관리 -> page_count 변수: '페이지 개수' 저장, setPageCount 함수: '페이지 개수' 조작
-
-    // [1-3] '내 정보 데이터' 관리
-    const [ productUserId, setProductUserId ] = useState("");
-
-    // [1-4] '쿼리 파라미터' 설정 관리
-    const [ search_params, setSearchParams ] = useSearchParams(); // '쿼리 파라미터' 상태 관리 -> search_params 변수: '쿼리 파라미터' 저장, setSearchParams 함수: '쿼리 파라미터' 조작
-
     // [2] 변수 설정
-    const userId = useSelector(state => state.Id.id);             // userId 변수: 'redux store'에서 'userId'를 받아 저장
+    const id = useSelector(state => state.Id.id);                // id 변수: 'redux store'에서 'userId'를 받아 저장
 
     // [2] 함수 설정
     
@@ -63,8 +44,8 @@ const MyProductList = () => {
             // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
             const getProductList = async () => {
                 const { data } = await api.get(`/products`);   // data 필드: '상품 목록 데이터' 저장
-                                                                                      // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
-                                                                                      //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
+                                                               // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
+                                                               //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
     
                 return data;
             }
@@ -83,21 +64,22 @@ const MyProductList = () => {
     }, [])
 
     // MyProductItems 함수: '내 상품 리스트' 저장
-    function MyProductItems(productList, userId){        
+    function MyProductItems(productList, id){        
                            // <매개변수>
                            //   - productList: '상품 목록'
                            //   - userId: '회원 아이디'
 
         // (1) 변수 설정
-        let myProductList = [];                         // MyProductList 리스트: '회원 아이디와 일치하는 상품 목록' 저장
+        let myProductList = [];                         // myProductList 리스트: '회원 아이디와 일치하는 상품 목록' 저장
 
         // (2) 처리
         // (2-1) '회원 아이디와 일치하는 상품 목록' 검색
         productList.forEach((p)=>{ 
                             // <매개변수>
                             //  - p: 'product_List'
+
             // (2-1-1) '회원 아이디'와 일치하는 '상품의 회원 아이디'가 없을 경우
-            if(p.userId !== userId){
+            if(p.seller.id !== id){
                 return;                                // 실행 종료
             }
 
@@ -113,7 +95,7 @@ const MyProductList = () => {
     // myProductlist 리스트: '회원 아이디와 일치하는 상품 목록' 저장
     // useMemo 훅: '기능' 재사용
     const myProductList = useMemo(() =>
-        MyProductItems(productList, userId), 
+        MyProductItems(productList, id), 
     [ productList ]);
 
     // (2) 화면 렌더링
@@ -134,7 +116,7 @@ const MyProductList = () => {
                             productName = { item.productName }
                             productPrice = { item.productPrice }
                             productPositive = { item.productPositive }
-                            userName = { item.userName }
+                            userName = { item.seller.userName }
                             productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
                         />
                 ))) : (

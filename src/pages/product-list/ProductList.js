@@ -49,9 +49,6 @@ const ProductList = () => {
     // [2-3] '상품 목록 페이지 데이터' 관리
     const [ pageCount, setPageCount ] = useState(0);                 // '페이지 개수' 상태 관리 -> pageCount 변수: '페이지 개수' 저장, setPageCount 함수: '페이지 개수' 조작
 
-    // [2-4] '쿼리 파라미터' 설정 관리
-    const [ searchParams, setSearchParams ] = useSearchParams();     // '쿼리 파라미터' 상태 관리 -> searchParams 변수: '쿼리 파라미터' 저장, setSearchParams 함수: '쿼리 파라미터' 조작
-
     // [2] 함수 설정
     // searchProductItems 함수: '검색한 상품 리스트' 반환
     function searchProductItems(productList, searchWord){        
@@ -147,35 +144,10 @@ const ProductList = () => {
             }
             
             // (2) '상품 목록 데이터'를 'setProductList 함수'에 설정
-            getProductList().then(response => setProductList(response.data)) 
+            getProductList().then((response) => {
+                setProductList(response.data);
+            }) 
 
-            // (3) '상품 목록 데이터'가 로드되었다고 설정
-            setOnList(true);
-        }
-
-        // catch -> '상품 목록 데이터 수신 실패' 처리
-        catch(e){
-            // (1) '상품 목록 데이터'가 로드되지 않았다고 설정
-            setOnList(false);            
-        }
-    }, []);
-
-    // [3-2] '상품 목록 데이터'를 '서버'로부터 수신
-    useEffect(() => {
-        // try -> '상품 목록 데이터 수신 성공' 처리
-        try{
-            // (1) '상품 목록 데이터'를 '서버'로부터 수신
-            // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
-            const getPageList = async () => {
-                const { data } = await api.get("/page"); // data 객체: '상품 목록 데이터' 저장
-                                                             // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
-                                                             //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
-                         
-                return data;
-            }
-            
-            // (2) '상품 목록 데이터'를 'setProductList 함수'에 설정
-            getPageList().then(response => setPageCount(response.data)) 
             // (3) '상품 목록 데이터'가 로드되었다고 설정
             setOnList(true);
         }
@@ -220,11 +192,11 @@ const ProductList = () => {
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
-                            productImage = { item.productImage }
+                            productImage = { `http://localhost:8080/images/product/${item.id}` }
                             productName = { item.productName }
                             productPrice = { item.productPrice }
                             productPositive = { item.productPositive }
-                            userName = { item.userName }
+                            userName = { item.seller.userName }
                             productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
                         />
                 ))) : (
@@ -243,11 +215,11 @@ const ProductList = () => {
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
-                            productImage = { item.productImage }
+                            productImage = { `http://localhost:8080/images/product/${item.id}` }
                             productName = { item.productName }
                             productPrice = { item.productPrice }
                             productPositive = { item.productPositive }
-                            userName = { item.userName }
+                            userName = { item.seller.userName }
                             productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일')}
                         />
                         ))) : (
