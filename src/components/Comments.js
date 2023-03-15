@@ -40,7 +40,10 @@ import axios from "axios";                                                      
 import api from "../utils/api";                                                              // api 컴포넌트: '인터셉터' 기능
 import { jwtUtils } from "../utils/jwtUtils";                                                // jwtUtils 컴포넌트: 'jwt 토큰'을 이용한 '이용자 계정' 보안
 
-// 1-5. 'SCSS' 모듈 추가
+// 1-5. '날짜 표현' 모듈 추가 
+import moment from "moment";                                             // moment 컴포넌트: '날짜' 변환
+
+// 1-6. 'SCSS' 모듈 추가
 import "./comments.scss";                                                                    // comments 모듈: '댓글' 스타일링
 
 /* 2. 함수 설정 */
@@ -54,6 +57,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
 
     // [1-2] '내 정보 데이터' 관리
     const [ userId, setUserId ] = useState("");                                                // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
+    const [ writer, setWriter] = useState("");
 
     // [1-3] '상품 긍정도 데이터' 관리
     const [ productPositive, setProductPositive ] = useState("");                              // '상품 긍정도' 상태 관리 -> productPositive 변수: '상품 긍정도' 저장, setProductPositive 함수: '상품 긍정도' 조작
@@ -69,7 +73,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
     
     // [2] 변수 설정
     const token = useSelector(state => state.Auth.token);  // token 변수: 'redux store'에서 '토큰'을 받아 저장    
-    const id = useSelector(state => state.Id.Id);          // id 변수: 'redux store'에서 'id'를 받아 저장
+    const id = useSelector(state => state.Id.id);          // id 변수: 'redux store'에서 'id'를 받아 저장
 
     const options = {
         luminosity: 'light',
@@ -97,7 +101,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
     const submit = useCallback(async () => {
         // (1) '서버'에 '댓글 내용' 송신
         await api.post(`/products/${product_id}/comments`, {'content': content}, { headers: { "Content-Type": "application/json"}}); // api.post 메소드: '서버'에 '데이터' 송신 -> '댓글 내용 데이터'를 '서버'에 송신
-                                                                                                                        //                  : comment_content
+                                                                                                                                     //                  : comment_content
 
                                                                                                                       
         // (2) '댓글 등록 완료' 알림창 표시
@@ -137,7 +141,8 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
             // (2) '댓글 목록 데이터'를 'setCommentList 함수'에 설정
             getCommentList().then((response) => {
                 setCommentList(response.data);
-                setCommentId(response.data[0].c_id);
+                setCommentId(response.data[0].id);
+                setWriter(response.data[0].writer);
             });
         }
 
@@ -154,7 +159,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
             // (1) '내 아이디 데이터'를 '서버'로부터 수신
             // getUser 함수: '비동기(async)' 함수, '내 아이디 데이터' 저장
             const getUser = async () => {
-                const { data } = await axios.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
+                const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
                                                                                        //                    : userId
 
                 return data;
@@ -249,16 +254,16 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
             <div className = "comments-body">
                 { commentList.map((item, index) => (
                     <div key = { index } className = "comments-comment">
-                        <div className = "comment-username">{ item.comment_author }</div>
+                        <div className = "comment-username">{ item.writer.userName }</div>
 
                         <div className = "comment-user_image">
-                            <img src = "../../image/default_image.png"/>
+                            <img src = { `http://localhost:8080/images/user/${item.writer.id}` }/>
                         </div>
 
                         <div className = "comment-content">{ item.content }</div>
 
                         <div className = "comment-username_date">
-                            <div className = "comment_date">{ item.createDate }</div>
+                            <div className = "comment_date">{  moment(item.createdDate).format('YYYY년 MM월 DD일') }</div>
                         </div>
 
                         {
@@ -281,7 +286,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                                     endIcon = { <BuildOutlinedIcon/> } 
                                     onClick = { () => {
                                          setEditCommentModalShow(true); 
-                                         setCommentId(item.c_id);
+                                         setCommentId(item.id);
                                     } }>
                                     수정
                                 </Button> 
