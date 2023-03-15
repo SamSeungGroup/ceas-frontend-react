@@ -112,7 +112,7 @@ const MyProductList = () => {
                         <ProductItemCard
                             key = { index } 
                             productId = { item.id }
-                            productImage = { item.productImage }
+                            productImage = { `http://localhost:8080/images/product/${item.id}` }
                             productName = { item.productName }
                             productPrice = { item.productPrice }
                             productPositive = { item.productPositive }
