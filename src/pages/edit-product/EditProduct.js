@@ -56,15 +56,17 @@ const EditProduct = () => {
             // (1) '상품 상세 정보 데이터'를 '서버'로부터 수신
             // getProduct 함수: '비동기(async)' 함수, '상품 상세 정보 데이터' 저장
             const getMyProduct = async () => {
-                await api.get(`/products/${product_id}`);  // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 상세 정보 데이터' 수신
+                const { data } = await api.get(`/products/${product_id}`);  // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 상세 정보 데이터' 수신
+
+                return data;
             }
 
             // (2) '상품 정보 데이터'를 'setProductList 함수'에 설정
-            getMyProduct.then((response) => {
-                setProductName(response.data[0].productName);
-                setProductPrice(response.data[0].productPrice);
-                setProductDescription(response.data[0].productDescription);
-                // setProductImage({...product_image, preview_URL: response.product_img})
+            getMyProduct().then((response) => {
+                setProductName(response.data.productName);
+                setProductPrice(response.data.productPrice);
+                setProductDescription(response.data.productDescription);
+                setProductImage({...product_image, preview_URL: `http://localhost:8080/images/product/${product_id}`})
             });
         }
 
@@ -78,38 +80,41 @@ const EditProduct = () => {
     // canSubmit 함수: '상품 상세 정보 데이터'를 서버에 '제출'할 수 있는지 검사
     //                 -> '상품 상세 정보 데이터 목록: '상품 이미지', '상품 이름', '상품 가격', '상품 설명' 
     const canSubmit = useCallback(() => {
-        return /* product_image.image_file !== "" && */ product_name !== "" && product_price !== "" && product_description !== "" ;
-    },[ /* product_image,*/ product_name, product_price, product_description ]);
+        return product_image.image_file !== "" &&  product_name !== "" && product_price !== "" && product_description !== "" ;
+    },[ product_image, product_name, product_price, product_description ]);
     
     // handleSubmit 함수: '비동기(async)' 함수, '상품 상세 정보 데이터'를 '서버'에 송신('상품 상세 정보 데이터' 수정)
     const handleSubmit = useCallback(async () => {
         // try -> '상품 수정 성공' 처리
         try {
             // (1) '폼 데이터' 생성
-            const formData = new FormData();                                          // formData 변수: '내 정보 데이터'를 저장
+            const formData = new FormData();                                                                     // formData 변수: '내 정보 데이터'를 저장
 
             // (2) '폼 데이터'에 '상품 정보 데이터' 추가
-            // formData.append("product_image", product_image.image_file);            // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
-            formData.append("productPrice", product_price);                           // append 메소드: '데이터' 추가 -> '상품 가격' 추가
-            formData.append("productName", product_name);                             // append 메소드: '데이터' 추가 -> '상품 이름' 추가
-            formData.append("productDescription", product_description);               // append 메소드: '데이터' 추가 -> '상품 설명' 추가
-            // formData.append("product_id", product_id);                             // append 메소드: '데이터' 추가 -> '상품 아이디' 추가
+            // formData.append("product_image", product_image.image_file);                                        // append 메소드: '데이터' 추가 -> '상품 이미지' 추가
+            formData.append("image", product_image.image_file);                                                   // append 메소드: '데이터' 추가 -> '회원 이미지' 추가
+            formData.append("dto", new Blob([JSON.stringify({                                                     // append 메소드: '데이터' 추가 
+                'id': product_id,                                                                                 // -> product_id 필드: '상품 아이디' 추가
+                'productName': product_name,
+                'productPrice': product_price,
+                'productDescription': product_description,
+            })], { type: "application/json" }));                                                                  // -> type 필드: application/json 타입으로 전송
 
             // (3) '상품 정보 데이터'를 '서버'에 송신
-            await api.put(`/products/${product_id}`, formData, { headers: { "Content-Type": "application/json"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '수정된 상품 상세 정보 데이터' 송신
+            await api.put(`/products/${product_id}`, formData, { headers: { "Content-Type": "multipart/form-data"}}); // api.post 메소드: '서버 주소'로 '데이터' 송신 -> '수정된 상품 상세 정보 데이터' 송신
 
-            // (4) '상품 수정 완료' 알림창 표시
-            alert("상품 정보가 수정되었습니다.");                                      // alert 메소드: '화면 상단'에 '알림창' 표시 
+            // (4) '상품 수정 완료' 알림창 표시 
+            alert("상품 정보가 수정되었습니다.");                                                                  // alert 메소드: '화면 상단'에 '알림창' 표시 
 
             // (5) '이전 페이지'로 이동
-            window.location.href = "/product-list";                                    // location.href 필드: '페이지 이동' -> '상품 목록 페이지'로 이동
+            window.location.href = "/product-list";                                                                // location.href 필드: '페이지 이동' -> '상품 목록 페이지'로 이동
         }
 
         // catch -> '상품 등록 실패' 처리
         catch (e) {
             // (2-1-1) '서버'로부터 받은 '에러' 알림창 표시
             toast.error("상품 등록에 실패하였습니다.", {
-                position: "top-center"                                   // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
+                position: "top-center"                                                                             // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
             });
         }
     },[ canSubmit ]);
