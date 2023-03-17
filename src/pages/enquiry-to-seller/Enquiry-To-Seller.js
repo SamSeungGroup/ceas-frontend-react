@@ -24,6 +24,7 @@ import { Formik, ErrorMessage } from "formik";                    // formik 모�
                                                                   // - ErrorMessage 컴포넌트: 입력폼 '오류 메시지' 렌더링
 
 // 1-5. '비동기 통신'을 위한 컴포넌트 추가
+import axios from "axios";                                        // axios 모듈: '비동기 HTTP 통신' 이용 -> 'REST API' 호출
 import api from "../../utils/api";
 
 // 1-6. 'Redux' 사용을 위한 컴포넌트 추가
@@ -42,7 +43,7 @@ import "./enquiry-to-seller.scss";                                // signup 모�
 // EnquiryToSeller 함수: '회원'이 '상품 판매자'에게 '1:1 문의내용'을 작성하여 '상품 판매자'에게 '이메일'을 보낼 수 있는 기능 구현 + 화면 표시
 const EnquiryToSeller = () => {
   // [1] 변수 설정
-  const product_id = useParams();
+  const { product_id } = useParams();
   const id = useSelector(state => state.Id.id);                // id 변수: 'redux store'에서 'id'를 받아 저장 
 
   const validationSchema = Yup.object().shape({                // validationSchema 변수: '입력된 값의 유효성 검증' 기능 저장
@@ -75,33 +76,33 @@ const EnquiryToSeller = () => {
     // try -> '문의 보내기 성공' 처리
     try {
         // (1-1) '회원 정보 데이터' 수신
-        const { userData }  = await api.get(`/users/${id}`)              // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName, userEmail
+        const userData  = await api.get(`/users/${id}`)                  // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userName, userEmail
                                                                          // userData 객체: userName, userEmail 저장
  
         // (1-2) '상품 상세 정보'에서 '판매자 이메일 데이터' 수신
-        const { sellerData } = await api.get(`/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userEmail
-                                                                         // sellerData 객체: userEmail 저장
+        const sellerData = await axios.get(`http://localhost:8080/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신: userEmail
+                                                                                            // sellerData 객체: userEmail 저장
 
-        // (2) '입력한 이메일'로 '비밀번호 발송 성공' 알림창 표시
-        toast.success(
-            <div>
-            문의내용을 성공적으로 보냈습니다! 확인 후 빠르게 답변드리겠습니다.
-            </div>,
-
-            {   
-                position: "top-center",             // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
-                autoClose: 2000,                    // autoClose 필드: toast 메시지가 '자동으로 닫히는 시간' 설정 -> '2초'로 조정
-            },
-        );
-
-        // (3) '이메일 템플릿' 생성('서버'로부터 받아온 '회원 정보 데이터' 저장)
+        // (2) '이메일 템플릿' 생성('서버'로부터 받아온 '회원 정보 데이터' 저장)
         const emailTemplate = {
-            userName: userData.data.userName,        // userName 필드: 회원 이름
-            userEmail: userData.data.userEmail,      // userEmail 필드: 회원 이메일   
-            sellerEmail: sellerData.data.userEmail,  // sellerData 필드: 판매자 이메일
-            equiryTitle: enquiryTitle,               // enquiryTitle 필드: 문의 제목 
-            enquiryContent: enquiryContent           // enquiryContent 필드: 문의 내용
-        };
+            userName: userData.data.data.userName,               // userName 필드: 회원 이름
+            userEmail: userData.data.data.userEmail,             // userEmail 필드: 회원 이메일   
+            sellerEmail: sellerData.data.data.seller.userEmail,  // sellerData 필드: 판매자 이메일
+            enquiryTitle: enquiryTitle,                          // enquiryTitle 필드: 문의 제목 
+            enquiryContent: enquiryContent                       // enquiryContent 필드: 문의 내용
+        }; 
+
+        // (3) '입력한 이메일'로 '비밀번호 발송 성공' 알림창 표시
+        toast.success(
+          <div>
+          문의내용을 성공적으로 보냈습니다! 확인 후 빠르게 답변드리겠습니다. 
+          </div>,
+
+          {   
+              position: "top-center",             // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
+              autoClose: 2000,                    // autoClose 필드: toast 메시지가 '자동으로 닫히는 시간' 설정 -> '2초'로 조정
+          },
+      );
 
         // (4) 'emailjs'에 '수신받을 내용 및 관련 정보' 송신
         emailjs.send("CEAS_Enquiry-to-Seller", "samseung_ceas_enquiry", emailTemplate, "R-PiOT-49i6isZGEQ");
