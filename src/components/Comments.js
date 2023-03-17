@@ -304,7 +304,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                         </div>
 
                         {
-                            jwtUtils.isAuth(token) && userId === item.userId &&
+                            jwtUtils.isAuth(token) && userId === item.writer.userId &&
                             <div className = "comment-edit-delete_button">
                                 <Button
                                     className = "comment-delete_button" 
