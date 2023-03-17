@@ -177,7 +177,44 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
         }
     }, []);
 
-    // [4-3] 화면 렌더링
+    // [4-3] '댓글 긍정도 데이터'를 '서버'로부터 수신 
+    useEffect(() => {
+        // try -> '댓글 긍정도 데이터 수신 성공' 처리
+        try{
+            // getUser 함수: '비동기(async)' 함수, '내 아이디 데이터' 저장
+            const getUser = async () => {
+                const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
+                                                                                     //                    : userId
+
+                return data;
+            }
+
+            // (2) '내 아이디 데이터'를 'setUserId' 함수에 적용 
+            getUser().then((response) => {
+                setUserId(response.userId);        // '내 아이디' 설정
+            })
+        }
+
+        // catch -> '댓글 긍정도 데이터 수신 실패' 처리
+        catch(e){
+
+        }
+    }, []);
+
+    // [4-4] '상품 긍정도 데이터'를 '서버'로부터 수신
+    useEffect(() => {
+        // try -> '상품 긍정도 데이터 수신 성공' 처리
+        try{
+
+        }
+        
+        // catch -> '상품 긍정도 데이터 수신 실패' 처리
+        catch(e){
+
+        }
+    }, []);
+
+    // [4-5] 화면 렌더링
     return (
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
@@ -267,7 +304,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                         </div>
 
                         {
-                            // jwtUtils.isAuth(token) && userId === item.userId &&
+                            jwtUtils.isAuth(token) && userId === item.userId &&
                             <div className = "comment-edit-delete_button">
                                 <Button
                                     className = "comment-delete_button" 
