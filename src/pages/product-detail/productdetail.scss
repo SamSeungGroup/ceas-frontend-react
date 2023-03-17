@@ -120,7 +120,7 @@
         img{
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          // object-fit: cover;
 
           border-radius: 0.5rem;
         }
@@ -129,8 +129,8 @@
       .product-detail-title-content{
         word-break: break-all;
         margin-left: 1rem;
-        overflow: auto;
-        flex-grow: 1;
+        // overflow: auto;
+        // flex-grow: 1;
 
         margin-top: -15px;
 
