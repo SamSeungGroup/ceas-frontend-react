@@ -183,8 +183,8 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
         try{
             // getUser 함수: '비동기(async)' 함수, '내 아이디 데이터' 저장
             const getUser = async () => {
-                const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
-                                                                                     //                    : userId
+                const { data } = await axios.get(`http://localhost:5000/comment-positive/${comment_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
+                                                                                                          //                    : userId
 
                 return data;
             }
@@ -205,7 +205,16 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
     useEffect(() => {
         // try -> '상품 긍정도 데이터 수신 성공' 처리
         try{
+            // [1]
+            commentList.map((item) => {
+                axios.get(`http://localhost:5000/comment-positive/${item.id}`);
+            })
 
+            // [2]
+            const { productPositive } = axios.get(`http://localhost:5000/product-positive/${product_id}`);
+
+            // [3]
+            setProductPositive(productPositive.product_positive);
         }
         
         // catch -> '상품 긍정도 데이터 수신 실패' 처리
@@ -221,7 +230,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                 <PieChart 
                     data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
                         {
-                           value: 70,                                    // value 필드: '비율 표시값'
+                           value: productPositive,                       // value 필드: '비율 표시값'
                            color: "blue",                                // color 필드: '비율 표시 색상'
                            name: "상품 긍정도",                          // name 필드: '차트 이름'
                          },
