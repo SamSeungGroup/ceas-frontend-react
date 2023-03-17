@@ -208,7 +208,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
             </div>
 
             <div className = "wordcloud_wrapper">
-                <TagCloud minSize = { 1000 } maxSize = { 1100 } tags = { wordcloud } colorOptions = { options } />               
+                <img src = { `http://localhost:5000/word-cloud/${product_id}` }/>               
             </div>
 
             <div className = "enquiry_button_wrapper">

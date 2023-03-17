@@ -20,12 +20,26 @@
       width: 900px;
       height: 300px;
 
+      border-radius: 0.5rem;
+
+      /* 
       border: solid;
       border-width: 0.5px;
       border-color: rgb(24, 23, 23);
       border-radius: 0.5rem;
+      */
 
-      margin-top: 50px;
+      margin-top: 40px;
+
+      img{
+        width: 900px;
+        height: 300px;
+    
+        margin-top: 10px;
+    
+        border-radius: 0.5rem;
+      }
+
     }
 
     .enquiry_button_wrapper{
