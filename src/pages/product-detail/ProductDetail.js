@@ -51,8 +51,6 @@ const ProductDetail = () => {
 
     // [2-2] '구매자 데이터' 관리
     const [ userId, setUserId ] = useState("");                                        // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
-    // const [ userName, setUserName ] = useState("");                                    // '회원(구매자) 이름' 상태 관리 -> userName 변수: '회원 이름' 저장, setUserName 함수: '회원 이름' 조작
-    // const [ userEmail, setUserEmail ] = useState("");                                  // '회원(구매자) 이메일' 상태 관리 -> userEmail 변수: '회원 이메일' 저장, setUserEmail 함수: '회원 이메일' 조작
 
     // [3] 함수 설정
     // navigate 함수: '페이지 이동' 기능 설정
