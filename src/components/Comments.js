@@ -152,7 +152,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
         }
     },[])
 
-    // [4-3] '내 아이디 데이터'를 '서버'로부터 수신
+    // [4-2] '내 아이디 데이터'를 '서버'로부터 수신
     useEffect(() => {
         // try -> '내 아이디 데이터 수신 성공' 처리
         try{
@@ -160,7 +160,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
             // getUser 함수: '비동기(async)' 함수, '내 아이디 데이터' 저장
             const getUser = async () => {
                 const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 정보 데이터' 수신
-                                                                                       //                    : userId
+                                                                                     //                    : userId
 
                 return data;
             }
@@ -177,7 +177,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
         }
     }, []);
 
-    // [4-4] 화면 렌더링
+    // [4-3] 화면 렌더링
     return (
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
