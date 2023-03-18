@@ -60,7 +60,7 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
     const [ writer, setWriter] = useState("");
 
     // [1-3] '상품 긍정도 데이터' 관리
-    const [ productPositive, setProductPositive ] = useState("");                              // '상품 긍정도' 상태 관리 -> productPositive 변수: '상품 긍정도' 저장, setProductPositive 함수: '상품 긍정도' 조작
+    //const [ productPositive, setProductPositive ] = useState("");                              // '상품 긍정도' 상태 관리 -> productPositive 변수: '상품 긍정도' 저장, setProductPositive 함수: '상품 긍정도' 조작
 
     // [1-4] '워드 클라우드 데이터' 관리
     const [ wordcloud, setWordCloud ] = useState([]);                                          // '워드 클라우드' 상태 관리 -> wordcloud 변수: '워드 클라우드 배열' 저장, setWordCloud 함수: '워드 클라우드 배열' 조작
@@ -177,27 +177,7 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
         }
     }, []);
 
-    // [4-4] '상품 긍정도 데이터'를 '서버'로부터 수신
-    useEffect(() => {
-        // try -> '상품 긍정도 데이터 수신 성공' 처리
-        try{
-            // [1]
-            commentList.map((item) => {
-                axios.get(`http://localhost:5000/comment-positive/${item.id}`);
-            })
-
-            // [2]
-            const { data } = axios.get(`http://localhost:5000/product-positive/${product_id}`);
-
-            // [3]
-            setProductPositive(data.product_positive);
-        }
-        
-        // catch -> '상품 긍정도 데이터 수신 실패' 처리
-        catch(e){
-
-        }
-    }, []);
+    
 
     // [4-5] 화면 렌더링
     return (
@@ -214,7 +194,7 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
                     style = {{                                           // style 속성: 차트 '스타일'
                         width: "90%"                                     // width 필드: '너비' 설정
                     }}
-                    reveal = { 70 }                                      // reveal 속성: '비율 표시'
+                    reveal = { productPositive*100 }                                      // reveal 속성: '비율 표시'
                     lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
                     background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
                     lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시

@@ -217,7 +217,7 @@ const ProductDetail = () => {
                     <hr className = "product-detail_bottom-hr"/>
 
                     <div className = "product-detail_footer">
-                        <Comments product_id = { product_id } productPostivie = { productDetail.productPositive } />
+                        <Comments product_id = { product_id } productPositive = { productDetail.productPositive } />
                     </div>
                 </div>
             )}
