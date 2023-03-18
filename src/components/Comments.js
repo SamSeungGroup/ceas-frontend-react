@@ -48,7 +48,7 @@ import "./comments.scss";                                                       
 
 /* 2. 함수 설정 */
 // Comments 함수: '댓글' 작성 기능 구현
-const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아이디에 맞는 댓글'을 추가 및 삭제하기 위한 용도
+const Comments = ({ product_id, productPositive}) => { // product_id 매개필드: '상품 아이디에 맞는 댓글'을 추가 및 삭제하기 위한 용도
     // [1] 상태 관리
     // [1-1] '댓글 데이터' 관리
     const [ commentList, setCommentList ] = useState([]);                                      // '댓글 리스트' 상태 관리 -> commenstList 변수: '댓글 리스트' 저장, setCommentList 함수: '댓글 리스트' 조작
@@ -206,7 +206,7 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                 <PieChart 
                     data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
                         {
-                           value: productPositive,                       // value 필드: '비율 표시값'
+                           value: (productPositive*100).toFixed(3),      // value 필드: '비율 표시값'
                            color: "blue",                                // color 필드: '비율 표시 색상'
                            name: "상품 긍정도",                          // name 필드: '차트 이름'
                          },
@@ -357,8 +357,8 @@ const Comments = ({ product_id }) => { // product_id 매개필드: '상품 아�
                     <IconButton 
                         style = { { position: "absolute", top: "0", right: "0"}} 
                         onClick = { async () => { 
-                            setEditCommentSucessDialogShow(false); 
                             setEditCommentModalShow(false);
+                            setEditCommentSucessDialogShow(false); 
 
                             await api.put(`products/${product_id}/comments/${comment_id}`, {'content': content});
 
