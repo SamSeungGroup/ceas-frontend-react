@@ -194,7 +194,7 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
                     style = {{                                           // style 속성: 차트 '스타일'
                         width: "90%"                                     // width 필드: '너비' 설정
                     }}
-                    reveal = { productPositive*100 }                                      // reveal 속성: '비율 표시'
+                    reveal = { productPositive*100 }                     // reveal 속성: '비율 표시'
                     lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
                     background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
                     lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시
