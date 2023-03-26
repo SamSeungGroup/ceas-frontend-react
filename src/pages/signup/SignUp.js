@@ -73,13 +73,15 @@ const SignUp = () => {
         // (4-1) '비밀번호 확인' 검증 -> 'userPassword2' 필드
         userPassword2: Yup.string()
             .oneOf([Yup.ref("userPassword"), null], "비밀번호가 일치하지 않습니다!")            // oneOf 메소드: '값 일치 여부' 판단, ref 메소드: 'userPassword' 필드 연결('비밀번호 확인'을 위함)
-            .required("필수 입력 값입니다."),                                                   // required 메소드: '필수 입력 안내 메세지' 표시
+            .required("비밀번호를 한 번 더 입력해 주세요."),                                    // required 메소드: '필수 입력 안내 메세지' 표시
 
         // (5) '가맹점 식별코드 입력' 검증 -> 'IMP' 필드
-        // IMP: Yup.string(),
+        IMP: Yup.string() 
+          .required("IMP(가맹점 식별코드)를 입력하세요."),                                      // required 메소드: '필수 입력 안내 메세지' 표시
 
-        // (6) 'PG사 입력' 검증 -> 'PG' 필드
-        // PG: Yup.string(),
+        // (6) 'PG사 코드 입력' 검증 -> 'PG' 필드
+        PG: Yup.string()
+          .required("PG사 코드를 입력하세요."),                                                 // required 메소드: '필수 입력 안내 메세지' 표시
   });
   
   // [2] 함수 설정
@@ -87,9 +89,9 @@ const SignUp = () => {
   const navigate = useNavigate();                                                             
 
   // submit 함수: 비동기(async) 함수, '회원가입 여부' 검증
-  const submit = async (values) => {                                                       // value 매개변수: '이용자'가 입력한 '닉네임/이메일/아이디/비밀번호' 데이터를 받아옴
+  const submit = async (values) => {                                                      // value 매개변수: '이용자'가 입력한 '닉네임/이메일/아이디/비밀번호/IMP(가맹점 식별코드) 코드/PG사 코드' 데이터를 받아옴
     // (1) 변수 설정
-    const { userName, userEmail, userId, userPassword } = values;                          // values 인수값을 '구조 분해 할당'하여 '인수값' 분리
+    const { userName, userEmail, userId, userPassword, IMP, PG } = values;                // values 인수값을 '구조 분해 할당'하여 '인수값' 분리
     
     // (2) 처리
     // (2-1) '회원가입' 처리
@@ -100,7 +102,9 @@ const SignUp = () => {
         userName,                                                                          // userName 필드: 이용자 이름
         userEmail,                                                                         // userEmail 필드: 아이디
         userId,                                                                            // userId 필드: 이메일
-        userPassword                                                                       // userPassword 필드: 비밀번호
+        userPassword,                                                                      // userPassword 필드: 비밀번호
+        IMP,                                                                               // IMP: 가맹점 식별코드
+        PG                                                                                 // PG: PG사 코드
       });
         
       // (2-1-2) '회원가입 성공' 알림창 표시
@@ -133,7 +137,9 @@ const SignUp = () => {
         userEmail: "",                                //                      - userEmail 필드: 이용자 이메일
         userId: "",                                   //                      - userId 필드: 이용자 아이디
         userPassword: "",                             //                      - userPassword 필드: 이용자 비밀번호
-        userPassword2: ""                             //                      - userPassword2 필드: 이용자 비밀번호 확인
+        userPassword2: "",                            //                      - userPassword2 필드: 이용자 비밀번호 확인
+        IMP: "",                                      //                      - IMP 필드: 가맹점 식별코드 확인
+        PG: "",                                       //                      - PG 필드: PG사 코드 확인
       }}
       validationSchema = { validationSchema }         // validationSchema 속성: '입력폼(form)'에서 '유효성' 검증
       onSubmit = { submit }                           // onSubmit 속성: '입력폼(form)'에 입력된 '데이터 제출'
@@ -225,6 +231,38 @@ const SignUp = () => {
                             { errors.userPassword2 }
                         </div>
                     </div>
+
+                    <div className="input-forms-item">
+                        <div className="input-label">IMP(가맹점 식별코드)</div>
+                        
+                        <TextField
+                            name = "userPassword2"
+                            value = { values.IMP }
+                            variant = "outlined"
+                            type = "IMP"
+                            onChange = { handleChange }
+                        />
+                    
+                        <div className = "error-message">
+                            { errors.IMP }
+                        </div>
+                    </div>
+
+                    <div className = "input-forms-item">
+                        <div className="input-label">PG사 코드</div>
+                        
+                        <TextField
+                            name = "PG"
+                            value = { values.PG }
+                            variant = "outlined"
+                            type = "PG"
+                            onChange = { handleChange }
+                        />
+                    
+                        <div className = "error-message">
+                            { errors.PG }
+                        </div>
+                    </div>
                     
                     <Button 
                         color = "primary" 
@@ -233,8 +271,64 @@ const SignUp = () => {
                         fullWidth >
                         회원가입
                     </Button>
+
                 </div>
             </form>
+
+            <div className = "portone-information_wrapper">
+                <div className = "portone-information_title">
+                    삼승그룹은 포트원과 함께합니다.
+                </div>
+
+                <div className = "portone-information_text">
+                    &emsp;&ensp;상품 판매, 결제 관리를 위해서는 <br/>
+                    &emsp;&ensp;'포트원(PortOne)'과 연동을 해야 <br/>
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    합니다.
+
+                    <br/><br/>
+
+                    &emsp;
+                    &emsp;
+                    &emsp;
+                    &emsp;
+                    &emsp;[연동 방법]
+                    
+                    <br/><br/>
+
+                    &emsp;1. 포트원 '회원가입' 후 '로그인'
+                    
+                    <br/><br/>
+
+                    &emsp;2. '결제 연동' 메뉴 - '테스트 실 연동<br/>
+                    &emsp;
+                    &nbsp;&emsp;관리' - '결제 대행사 설정 및 추가'<br/>
+                    &emsp;&emsp;&nbsp;
+                    에서 본인이 원하는 상점을 추가
+                    &emsp;&emsp;&ensp;합니다.
+                    
+                    <br/><br/>
+
+                    &emsp;3. '대표상점'-'내 식별코드/API <br/>
+                    &emsp;&emsp;&nbsp;Keys'로 이동하여 '가맹점 
+                    &emsp;&emsp;&emsp;
+                    &emsp;&emsp;식별코드'를 찾습니다.
+                    
+                    <br/><br/>
+
+                    &emsp;4. '결제대행사 목록' - '정보 수정' <br/>
+                    &emsp;&emsp;&nbsp;로 이동하여 PG 상점 아이디<br/>
+                    &emsp;&emsp;&nbsp;PG(PG사 코드)를 찾습니다. 
+                    
+                    <br/><br/>
+
+                    &emsp;5. 회원가입란에 정보를 입력합니다.
+                </div>
+            </div>
         </div>
     )}
     </Formik>
