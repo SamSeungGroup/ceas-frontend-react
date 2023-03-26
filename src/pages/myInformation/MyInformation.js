@@ -33,7 +33,6 @@ import MyInformationTextArea from "./MyInformationTextArea";                    
 
 // 1-5. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
 import api from "../../utils/api";                                                           // api 컴포넌트: '인터셉터' 기능 
-import axios from "axios";                                                                   // axios 모듈: '비동기 HTTP 통신' 이용 - REST API 호출
 
 // 1-6. 'Redux' 사용을 위한 컴포넌트 추가
 import { useSelector, useDispatch } from "react-redux";                                       // react-redux 모듈: '컴포넌트의 데이터들'을 'redux store'에서 '상태 관리' 

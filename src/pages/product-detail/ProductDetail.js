@@ -24,7 +24,6 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";   // - DisabledByDefaultOutlinedIcon 컴포넌트: 
 
 // 1-3. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
-import axios from "axios";                                                                   // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
 import api from "../../utils/api";                                                           // api 컴포넌트:  '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능
 import { jwtUtils } from "../../utils/jwtUtils";                                             // jwtUtils 컴포넌트: '토큰'을 이용한 '이용자 계정' 보안
 
@@ -50,7 +49,7 @@ const ProductDetail = () => {
     const [ productDeleteModalShow, setProductdDeleteModalShow ] = useState(false);    // '상품 삭제 모달창' 표시 여부 상태 관리 -> productDeleteModalShow 변수: '모달창이 표시'되었는지 여부 저장, setProductDeleteModalShow 함수: '모달창 표시 여부' 조작 
 
     // [2-2] '구매자 데이터' 관리
-    const [ userId, setUserId ] = useState("");                                        // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
+    //  const [ userId, setUserId ] = useState("");                                        // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
 
     // [3] 함수 설정
     // navigate 함수: '페이지 이동' 기능 설정
@@ -108,8 +107,8 @@ const ProductDetail = () => {
             merchant_uid: "20230311",                                      // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
             amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
-            buyer_name: "송정우", //userName,                                          // buyer_name 필드: 구매자 이름
-            buyer_email: "sjw9664@naver.com", // userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
+            buyer_name: "송정우", //userName,                              // buyer_name 필드: 구매자 이름
+            buyer_email: "sjw9664@naver.com", // userEmail,                // buyer_email 필드: 구매자 이메일 주소
             impUid: "",                                                    // impUid 필드: ???
         };
 
