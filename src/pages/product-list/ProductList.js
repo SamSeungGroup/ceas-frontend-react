@@ -184,6 +184,8 @@ const ProductList = () => {
             <div className = "hot-product-list-instruction">
                 <img className = "hot-product_image" src = "../../image/hot-product_icon.png"/>
                 <h2 className = "hot-product-list-title">Top3 긍정 상품</h2>
+
+                
             </div>
 
             <div className = "hot-product-list_body">
@@ -204,9 +206,9 @@ const ProductList = () => {
                 )}
             </div>
 
-            <div className = "hot-product-list-instruction">
-                <img className = "hot-product_image" src = "../../image/product-list-02_icon.png"/>
-                <h2 className = "hot-product-list-title">상품 목록</h2>
+            <div className = "product-list-instruction">
+                <img className = "product_image" src = "../../image/product-list-02_icon.png"/>
+                <h2 className = "product-list-title">상품 목록</h2>
             </div>
 
             <div className = "product-list_body">
