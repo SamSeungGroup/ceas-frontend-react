@@ -3,52 +3,55 @@
 
 /* 1. 모듈 및 컴포넌트 추가 */
 // 1-1. 'use 훅' 컴포넌트 추가
-import { useState } from "react";                                 // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리' 
-                                                                  // - useState 훅 컴포넌트: '상태 관리'
-import { useNavigate, useSearchParams } from "react-router-dom";  // react-router-dom 모듈: '웹'에서의 '라우팅' 
-                                                                  // - useNavigate 훅 컴포넌트: '페이지 이동'
-                                                                  // - useSearchParams 훅 컴포넌트: '현재 URL'에서 '쿼리 파라미터' 검색
+import { useState } from "react";                                    // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리' 
+                                                                     // - useState 훅 컴포넌트: '상태 관리'
+import { useNavigate, useSearchParams } from "react-router-dom";     // react-router-dom 모듈: '웹'에서의 '라우팅' 
+                                                                     // - useNavigate 훅 컴포넌트: '페이지 이동'
+                                                                     // - useSearchParams 훅 컴포넌트: '현재 URL'에서 '쿼리 파라미터' 검색
 
 // 1-2. 'UI' 컴포넌트 추가
-import { Button, TextField } from "@mui/material";                // Material UI: 'CSS 프레임워크' 
-                                                                  // - Button 컴포넌트: '버튼'
-                                                                  // - TextField 컴포넌트: '입력창'
-import "react-toastify/dist/ReactToastify.css";                   // ReactToastify.css 모듈: '알림창' 스타일링
-import { Modal, Input } from "antd";                              // antd 모듈:
-                                                                  // - Modal 컴포넌트: '모달창'
-                                                                  // - Input 컴포넌트: '입력창'
+import { Button, TextField } from "@mui/material";                   // Material UI: 'CSS 프레임워크' 
+                                                                     // - Button 컴포넌트: '버튼'
+                                                                     // - TextField 컴포넌트: '입력창'
+import "react-toastify/dist/ReactToastify.css";                      // ReactToastify.css 모듈: '알림창' 스타일링
+import { Modal, Input } from "antd";                                 // antd 모듈:
+                                                                     // - Modal 컴포넌트: '모달창'
+                                                                     // - Input 컴포넌트: '입력창'
 
 // 1-3. '알림창' 컴포넌트 추가
-import { toast, ToastContainer } from "react-toastify";           // react-toastify 모듈: '알림창' 표시 
-                                                                  // - toast 컴포넌트: '알림창' 생성
-                                                                  // - ToastContainer 컴포넌트: '알림창' 렌더링
+import { toast, ToastContainer } from "react-toastify";              // react-toastify 모듈: '알림창' 표시 
+                                                                     // - toast 컴포넌트: '알림창' 생성
+                                                                     // - ToastContainer 컴포넌트: '알림창' 렌더링
 
 // 1-4. '로그인 관리'를 위한 모듈 및 컴포넌트 추가
-import * as Yup from "yup";                                      // yup 모듈: '입력폼(form)에서 입력된 값'의 '유효성 검증'
-import { Formik, ErrorMessage } from "formik";                   // formik 모듈: 입력폼 '상태' 관리 
-                                                                 // - Formik 컴포넌트: 입력폼 'state' 관리
-                                                                 // - ErrorMessage 컴포넌트: 입력폼 '오류 메시지' 렌더링
+import * as Yup from "yup";                                          // yup 모듈: '입력폼(form)에서 입력된 값'의 '유효성 검증'
+import { Formik, ErrorMessage } from "formik";                       // formik 모듈: 입력폼 '상태' 관리 
+                                                                     // - Formik 컴포넌트: 입력폼 'state' 관리
+                                                                     // - ErrorMessage 컴포넌트: 입력폼 '오류 메시지' 렌더링
 
 // 1-5. '비동기 통신'을 위한 컴포넌트 추가
-import axios from "axios";                                       // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
+import axios from "axios";                                           // axios 모듈: '비동기 HTTP 통신' 이용 -> REST API 호출
+import api from "../../utils/api";                                   // api 컴포넌트: '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능 
 
 // 1-6. 'Redux' 사용을 위한 컴포넌트 추가
-import { useDispatch } from "react-redux";                       // react-redux 모듈: '컴포넌트의 데이터'들을 'redux store'에서 '상태' 관리 
-                                                                 // - useDispatch 훅 컴포넌트: 'redux store'에 '변경된 상태값' 저장                                                          
-import { setToken } from "../../redux/reducers/AuthReducer";     // AuthReducer 모듈: '토큰'을 반환하는 'reducer' 생성 
-                                                                 // - setToken 컴포넌트: '토큰' 설정
-import { setId } from "../../redux/reducers/IdReducer";          // IdReducer 모듈: 'id(회원 식별 코드)'를 반환하는 'reducer' 생성
-                                                                 // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
-import { setUserId } from "../../redux/reducers/UserIdReducer";  // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
-                                                                 // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
+import { useDispatch } from "react-redux";                           // react-redux 모듈: '컴포넌트의 데이터'들을 'redux store'에서 '상태' 관리 
+                                                                     // - useDispatch 훅 컴포넌트: 'redux store'에 '변경된 상태값' 저장                                                          
+import { setToken } from "../../redux/reducers/AuthReducer";         // AuthReducer 모듈: '토큰'을 반환하는 'reducer' 생성 
+                                                                     // - setToken 컴포넌트: '토큰' 설정
+import { setId } from "../../redux/reducers/IdReducer";              // IdReducer 모듈: 'id(회원 식별 코드)'를 반환하는 'reducer' 생성
+                                                                     // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
+import { setUserId } from "../../redux/reducers/UserIdReducer";      // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
+                                                                     // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
+import { setUserName } from "../../redux/reducers/UserNameReducer";  // UserNameReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
+                                                                     // - setUserName 컴포넌트: 'userId(회원 아이디)' 설정
 
 // 1-7. '이메일' 기능을 위한 모듈 추가
-import emailjs, { init } from "emailjs-com";                     // emailjs-com 모듈: '이용자의 요청'에 따라 '이메일 수신'이 가능한 모듈
-                                                                 // - emailjs 컴포넌트: 'emailjs' 기능 이용
-                                                                 // - init 컴포넌트: 'emailjs'에서 '관리자 정보' 초기화(설정)
+import emailjs, { init } from "emailjs-com";                         // emailjs-com 모듈: '이용자의 요청'에 따라 '이메일 수신'이 가능한 모듈
+                                                                     // - emailjs 컴포넌트: 'emailjs' 기능 이용
+                                                                     // - init 컴포넌트: 'emailjs'에서 '관리자 정보' 초기화(설정)
 
 // 1-8. 'SCSS' 모듈 추가
-import "../signup/signup.scss";                                  // signup 모듈: '회원가입 페이지' 스타일링을 '로그인 스타일링'에 이용
+import "../signup/signup.scss";                                      // signup 모듈: '회원가입 페이지' 스타일링을 '로그인 스타일링'에 이용
 
 /* 2. 함수 설정 */
 // Login 함수: '이용자'가 '로그인'을 할 수 있는 기능 구현 + 화면 표시
@@ -60,7 +63,7 @@ const Login = () => {
   const [ userId, setUnUserId ] = useState("");                            // '이용자 아이디 입력' 상태 관리 -> userId 변수: '입력된 아이디' 저장, setUserId 함수: '입력된 아이디' 조작
 
   // [1-2] '모달창 표시' 관리
-  const [ findPwModalVisible, setFindPwModalVisible ] = useState(false); // '비밀번호 찾기 모달창 표시 여부' 상태 관리 -> findPwModalVisible 변수: '모달창 표시 여부' 저장, setFindPwModalVisible 함수: '모달창 표시 여부' 조작
+  const [ findPwModalVisible, setFindPwModalVisible ] = useState(false);   // '비밀번호 찾기 모달창 표시 여부' 상태 관리 -> findPwModalVisible 변수: '모달창 표시 여부' 저장, setFindPwModalVisible 함수: '모달창 표시 여부' 조작
 
   // [2] 변수 설정
   // [2-1] '로그인' 설정
@@ -104,9 +107,10 @@ const Login = () => {
       });
 
       // (2-1-2) '서버'에서 '토큰/id'를 받아 'redux store'에 저장 후 'redux persist' 모듈을 이용해 '토큰/id을 가진 로그인 데이터'를 'local storage'에 저장
-      dispatch(setToken(data.token));   // '현재 로그인한 회원'의 '토큰' 저장
-      dispatch(setId(data.id));         // '현재 로그인한 회원'의 'id' 저장
-      dispatch(setUserId(data.userId)); // '현재 로그인한 회원'의 'userId' 저장
+      dispatch(setToken(data.token));       // '현재 로그인한 회원'의 '토큰' 저장
+      dispatch(setId(data.id));             // '현재 로그인한 회원'의 'id' 저장
+      dispatch(setUserId(data.userId));     // '현재 로그인한 회원'의 'userId' 저장
+      dispatch(setUserName(data.userName)); // '현재 로그인한 회원'의 '이름' 저장
       
       // (2-1-3) '페이지'를 '리다이렉트' 할 수 있는 기능 설정
       const redirectUrl = searchParams.get("redirectUrl");                     // redirectUrl 변수: '페이지 주소'에서 '쿼리 파라미터'를 검색해 '페이지'를 '리다이렉트'할 수 있는 기능 저장
