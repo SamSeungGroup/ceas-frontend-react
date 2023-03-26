@@ -24,8 +24,9 @@ import "./welcomemessage.scss";                                                 
 // WelcomeMessage 함수: '회원 환영인사 메시지' 기능 구현 + 화면 표시
 const WelcomeMessage = () => {
     // [1] 변수 설정
-    const token = useSelector(state => state.Auth.token); // token 변수: 'redux store'에서 '토큰'을 받아 저장 
-    const id = useSelector(state => state.Id.id);         // id 변수: 'redux store'에서 'id'를 받아 저장    
+    const token = useSelector(state => state.Auth.token);               // token 변수: 'redux store'에서 '토큰'을 받아 저장 
+    const id = useSelector(state => state.Id.id);                       // id 변수: 'redux store'에서 'id'를 받아 저장
+    const userNameRedux = useSelector(state => state.UserName.userName) // userNameRedux 변수: 'redux store'에서 'userName'을 받아 저장
 
     // [2] 상태 관리
     const [ isLogin, setIsLogin ] = useState(false);      // '로그인 여부' 상태 관리 -> isLogin 변수: '로그인 여부' 저장, setIsLogin 함수: '로그인 여부' 조작
@@ -64,7 +65,7 @@ const WelcomeMessage = () => {
         jwtUtils.isAuth(token) && isLogin ? (
             <div className = "welcome-message">
                 <img className = "welcome_image1" src = "../../image/welcome_icon.png"/>
-                    { userName }님 환영합니다! 오늘 하루 즐거운 쇼핑 되세요!
+                    { userNameRedux }님 환영합니다! 오늘 하루 즐거운 쇼핑 되세요!
                 <img className = "welcome_image2" src = "../../image/welcome_icon.png"/>
             </div>
         ) : (
