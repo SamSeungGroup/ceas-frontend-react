@@ -3,11 +3,12 @@
 
 /* 1. 모듈/라이브러리 및 컴포넌트 추가 */
 // 1-1. 'React' 라이브러리 + 'use 훅' 컴포넌트 추가
-import React, { useCallback, useEffect, useState } from "react";                            // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
+import React, { useCallback, useEffect, useState, useMemo } from "react";                   // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
                                                                                             // - React 컴포넌트: 'React' 요소 사용
                                                                                             // - useCallback 훅 컴포넌트: '불필요한 컴포넌트 재렌더링 방지'
                                                                                             // - useEffect 훅 컴포넌트: '비동기 통신' 용도
                                                                                             // - useState 훅 컴포넌트: '상태 관리'
+                                                                                            // - useMemo 훅 컴포넌트: '기능 재사용'
 import { useSelector } from "react-redux";                                                  // react-redux 모듈: '컴포넌트 바깥'에서 '상태 관리' 
                                                                                             // - useSelector 훅 컴포넌트: '상태 관리' 최적화
 import { useLocation, useNavigate } from "react-router-dom";                                // react-router-dom 모듈: '라우팅' 적용 
@@ -36,19 +37,18 @@ import { TagCloud } from 'react-tagcloud';                                      
                                                                                              // - TagCloud 컴포넌트: '태그(워드) 클라우드' 표시
 
 // 1-4. '비동기 통신'을 위한 라이브러리 및 컴포넌트 추가
-import axios from "axios";                                                                   // axios 라이브러리: '비동기 통신' - REST API 호출
 import api from "../utils/api";                                                              // api 컴포넌트: '인터셉터' 기능
 import { jwtUtils } from "../utils/jwtUtils";                                                // jwtUtils 컴포넌트: 'jwt 토큰'을 이용한 '이용자 계정' 보안
 
 // 1-5. '날짜 표현' 모듈 추가 
-import moment from "moment";                                             // moment 컴포넌트: '날짜' 변환
+import moment from "moment";                                                                 // moment 컴포넌트: '날짜' 변환
 
 // 1-6. 'SCSS' 모듈 추가
 import "./comments.scss";                                                                    // comments 모듈: '댓글' 스타일링
 
 /* 2. 함수 설정 */
 // Comments 함수: '댓글' 작성 기능 구현
-const Comments = ({ product_id, productPositive}) => { // product_id 매개필드: '상품 아이디에 맞는 댓글'을 추가 및 삭제하기 위한 용도
+const Comments = ({ product_id, productPositive }) => {                                        // product_id 매개필드: '상품 아이디에 맞는 댓글'을 추가 및 삭제하기 위한 용도
     // [1] 상태 관리
     // [1-1] '댓글 데이터' 관리
     const [ commentList, setCommentList ] = useState([]);                                      // '댓글 리스트' 상태 관리 -> commenstList 변수: '댓글 리스트' 저장, setCommentList 함수: '댓글 리스트' 조작
@@ -59,13 +59,11 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
     const [ userId, setUserId ] = useState("");                                                // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
     const [ writer, setWriter] = useState("");
 
-    // [1-3] '상품 긍정도 데이터' 관리
-    //const [ productPositive, setProductPositive ] = useState("");                              // '상품 긍정도' 상태 관리 -> productPositive 변수: '상품 긍정도' 저장, setProductPositive 함수: '상품 긍정도' 조작
+    // [1-3] 'PieChart 긍정/부정 출력 형식' 관리
+    const [ positiveChart, setPositiveChart ] = useState(false);                               // '긍정 차트' 상태 관리 -> positiveChart 변수: '긍정 차트' 출력, setPositiveChart 함수: '긍정 차트' 설정 조작
+    const [ negativeChart, setNegativeChart ] = useState(false);                               // '부정 차트' 상태 관리 -> negativeChart 변수: '부정 차트' 출력, setNegativeChart 함수: '부정 차트' 설정 조작
 
-    // [1-4] '워드 클라우드 데이터' 관리
-    const [ wordcloud, setWordCloud ] = useState([]);                                          // '워드 클라우드' 상태 관리 -> wordcloud 변수: '워드 클라우드 배열' 저장, setWordCloud 함수: '워드 클라우드 배열' 조작
-
-    // [1-5] '모달 출력 여부 데이터' 관리
+    // [1-4] '모달 출력 여부 데이터' 관리
     const [ logindialog_show, setLoginModalShow ] = useState(false);                           // '로그인 다이얼로그' 표시 여부 상태 관리 -> logindialog_show 변수: '로그인 모달창'이 표시되었는지 여부 저장, setLoginDialogShow 함수: '로그인 모달창 표시 여부' 조작
     const [ editcommentmodal_show, setEditCommentModalShow ] = useState(false);                // '댓글 수정 모달창' 표시 여부 상태 관리 -> editcommentmodal_show 변수: '댓글 수정 모달창'이 표시되었는지 여부 저장, setEditCommentModalShow 함수: '댓글 수정 모달창 표시 여부' 조작
     const [ editcommentsucessdialog_show, setEditCommentSucessDialogShow ] = useState(false);  // '댓글 수정 완료 다이얼로그창' 표시 여부 상태 관리 -> editcommentsucessdialog_show 변수: '댓글 수정 완료 다이얼로그창'이 표시되었는지 여부 저장, setEditCommentSucessDialogShow 함수: '댓글 수정 완료 다이얼로그창 표시 여부' 조작
@@ -177,36 +175,91 @@ const Comments = ({ product_id, productPositive}) => { // product_id 매개필�
         }
     }, []);
 
-    
+    // [4-3] '긍정/부정 값'에 따른 '차트 출력' 설정
+    useMemo(() => {
+        // (1) '상품 긍정도 값'이 '양수'일 경우 -> '긍정 차트' 출력
+        if(productPositive > 0){
+            setPositiveChart(true);
+            setNegativeChart(false);
+        }
+        // (2) '상품 긍정도 값'이 '0'일 경우 -> '부정 차트' 출력
+        else if(productPositive === 0){
+            setPositiveChart(false);
+            setNegativeChart(true);
+        }
+        // (3) '상품 긍정도 값'이 없을 경우 -> '부정 차트' 출력
+        else if(productPositive === null){
+            setPositiveChart(false);
+            setNegativeChart(true);
+        }
+        // (4) '상품 긍정도 값'이 '음수'일 경우 -> '부정 차트' 출력
+        else{
+            setPositiveChart(false);
+            setNegativeChart(true);
+        }
+    }, [ productPositive ])
 
-    // [4-5] 화면 렌더링
+    // [4-4] 화면 렌더링
     return (
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
-                <PieChart 
-                    data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
-                        {
-                           value: (productPositive*100).toFixed(3),      // value 필드: '비율 표시값'
-                           color: "blue",                                // color 필드: '비율 표시 색상'
-                           name: "상품 긍정도",                          // name 필드: '차트 이름'
-                         },
-                    ]}
-                    style = {{                                           // style 속성: 차트 '스타일'
-                        width: "90%"                                     // width 필드: '너비' 설정
-                    }}
-                    reveal = { productPositive*100 }                     // reveal 속성: '비율 표시'
-                    lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
-                    background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
-                    lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시
-                    rounded                                              // rounded 속성: '양 끝 모양'이 '동그랗게' 설정
-                    animate                                              // animate 속성: '페이지 입장' 시 '비율 차트'가 채워지는 '애니메이션' 적용
-                    label = {({ dataEntry }) => dataEntry.value + '%'}	 // label 속성: '비율 글자 표시' 스타일('가운데에 표시되는 글자')
-                    labelStyle = {{                                      // labelStyle 속성: '비율 글자' 스타일
-                        fontSize: "20px",                                // fontSize 필드: 비율 글자 '크기'
-                        fill: "blue",                                    // fill 필드: 비율 글자 '색상'
-                    }} 
-                    labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
-                />
+                {
+                    positiveChart && 
+                    <PieChart 
+                        data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
+                            {
+                                value: (productPositive*100).toFixed(3),     // value 필드: '비율 표시값'
+                                color: "blue",                               // color 필드: '비율 표시 색상'
+                                name: "상품 긍정도",                         // name 필드: '차트 이름'
+                            },
+                        ]} 
+                        style = {{                                           // style 속성: 차트 '스타일'
+                            width: "100%"                                    // width 필드: '너비' 설정
+                        }}
+                        reveal = { productPositive*100 }                     // reveal 속성: '비율 표시'
+                        lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
+                        background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
+                        startAngle = { 270 }                                 // startAngle 속성: '비율'이 시작하는 지점
+                        lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시
+                        rounded                                              // rounded 속성: '양 끝 모양'이 '동그랗게' 설정
+                        animate                                              // animate 속성: '페이지 입장' 시 '비율 차트'가 채워지는 '애니메이션' 적용
+                        label = {({ dataEntry }) => dataEntry.value + '%'}	 // label 속성: '비율 글자 표시' 스타일('가운데에 표시되는 글자')
+                        labelStyle = {{                                      // labelStyle 속성: '비율 글자' 스타일
+                            fontSize: "15px",                                // fontSize 필드: 비율 글자 '크기'
+                            fill: "blue",                                    // fill 필드: 비율 글자 '색상'
+                        }} 
+                        labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
+                    />
+                }
+
+                {
+                    negativeChart && 
+                    <PieChart 
+                        data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
+                            {
+                                value: -(productPositive*100).toFixed(3),    // value 필드: '비율 표시값'
+                                color: "red",                                // color 필드: '비율 표시 색상'
+                                name: "상품 긍정도",                         // name 필드: '차트 이름'
+                            },
+                        ]} 
+                        style = {{                                           // style 속성: 차트 '스타일'
+                            width: "100%"                                    // width 필드: '너비' 설정
+                        }}
+                        reveal = { productPositive*100 }                     // reveal 속성: '비율 표시'
+                        lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
+                        background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
+                        startAngle = { 270 }                                 // startAngle 속성: '비율'이 시작하는 지점
+                        lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시
+                        rounded                                              // rounded 속성: '양 끝 모양'이 '동그랗게' 설정
+                        animate                                              // animate 속성: '페이지 입장' 시 '비율 차트'가 채워지는 '애니메이션' 적용
+                        label = {({ dataEntry }) => dataEntry.value + '%'}	 // label 속성: '비율 글자 표시' 스타일('가운데에 표시되는 글자')
+                        labelStyle = {{                                      // labelStyle 속성: '비율 글자' 스타일
+                            fontSize: "15px",                                // fontSize 필드: 비율 글자 '크기'
+                            fill: "red",                                     // fill 필드: 비율 글자 '색상'
+                        }} 
+                        labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
+                    />
+                }
             </div>
 
             <div className = "wordcloud_wrapper">
