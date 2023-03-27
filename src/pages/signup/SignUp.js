@@ -74,14 +74,6 @@ const SignUp = () => {
         userPassword2: Yup.string()
             .oneOf([Yup.ref("userPassword"), null], "비밀번호가 일치하지 않습니다!")            // oneOf 메소드: '값 일치 여부' 판단, ref 메소드: 'userPassword' 필드 연결('비밀번호 확인'을 위함)
             .required("비밀번호를 한 번 더 입력해 주세요."),                                    // required 메소드: '필수 입력 안내 메세지' 표시
-
-        // (5) '가맹점 식별코드 입력' 검증 -> 'IMP' 필드
-        IMP: Yup.string() 
-          .required("IMP(가맹점 식별코드)를 입력하세요."),                                      // required 메소드: '필수 입력 안내 메세지' 표시
-
-        // (6) 'PG사 코드 입력' 검증 -> 'PG' 필드
-        PG: Yup.string()
-          .required("PG사 코드를 입력하세요."),                                                 // required 메소드: '필수 입력 안내 메세지' 표시
   });
   
   // [2] 함수 설정
