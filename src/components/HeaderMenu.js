@@ -31,6 +31,8 @@ import { setId } from "../redux/reducers/IdReducer";          // IdReducer 모�
                                                               // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
 import { setUserId } from "../redux/reducers/UserIdReducer";  // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
                                                               // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
+import { setUserName } from "../redux/reducers/UserNameReducer";  // UserNameReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
+                                                                     // - setUserName 컴포넌트: 'userId(회원 아이디)' 설정
 
 /* 2. 함수 설정 */
 // HeaderMenu 함수: '화면'에 '헤더 메뉴' 기능 구현 + 화면 표시
@@ -97,6 +99,7 @@ const HeaderMenu = () => {
     await dispatch(setToken(""));    // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
     await dispatch(setId(""));       // dispatch 메소드: 'redux store'에 '변경된 값' 저장 
     await dispatch(setUserId(""));   // dispatch 메소드: 'redux store'에 '변경된 값' 저장
+    await dispatch(setUserName("")); // dispatch 메소드: 'redux store'에 '변경된 값' 저장
 
     // (2) '로그아웃' 알림창 표시
     alert("로그아웃 되었습니다."); // alert 메소드: '화면 상단'에 '알림창' 표시
