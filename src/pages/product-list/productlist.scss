@@ -90,12 +90,12 @@
 
     .hot-product-list-instruction{
       box-sizing: content-box;
-      width: 210px;
+      width: 360px;
       opacity: 0;
       animation: smoothAppear 1s forwards;
 
-      margin-top: -730px;
-      margin-left: 1100px;
+      margin-top: 50px;
+      margin-left: 0px;
 
       .hot-product_image{
         box-sizing: content-box;
@@ -118,12 +118,14 @@
 
       .hot-product-list-title{
         font-Size: 30px;
+
+        margin-top: -50px;
+        margin-left: 150px;
       }
     }
 
     .hot-product-list_body{
       box-sizing: content-box;
-      width: 10px;
 
       opacity: 0;
       animation: smoothAppear 2.0s forwards;
@@ -132,8 +134,6 @@
       align-items: center;
       justify-content: left;
       flex-wrap: wrap;
-
-      margin-left: 900px;
 
       .no-hot-product-list{
         margin-left: 30px;
