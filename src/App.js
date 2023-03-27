@@ -17,6 +17,7 @@ import SignUp from './pages/signup/SignUp';                                     
 import Login from "./pages/login/Login";                                                  // 'Login(로그인)' 페이지 추가
 import CreateProduct from "./pages/create-product/CreateProduct";                         // 'CreateProduct(상품 등록)' 페이지 추가
 import MyProductList from "./pages/myproduct-list/Myproduct-list";                        // 'MyProductList(내 상품 관리)' 페이지 추가
+import MyPurchaseList from "./pages/mypurchase-list/Mypurchase-list";                     // 'MyProductList(내 상품 관리)' 페이지 추가
 import ProductList from "./pages/product-list/ProductList";                               // 'ProductList(상품 목록)' 페이지 추가
 import ProductDetail from "./pages/product-detail/ProductDetail";                         // 'ProductDetail(상품 상세)' 페이지 추가
 import EnquiryToSeller from "./pages/enquiry-to-seller/Enquiry-To-Seller";                // 'EnquiryToSeller(판매자 1:1 문의)' 페이지 추가
@@ -60,6 +61,7 @@ const App = () => {
         <Route path = "/productdetail/:product_id" element = { <ProductDetail /> }/>
         <Route path = "/enquiry-to-seller/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EnquiryToSeller } /> }/> 
         <Route path = "/edit-product/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EditProduct } /> }/>
+        <Route path = "/mypurchase-list" element = { <PrivateRoute path = {`${location.pathname}`} component = { MyPurchaseList } /> }/>
       </Routes>
       
     </React.Fragment>
