@@ -210,6 +210,61 @@ const MyInformation = () => {
                 </Button>
             </div>
 
+            <div className = "portone-information_wrapper">
+                <div className = "portone-information_title">
+                    삼승그룹은 포트원과 함께합니다.
+                </div>
+
+                <div className = "portone-information_text">
+                    &emsp;&ensp;상품 판매, 결제 관리를 위해서는 <br/>
+                    &emsp;&ensp;'포트원(PortOne)'과 연동을 해야 <br/>
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    &ensp;&ensp;
+                    합니다.
+
+                    <br/><br/>
+
+                    &emsp;
+                    &emsp;
+                    &emsp;
+                    &emsp;
+                    &emsp;[연동 방법]
+                    
+                    <br/><br/>
+
+                    &emsp;1. 포트원 '회원가입' 후 '로그인'
+                    
+                    <br/><br/>
+
+                    &emsp;2. '결제 연동' 메뉴 - '테스트 실 연동<br/>
+                    &emsp;
+                    &nbsp;&emsp;관리' - '결제 대행사 설정 및 추가'<br/>
+                    &emsp;&emsp;&nbsp;
+                    에서 본인이 원하는 상점을 추가
+                    &emsp;&emsp;&ensp;합니다.
+                    
+                    <br/><br/>
+
+                    &emsp;3. '대표상점'-'내 식별코드/API <br/>
+                    &emsp;&emsp;&nbsp;Keys'로 이동하여 '가맹점 
+                    &emsp;&emsp;&emsp;
+                    &emsp;&emsp;식별코드'를 찾습니다.
+                    
+                    <br/><br/>
+
+                    &emsp;4. '결제대행사 목록' - '정보 수정' <br/>
+                    &emsp;&emsp;&nbsp;로 이동하여 PG 상점 아이디<br/>
+                    &emsp;&emsp;&nbsp;PG(PG사 코드)를 찾습니다. 
+                    
+                    <br/><br/>
+
+                    &emsp;5. 회원가입란에 정보를 입력합니다.
+                </div>
+            </div>
+
             <Dialog open = { deleteUserModalShow }>
                 <DialogContent style = { { position: "relative" } }>
                     <IconButton 
