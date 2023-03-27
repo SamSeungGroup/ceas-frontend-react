@@ -62,6 +62,8 @@ const MyInformation = () => {
         image_file: "",                                                            //  - image_file 필드: '파일 탐색기'에서 '선택된 파일' 저장
         preview_URL: "../../image/default_image.png"                               //  - preview_URL 필드: '기본 이미지 주소' 저장 
     });
+    const [ IMP, setIMP ] = useState("");
+    const [ PG, setPG ] = useState("");
     const [ userPassword, setUserPassword ] = useState("");                        // '회원 비밀번호' 상태 관리 -> userPassword 변수: '회원 비밀번호' 저장, setUserPassword 함수: '회원 비밀번호' 조작
 
     // [2-2] '회원탈퇴 시 입력 데이터' 관리
@@ -96,6 +98,8 @@ const MyInformation = () => {
                 setUserEmail(response.data.userEmail);                                                // '내 이메일 주소' 설정
                 setUserImage({...userImage, preview_URL: `http://localhost:8080/images/user/${id}`}); // '내 프로필 이미지' 설정
                 setUserPassword(response.data.userPassword);                                          // '내 비밀번호' 설정
+                setIMP(response.data.impId);                                                          // '내 IMP 코드' 설정
+                setPG(response.data.pgId);                                                            // '내 PG사 코드' 설정
             });
         }
 
@@ -109,8 +113,8 @@ const MyInformation = () => {
     // canSubmit 함수: '내 정보 데이터'를 서버에 '제출'할 수 있는지 검사
     //                 -> '내 정보 데이터' 목록: '내 프로필 이미지, '내 이름', '내 이메일 주소'
     const canSubmit = useCallback(() => {
-        return userImage.image_file !== "" && userName !== "" && userEmail !== "";
-    },[ userImage, userName, userEmail ]);
+        return userImage.image_file !== "" && userName !== "" && userEmail !== "" || IMP !== "" || PG !== ""
+    },[ userImage, userName, userEmail, IMP, PG ]);
     
     // handleSubmit 함수: '비동기(async) 함수', '내 정보 데이터'를 '서버'에 송신
     const handleSubmit = useCallback(async () => {
@@ -124,7 +128,9 @@ const MyInformation = () => {
             formData.append("dto", new Blob([JSON.stringify({                                              // append 메소드: '데이터' 추가 
                 'id': id,                                                                                  // -> id 필드: '회원 식별 아이디' 추가
                 'userName': userName,                                                                      // -> userName 필드: '회원 이름' 추가
-                'userEmail': userEmail                                                                     // -> userEmail 필드: '회원 이메일' 추가
+                'userEmail': userEmail,                                                                    // -> userEmail 필드: '회원 이메일' 추가
+                'impId': IMP,                                                                              // -> impId 필드: 'IMP 코드' 추가
+                'pgId': PG,                                                                                // -> pgId 필드: 'PG사 코드' 추가
             })], { type: "application/json" }));                                                           // -> type 필드: application/json 타입으로 전송
  
             // (3) '내 정보 데이터'를 '서버'에 송신
@@ -154,7 +160,6 @@ const MyInformation = () => {
             <div className = "myinformation_header">
                 <img className = "myinformation-edit_image" src = "../../image/myinformation-edit_icon.png"/>
                 <div className = "myinformation-edit-title">내 정보 수정</div>
-                <div>{ userPassword }</div>
             </div>
 
             <div className = "myinformation-submit_button">
@@ -189,6 +194,10 @@ const MyInformation = () => {
                     userName = { userName }
                     setUserEmail = { setUserEmail }
                     userEmail = { userEmail }
+                    setIMP = { setIMP }
+                    IMP = { IMP }
+                    setPG = { setPG }
+                    PG = { PG }
                 /> 
             </div>
 
