@@ -181,31 +181,6 @@ const ProductList = () => {
                 </div>
             </div>
 
-            <div className = "hot-product-list-instruction">
-                <img className = "hot-product_image" src = "../../image/hot-product_icon.png"/>
-                <h2 className = "hot-product-list-title">Top3 긍정 상품</h2>
-
-                
-            </div>
-
-            <div className = "hot-product-list_body">
-                {
-                    onList ? (hotProductList.map((item, index) => (
-                        <ProductItemCard
-                            key = { index } 
-                            productId = { item.id }
-                            productImage = { `http://localhost:8080/images/product/${item.id}` }
-                            productName = { item.productName }
-                            productPrice = { item.productPrice }
-                            productPositive = { item.productPositive }
-                            userName = { item.seller.userName }
-                            productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
-                        />
-                ))) : (
-                    <h2 className = "no-hot-product-list">등록된 인기 상품이 없습니다.</h2>
-                )}
-            </div>
-
             <div className = "product-list-instruction">
                 <img className = "product_image" src = "../../image/product-list-02_icon.png"/>
                 <h2 className = "product-list-title">상품 목록</h2>
@@ -228,6 +203,29 @@ const ProductList = () => {
                             <h2 className = "no-product-list">등록된 상품이 없습니다.</h2>
                         )
                 }
+            </div>
+
+            <div className = "hot-product-list-instruction">
+                <img className = "hot-product_image" src = "../../image/hot-product_icon.png"/>
+                <h2 className = "hot-product-list-title">Top3 긍정 상품</h2>
+            </div>
+
+            <div className = "hot-product-list_body">
+                {
+                    onList ? (hotProductList.map((item, index) => (
+                        <ProductItemCard
+                            key = { index } 
+                            productId = { item.id }
+                            productImage = { `http://localhost:8080/images/product/${item.id}` }
+                            productName = { item.productName }
+                            productPrice = { item.productPrice }
+                            productPositive = { item.productPositive }
+                            userName = { item.seller.userName }
+                            productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
+                        />
+                ))) : (
+                    <h2 className = "no-hot-product-list">등록된 인기 상품이 없습니다.</h2>
+                )}
             </div>
 
             <div className = "product-list_footer">
