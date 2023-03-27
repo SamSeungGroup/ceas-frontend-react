@@ -330,7 +330,10 @@ const Comments = ({ product_id, productPositive }) => {                         
                                     color = "error"
                                     style = {{ fontSize: 12 }}
                                     endIcon = { <DeleteForeverOutlinedIcon /> } 
-                                    onClick = { () => { setDeleteCommentModalShow(true); } }>
+                                    onClick = { () => { 
+                                            setDeleteCommentModalShow(true); 
+                                            setCommentId(item.id);
+                                    } }>
                                    삭제
                                 </Button> 
 
