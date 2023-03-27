@@ -86,12 +86,12 @@ const SideMenu = () => {
                <a>내 상품 관리</a>
           </div>
 
-          <div className = "sidemenu-menu_text" onClick = { () => window.open("https://admin.portone.io/auth/signin")}>
+          <div className = "sidemenu-menu_text" onClick = { () => navigate("/mypurchase-list")}>
                <div className = "sidemenu-menu_image">
                   <img src = "../../image/purchase_icon.png"/>
                </div>
 
-               <a>결제 내역</a>
+               <a>내 결제 관리</a>
           </div>
       </div>    
     </div>
