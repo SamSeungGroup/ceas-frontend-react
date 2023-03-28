@@ -104,7 +104,7 @@ const ProductList = () => {
         })
 
         // (2-2) '임시 저장 배열'에 저장된 '상품 목록'을 '긍정도'가 가장 높은 순서대로 '내림차순 정렬'
-        tempProductList.sort((x, y) => x.productName.localeCompare(y.productName))
+        tempProductList.sort((x, y) => y.productPositive - x.productPositive)
 
         // (2-3) '정렬된 임시 저장 배열'에서 '3개의 긍정 상품' 저장
         for(let i = 0; i < tempProductList.length; i++){
