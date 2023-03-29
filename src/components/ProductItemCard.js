@@ -16,8 +16,6 @@ export const ProductItemCard = ({ productId, productImage, productName, productP
     // navigate 함수: '페이지 이동' 기능 저장
     const navigate = useNavigate();
 
-    productPrice.toLocaleString();
-
     // [2] 처리
     // [2-1] 화면 렌더링
     return (
