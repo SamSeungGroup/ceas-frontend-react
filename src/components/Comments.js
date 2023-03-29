@@ -87,7 +87,15 @@ const Comments = ({ product_id, productPositive }) => {                         
 
     // handleOk 함수: '댓글 수정 완료 모달창'의 'OK 버튼'(승인 버튼)
     const handleOk = async () => {
-        setEditCommentSucessDialogShow(true); // '댓글 수정 모달창' 보이기
+        // setEditCommentSucessDialogShow(true); // '댓글 수정 모달창' 보이기
+        setEditCommentModalShow(false);
+        setEditCommentSucessDialogShow(false); 
+
+        await api.put(`products/${product_id}/comments/${comment_id}`, {'content': content});
+                            
+        alert("해당 댓글이 수정되었습니다.");
+
+        window.location.reload();
     }; 
 
     // handleCancel 함수: '댓글 수정 완료 모달창'의 'Cancel 버튼'(취소 버튼)
@@ -387,25 +395,6 @@ const Comments = ({ product_id, productPositive }) => {                         
                     }}
                 />
             </Modal>
-
-            <Dialog open = { editcommentsucessdialog_show }>
-                <DialogContent style = { { position: "relative" } }>
-                    <IconButton 
-                        style = { { position: "absolute", top: "0", right: "0"}} 
-                        onClick = { async () => { 
-                            setEditCommentModalShow(false);
-                            setEditCommentSucessDialogShow(false); 
-
-                            await api.put(`products/${product_id}/comments/${comment_id}`, {'content': content});
-
-                            alert("해당 댓글이 수정되었습니다.");
-
-                            window.location.reload();
-                        }}>
-                        <DisabledByDefaultOutlinedIcon />
-                    </IconButton>
-                </DialogContent>
-            </Dialog>
 
             <Dialog open = { deletecommentmodal_show }>
                 <DialogContent style = { { position: "relative" } }>
