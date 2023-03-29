@@ -131,9 +131,20 @@ const ProductDetail = () => {
             function callback(response) {
                 // (2-3-2-1) '결제 성공' 처리
                 if (response.success) {                                     // response.sucess 매개변수: '결제 성공 정보' 수신
-                    
-                } 
-
+                    const { data } = api.post(`/payments/${product_id}`, 
+                        {
+                            "impUid": response.imp_uid,
+                            "merchantUid": response.merchant_uid,
+                            "productName": response.name,
+                            "paidAmount": response.paid_amount,
+                            "paidMilliseconds": response.paid_at*1000,
+                            "paidDate": new Date(response.paid_at*1000),
+                            "payMethod": response.pay_method,
+                            "pgProvider": response.pg_provider,
+                            "status": response.status,
+                            "success": response.success
+                        })
+                    } 
                 // (2-3-2-2) '결제 실패' 처리                               // response.error_msg 매개변수: '결제 실패 정보' 수신
                 else { 
                     alert(`결제 실패: ${response.error_msg}`);              // alert 메소드: '알림창' 표시 -> '결제 실패' 알림창 표시
