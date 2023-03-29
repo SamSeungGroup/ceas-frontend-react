@@ -36,7 +36,7 @@ export const ProductItemCard = ({ productId, productImage, productName, productP
                 </div>
 
                 <div className = "producg-item-card-body_text_positive">
-                    - 긍정도: { productPositive }%
+                    - 긍정도: { productPositive*100 }%
                 </div>
 
                 <div className = "userName">
