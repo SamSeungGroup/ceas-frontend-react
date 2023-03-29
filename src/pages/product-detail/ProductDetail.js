@@ -104,7 +104,7 @@ const ProductDetail = () => {
         const purchaseData = {
             pg: "html5_inicis.INIpayTest",                                 // pg 필드: PG사(필수 항목)                   // ---> pg: productDetail.PG
             pay_method: "card",                                            // pay_method 필드: 결제 수단(필수 항목)
-            merchant_uid: "20230311",                                      // merchant_uid 필드: 결제 번호
+            merchant_uid: new Date().getTime().toString(),                 // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
             amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
             buyer_name: "송정우", //userName,                              // buyer_name 필드: 구매자 이름

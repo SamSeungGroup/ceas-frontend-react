@@ -14,13 +14,13 @@ import { useSelector } from "react-redux";                               // reac
 import moment from "moment"                                              // moment 모듈: '날짜' 관리
 
 // 1-3. 'UI' 관련 컴포넌트 추가
-import { ProductItemCard } from "../../components/ProductItemCard";      // ProductItemCard 컴포넌트: '상품 목록' 페이지에서 '하나의 상품 정보 카드' 표시
+import { PurchaseItemCard } from "../../components/PurchaseItemCard";    // PurchaseItemCard 컴포넌트: '내 결제 관리' 페이지에서 '하나의 결제 정보 카드' 표시
 
 // 1-4. '비동기 통신'을 위한 모듈 추가
 import api from "../../utils/api";                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 - REST API 호출 + '인터셉터' 기능
 
 // 1-5. 'SCSS' 모듈 추가
-import "./mypurchaselist.scss";                                          // productlist scss 모듈: '상품 목록' 스타일링
+import "./mypurchaselist.scss";                                          // mypurchaselist scss 모듈: '내 결제 관리' 스타일링
 
 /* 2. 함수 설정 */
 // MyProductList 함수: '상품 목록' 기능 구현
@@ -31,9 +31,7 @@ const MyProductList = () => {
     const [ onList, setOnList ] = useState(false);               // '상품 출력 여부' 상태 관리 -> onList 변수: '상품 출력 여부 상태' 저장, setOnList 함수: '상품 출력 여부 상태' 조작
 
     // [2] 변수 설정
-    const id = useSelector(state => state.Id.id);                // id 변수: 'redux store'에서 'userId'를 받아 저장
-
-    // [2] 함수 설정
+    const userId = useSelector(state => state.UserId.userId);    // userId 변수: 'redux store'에서 'userId'를 받아 저장
     
     // [3] 처리
     // [3-1] '상품 목록 데이터'를 '서버'로부터 수신
@@ -43,9 +41,8 @@ const MyProductList = () => {
             // (1) '상품 목록 데이터'를 '서버'로부터 수신
             // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
             const getProductList = async () => {
-                const { data } = await api.get(`/products`);   // data 필드: '상품 목록 데이터' 저장
-                                                               // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신
-                                                               //                    : product_id, product_name, product_img, product_img, product_price, product_positive                                                   
+                const { data } = await api.get(`/payments/${userId}`);  // data 필드: '상품 목록 데이터' 저장
+                                                                        // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신                                  
     
                 return data;
             }
@@ -63,42 +60,7 @@ const MyProductList = () => {
         }
     }, [])
 
-    // MyProductItems 함수: '내 상품 리스트' 저장
-    function MyProductItems(productList, id){        
-                           // <매개변수>
-                           //   - productList: '상품 목록'
-                           //   - userId: '회원 아이디'
-
-        // (1) 변수 설정
-        let myProductList = [];                         // myProductList 리스트: '회원 아이디와 일치하는 상품 목록' 저장
-
-        // (2) 처리
-        // (2-1) '회원 아이디와 일치하는 상품 목록' 검색
-        productList.forEach((p)=>{ 
-                            // <매개변수>
-                            //  - p: 'product_List'
-
-            // (2-1-1) '회원 아이디'와 일치하는 '상품의 회원 아이디'가 없을 경우
-            if(p.seller.id !== id){
-                return;                                // 실행 종료
-            }
-
-            // (2-1-2) '회원 아이디'와 일치하는 '상품'이 있을 경우
-            myProductList.push(p)                      // '검색한 단어'와 일치하는 '상품 이름'을 가진 '상품'을 '검색 상품 목록' 추가
-        })
-
-        // (3) 반환
-        // (3-1) '회원 아이디와 일치하는 상품 목록' 반환
-        return myProductList;
-    }
-
-    // myProductlist 리스트: '회원 아이디와 일치하는 상품 목록' 저장
-    // useMemo 훅: '기능' 재사용
-    const myProductList = useMemo(() =>
-        MyProductItems(productList, id), 
-    [ productList ]);
-
-    // (2) 화면 렌더링
+    // [3-2] 화면 렌더링
     return (
         <div className = "product-list_wrapper">
             <div className = "product-list_header">
@@ -108,8 +70,8 @@ const MyProductList = () => {
 
             <div className = "product-list_body" style = {{ marginTop: "50px" }}>
                 { onList ? 
-                    (myProductList.map((item, index) => (
-                        <ProductItemCard
+                    (productList.map((item, index) => (
+                        <PurchaseItemCard
                             key = { index } 
                             productId = { item.id }
                             productImage = { `http://localhost:8080/images/product/${item.id}` }
