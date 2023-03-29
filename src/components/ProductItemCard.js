@@ -14,7 +14,9 @@ import "./productitemcard.scss";                            // productitemcard.s
 export const ProductItemCard = ({ productId, productImage, productName, productPrice, productPositive, userName, productCreateDate }) => {
     // [1] 함수 설정
     // navigate 함수: '페이지 이동' 기능 저장
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+
+    productPrice.toLocaleString();
 
     // [2] 처리
     // [2-1] 화면 렌더링
@@ -30,7 +32,7 @@ export const ProductItemCard = ({ productId, productImage, productName, productP
                 </div>
 
                 <div className = "product-item-card-body_text_price">
-                    - 가격: { productPrice }원
+                    - 가격: { productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }원
                 </div>
 
                 <div className = "producg-item-card-body_text_positive">
