@@ -31,7 +31,7 @@ const MyProductList = () => {
     const [ onList, setOnList ] = useState(false);               // '상품 출력 여부' 상태 관리 -> onList 변수: '상품 출력 여부 상태' 저장, setOnList 함수: '상품 출력 여부 상태' 조작
 
     // [2] 변수 설정
-    const userId = useSelector(state => state.UserId.userId);    // userId 변수: 'redux store'에서 'userId'를 받아 저장
+    const id = useSelector(state => state.Id.id);    // userId 변수: 'redux store'에서 'userId'를 받아 저장
     
     // [3] 처리
     // [3-1] '상품 목록 데이터'를 '서버'로부터 수신
@@ -41,7 +41,7 @@ const MyProductList = () => {
             // (1) '상품 목록 데이터'를 '서버'로부터 수신
             // getProductList 함수: '비동기(async)' 함수, '상품 목록 데이터' 저장
             const getProductList = async () => {
-                const { data } = await api.get(`/payments/${userId}`);  // data 필드: '상품 목록 데이터' 저장
+                const { data } = await api.get(`/payments/users/${id}`);  // data 필드: '상품 목록 데이터' 저장
                                                                         // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 목록 데이터' 수신                                  
     
                 return data;
@@ -69,21 +69,30 @@ const MyProductList = () => {
             </div>
 
             <div className = "product-list_body" style = {{ marginTop: "50px" }}>
-                { onList ? 
-                    (productList.map((item, index) => (
-                        <PurchaseItemCard
-                            key = { index } 
-                            productId = { item.id }
-                            productImage = { `http://localhost:8080/images/product/${item.id}` }
-                            productName = { item.productName }
-                            productPrice = { item.productPrice }
-                            productPositive = { item.productPositive }
-                            userName = { item.seller.userName }
-                            productCreateDate = { moment(item.created).format('YYYY년 MM월 DD일') }
-                        />
+                <table>
+                        <thead>
+                            <tr>
+                                <th>merchantUid</th>
+                                <th>상품명</th>
+                                <th>구매자</th>
+                                <th>결제금액</th>
+                                <th>결제시간</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                { onList ? (productList.map((item, index) => (
+                        <tr>
+                            <td>{item.merchantUid}</td>
+                            <td>{item.productName}</td>
+                            <td>{item.buyerId}</td>
+                            <td>{item.paidAmount}</td>
+                            <td>{item.paidDate}</td>
+                            <td>{item.status}</td>
+                        </tr>
                 ))) : (
                     <h2 className = "no-myproduct-list">등록한 상품이 없습니다.</h2>
                 )}
+                </table>
             </div>
         </div>
     )
