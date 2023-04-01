@@ -270,7 +270,7 @@ const MyInformation = () => {
                     
                     <br/><br/>
 
-                    &emsp;5. 회원가입란에 정보를 입력합니다.
+                    &emsp;5. 내 정보 수정에 정보를 입력합니다.
                 </div>
             </div>
 
