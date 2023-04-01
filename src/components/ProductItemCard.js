@@ -16,8 +16,6 @@ export const ProductItemCard = ({ productId, productImage, productName, productP
     // navigate 함수: '페이지 이동' 기능 저장
     const navigate = useNavigate();
 
-    productPrice.toLocaleString();
-
     // [2] 처리
     // [2-1] 화면 렌더링
     return (
@@ -36,7 +34,7 @@ export const ProductItemCard = ({ productId, productImage, productName, productP
                 </div>
 
                 <div className = "producg-item-card-body_text_positive">
-                    - 긍정도: { productPositive }%
+                    - 긍정도: { productPositive*100 }%
                 </div>
 
                 <div className = "userName">
