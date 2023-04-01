@@ -1,6 +1,6 @@
 @keyframes smoothAppear {
     from {
-      opacity: 0;
+      opacity: 1;
       transform: translateY(-10%);
     }
     to {
@@ -48,7 +48,7 @@
   .edit-delete_button{
     // display: flex;
     flex-direction: row-reverse;
-    margin-bottom: 0.7rem;
+    margin-bottom: 1.0rem;
 
     button{
       font-size: 1.3rem;

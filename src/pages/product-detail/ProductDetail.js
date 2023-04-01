@@ -21,7 +21,8 @@ import { Button, Dialog, DialogContent, IconButton } from "@mui/material";      
                                                                                              // - IconButton 컴포넌트: '아이콘 버튼'
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";                           // - BuildOutlinedIcon 컴포넌트: '수정' 아이콘
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';           // - DeleteForeverOutlinedIcon 컴포넌트: '삭제' 아이콘
-import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";   // - DisabledByDefaultOutlinedIcon 컴포넌트: 
+import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";   // - DisabledByDefaultOutlinedIcon 컴포넌트: '창 닫기' 아이콘
+import ListAltIcon from '@mui/icons-material/ListAlt';                                       // - ListAltIcon 컴포넌트: '상품 결제 관리' 아이콘
 
 // 1-3. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
 import api from "../../utils/api";                                                           // api 컴포넌트:  '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능
@@ -39,7 +40,8 @@ const ProductDetail = () => {
     // [1] 변수 설정
     const { product_id } = useParams();                                                // product_id 필드: 'useParams 훅'을 이용해 '상품 상세 정보' 페이지의 'URL 파라미터'인 '상품 상세 정보 아이디(product_id)'를 받아옴
     const token = useSelector(state => state.Auth.token);                              // token 변수: 'redux store'에서 '토큰'을 받아 저장
-    const id = useSelector(state => state.Id.id);         
+    const id = useSelector(state => state.Id.id);                                      // id 변수: 'redux store'에서 'id'를 받아 저장
+    const userName = useSelector(state => state.UserName.userName);                    // userName 변수: 'redux store'에서 'userName'을 받아 저장
 
     // [2] 상태 관리
     // [2-1] '상품 상세 정보 데이터' 관리
@@ -47,9 +49,6 @@ const ProductDetail = () => {
     const [ seller, setSeller ] = useState({});
     const [ isLoaded, setIsLoaded ] = useState(false);                                 // '상품 상세 정보 표시 여부' 상태 관리 -> isLoaded 변수: '상품 상세 정보 표시' 여부 저장, setIsLoaded 함수: '상품 상세 정보 표시 여부 조작
     const [ productDeleteModalShow, setProductdDeleteModalShow ] = useState(false);    // '상품 삭제 모달창' 표시 여부 상태 관리 -> productDeleteModalShow 변수: '모달창이 표시'되었는지 여부 저장, setProductDeleteModalShow 함수: '모달창 표시 여부' 조작 
-
-    // [2-2] '구매자 데이터' 관리
-    //  const [ userId, setUserId ] = useState("");                                        // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
 
     // [3] 함수 설정
     // navigate 함수: '페이지 이동' 기능 설정
@@ -107,7 +106,7 @@ const ProductDetail = () => {
             merchant_uid: new Date().getTime().toString(),                 // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
             amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
-            buyer_name: "송정우", //userName,                              // buyer_name 필드: 구매자 이름
+            buyer_name: userName,                                          // buyer_name 필드: 구매자 이름
             buyer_email: "sjw9664@naver.com", // userEmail,                // buyer_email 필드: 구매자 이메일 주소
             impUid: "",                                                    // impUid 필드: ???
         };
@@ -130,20 +129,23 @@ const ProductDetail = () => {
             // callback 함수: '결제' 처리
             function callback(response) {
                 // (2-3-2-1) '결제 성공' 처리
-                if (response.success) {                                     // response.sucess 매개변수: '결제 성공 정보' 수신
-                    const { data } = api.post(`/payments/${product_id}`, 
+                if (response.success) {                                    // response.sucess 매개변수: '결제 성공 정보' 수신
+                    // 1. '결제 정보' 등록
+                    const { data } = api.post(`/payments/products/${product_id}`, 
                         {
-                            "impUid": response.imp_uid,
-                            "merchantUid": response.merchant_uid,
-                            "productName": response.name,
-                            "paidAmount": response.paid_amount,
-                            "paidMilliseconds": response.paid_at*1000,
-                            "paidDate": new Date(response.paid_at*1000),
-                            "payMethod": response.pay_method,
-                            "pgProvider": response.pg_provider,
-                            "status": response.status,
-                            "success": response.success
+                            "impUid": response.imp_uid,                    // impUid 필드:
+                            "merchantUid": response.merchant_uid,          // merchantUid 필드: 
+                            "productName": response.name,                  // productName 필드:
+                            "paidAmount": response.paid_amount,            // paidAmount 필드:
+                            "paidMilliseconds": response.paid_at*1000,     // paidMilliseconds 필드:
+                            "paidDate": new Date(response.paid_at*1000),   // paidDate 필드:
+                            "payMethod": response.pay_method,              // payMethod 필드:
+                            "pgProvider": response.pg_provider,            // pgProvider 필드:
+                            "status": response.status,                     // status 필드:  
+                            "success": response.success                    // success 필드:
                         })
+
+                        alert('결제 성공');
                     } 
                 // (2-3-2-2) '결제 실패' 처리                               // response.error_msg 매개변수: '결제 실패 정보' 수신
                 else { 
@@ -160,7 +162,21 @@ const ProductDetail = () => {
                 <div className = "product-detail_wrapper">
                     {
                         jwtUtils.isAuth(token) && id === seller.id &&
-                        <div className = "edit-delete_button">
+                        <div className = "edit-delete_button">  
+                            <Button 
+                                variant = "outlined" 
+                                endIcon = { <ListAltIcon/> } 
+                                style = {{
+                                    fontSize: "13px",
+                                    width: "150px",
+                                    marginRight: "10px",
+                                    color: "green",
+                                    border: "1px solid green",
+                                }}                              
+                                onClick = { () => { navigate(`/productuserpaymentslist/${product_id}`)}}>
+                                상품 결제 관리
+                            </Button>
+
                             <Button 
                                 variant = "outlined" 
                                 endIcon = { <BuildOutlinedIcon/> } 
