@@ -91,7 +91,7 @@ const SideMenu = () => {
                   <img src = "../../image/purchase_icon.png"/>
                </div>
 
-               <a>내 결제 관리</a>
+               <a>내 결제 내역</a>
           </div>
       </div>    
     </div>
