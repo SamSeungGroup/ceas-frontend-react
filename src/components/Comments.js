@@ -205,6 +205,12 @@ const Comments = ({ product_id, productPositive }) => {                         
     return (
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
+                {   positiveChart &&
+                    <div className = "negative-chart-comment">
+                        [AI 딥러닝 댓글 문장 종합 분석 결과]<br/>
+                    </div>
+                }
+
                 {
                     positiveChart &&
                     <PieChart 
@@ -232,6 +238,12 @@ const Comments = ({ product_id, productPositive }) => {                         
                         }} 
                         labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
                     />
+                }
+
+                {   negativeChart &&
+                    <div className = "negative-chart-comment">
+                        [AI 딥러닝 댓글 문장 종합 분석 결과]<br/>
+                    </div>
                 }
 
                 {
