@@ -27,7 +27,7 @@ import { toast, ToastContainer } from "react-toastify";                         
                                                                                              // - ToastContainer 컴포넌트: '알림창' 렌더링
 import "react-toastify/dist/ReactToastify.css";                                              // ReactToastify.css 모듈: '알림창' 스타일링
  
-// 1-4. '삼승 CEAS UI 기능' 컴포넌트 추가
+// 1-4. 'UI 기능' 컴포넌트 추가
 import MyInformationImageUploader from "./MyInformationImageUploader";                       // MyInformationImageUploader 컴포넌트: '상품 이미지 업로드' 기능
 import MyInformationTextArea from "./MyInformationTextArea";                                 // MyInformationTextArea 컴포넌트: '상품 이름', '상품 설명' 작성 기능
 
@@ -79,7 +79,38 @@ const MyInformation = () => {
     const dispatch = useDispatch();     
 
     // [4] 처리
-    // [4-1] '내 정보 데이터'를 '서버'로부터 수신
+    // [4-1] '내 프로필 이미지 데이터'를 '서버'로부터 수신
+    useEffect(() => {
+    // try -> '내 프로필 이미지 데이터 수신 성공' 처리
+    try{
+      // (1) '내 프로필 이미지 데이터'를 '서버'로부터 수신
+      // getUser 함수: '비동기(async)' 함수, '회원 정보 데이터' 저장
+      const getUser = async () => {
+        const { data } = await api.get(`http://localhost:8080/images/user/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 프로필 이미지 데이터' 수신: userImage
+
+        return data;
+      }
+
+      // (2) '내 정보 데이터 중 내 프로필 이미지'를 'setUserImage' 함수에 설정
+      getUser().then((response) => {
+          // (2-1) '내 프로필 이미지'에 '설정된 이미지'가 없을 경우
+          if(response.status === 400){
+            setUserImage({...userImage, preview_URL: "../../image/default_image.png"});            // '기본 이미지'로 표시
+          }
+          // (2-2) '내 프로필 이미지'에 '설정된 이미지'가 있을 경우
+          else{
+            setUserImage({...userImage, preview_URL: `http://localhost:8080/images/user/${id}`});  // '설정된 이미지'로 표시
+          }
+       });
+    }
+
+    // catch -> '내 정보 데이터 수신 실패' 처리
+    catch(e){
+
+    }
+  }, [])
+
+    // [4-2] '내 정보 데이터'를 '서버'로부터 수신
     useEffect(() => {
         // try -> '내 정보 데이터 수신 성공' 처리
         try{
@@ -96,7 +127,6 @@ const MyInformation = () => {
             getUser().then((response) => {
                 setUserName(response.data.userName);                                                  // '내 이름' 설정
                 setUserEmail(response.data.userEmail);                                                // '내 이메일 주소' 설정
-                setUserImage({...userImage, preview_URL: `http://localhost:8080/images/user/${id}`}); // '내 프로필 이미지' 설정
                 setUserPassword(response.data.userPassword);                                          // '내 비밀번호' 설정
                 setIMP(response.data.impId);                                                          // '내 IMP 코드' 설정
                 setPG(response.data.pgId);                                                            // '내 PG사 코드' 설정
@@ -113,7 +143,7 @@ const MyInformation = () => {
     // canSubmit 함수: '내 정보 데이터'를 서버에 '제출'할 수 있는지 검사
     //                 -> '내 정보 데이터' 목록: '내 프로필 이미지, '내 이름', '내 이메일 주소'
     const canSubmit = useCallback(() => {
-        return userImage.image_file !== "" && userName !== "" && userEmail !== "" || IMP !== "" || PG !== ""
+        return userImage.image_file !== "" || userName !== "" && userEmail !== "" || IMP !== "" || PG !== ""
     },[ userImage, userName, userEmail, IMP, PG ]);
     
     // handleSubmit 함수: '비동기(async) 함수', '내 정보 데이터'를 '서버'에 송신
