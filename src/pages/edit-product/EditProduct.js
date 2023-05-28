@@ -123,7 +123,8 @@ const EditProduct = () => {
     return (
         <div className = "createproduct_wrapper">
             <div className = "createproduct_header">
-                상품 수정
+                <img className = "product-list_image" src = "../../image/edit-product_icon.png"/>
+                <div className = "product-list-title">상품 수정</div>
             </div>
 
             <div className = "submit_button">
