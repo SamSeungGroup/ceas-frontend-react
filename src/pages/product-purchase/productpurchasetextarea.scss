@@ -1,0 +1,74 @@
+/* <삼승 CEAS 스타일러 - '상품 정보 작성' 스타일링> */
+//   - 설명: '상품 정보 작성' 스타일링
+
+// 1. purchase-textarea_wrapper: '결제 정보 작성'을 감싸는 부분
+.purchase-textarea_wrapper {
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column;
+
+    margin-top: -10px;
+    margin-left: 300px;
+
+    // 1-1. buyer-name: '구매자 이름'
+    .buyer-name {
+      margin-bottom: 0.7rem;
+      margin-left: 57px;
+    }
+
+    // 1-2. buyer-email: '구매자 이메일 주소'
+    .buyer-email{
+      margin-bottom: 0.7rem;
+    }
+
+    // 1-3. buyer-phone-number: '구매자 전화번호'
+    .buyer-phone-number{
+      margin-bottom: 0.7rem;
+      margin-left: 28px;
+    }
+
+    // 1-4. buyer-address: '구매자 주소'
+     .buyer-address{
+      margin-bottom: 0.7rem;
+      margin-left: 57px;
+    }
+
+    // 1-5. product-count: '주문 상품 개수'
+    .product-count{
+      margin-bottom: 0.7rem;
+      margin-left: 57px;
+    }
+
+    // 1-6. buyer-request: '구매자 요청 사항'
+    .buyer-request{
+      margin-bottom: 0.7rem;
+      margin-left: 27px;
+    }
+  
+    // 1-7. input: '입력창', textarea: '여러 줄을 입력할 수 있는 창' 
+    input, textarea {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+  
+      resize: none;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'Noto Sans KR', sans-serif;
+      border: 1px solid whitesmoke;
+      border-radius: 5px;
+      transition: border 1s;
+      padding: 5px;
+      box-sizing: border-box;
+      border-color: black;
+
+      width: 500px;
+
+      margin-left: 10px;
+  
+      &:focus {
+        outline: none;
+        border: 3px solid skyblue;
+      }
+    }
+  }
