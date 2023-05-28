@@ -42,8 +42,8 @@ import { setId } from "../../redux/reducers/IdReducer";              // IdReduce
                                                                      // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
 import { setUserId } from "../../redux/reducers/UserIdReducer";      // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
                                                                      // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
-import { setUserName } from "../../redux/reducers/UserNameReducer";  // UserNameReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
-                                                                     // - setUserName 컴포넌트: 'userId(회원 아이디)' 설정
+import { setUserName } from "../../redux/reducers/UserNameReducer";  // UserNameReducer 모듈: 'userName(회원 이름)'을 반환하는 'reducer' 생성
+                                                                     // - setUserName 컴포넌트: 'userName(회원 이름)' 설정
 
 // 1-7. '이메일' 기능을 위한 모듈 추가
 import emailjs, { init } from "emailjs-com";                         // emailjs-com 모듈: '이용자의 요청'에 따라 '이메일 수신'이 가능한 모듈
@@ -107,10 +107,10 @@ const Login = () => {
       });
 
       // (2-1-2) '서버'에서 '토큰/id'를 받아 'redux store'에 저장 후 'redux persist' 모듈을 이용해 '토큰/id을 가진 로그인 데이터'를 'local storage'에 저장
-      dispatch(setToken(data.token));       // '현재 로그인한 회원'의 '토큰' 저장
-      dispatch(setId(data.id));             // '현재 로그인한 회원'의 'id' 저장
-      dispatch(setUserId(data.userId));     // '현재 로그인한 회원'의 'userId' 저장
-      dispatch(setUserName(data.userName)); // '현재 로그인한 회원'의 '이름' 저장
+      dispatch(setToken(data.token));         // '현재 로그인한 회원'의 '토큰' 저장
+      dispatch(setId(data.id));               // '현재 로그인한 회원'의 'id' 저장
+      dispatch(setUserId(data.userId));       // '현재 로그인한 회원'의 'userId' 저장
+      dispatch(setUserName(data.userName));   // '현재 로그인한 회원'의 '이름' 저장
       
       // (2-1-3) '페이지'를 '리다이렉트' 할 수 있는 기능 설정
       const redirectUrl = searchParams.get("redirectUrl");                     // redirectUrl 변수: '페이지 주소'에서 '쿼리 파라미터'를 검색해 '페이지'를 '리다이렉트'할 수 있는 기능 저장
