@@ -65,6 +65,11 @@ const MyPurchaseList = () => {
                 <div className = "mypurchase-list-title">내 결제 내역</div>
             </div>
 
+            <div className = "port-one-link_wrapper">
+                <img className = "port-one_icon" src = "../../image/port-one_icon.png" onClick = { () => window.open("https://admin.portone.io/")}/>
+                <div className = "port-one-link">아이콘을 클릭하시면 '포트원 결제 관리 페이지'로 이동합니다!</div>
+            </div>
+
             <div className = "mypurchase-list_body" style = {{ marginTop: "50px" }}>
                 <table>
                         <thead>
