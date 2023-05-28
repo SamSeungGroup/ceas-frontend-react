@@ -33,8 +33,6 @@ import { Modal, Input } from "antd";                                            
                                                                                              // - Input 컴포넌트: '입력창'
 import { PieChart } from "react-minimal-pie-chart";                                          // react-minimal-pie-chart 모듈: 'React'에서 간단하게 사용하는 '파이(도넛) 차트' 모듈
                                                                                              // - PieChart 컴포넌트: '파이(도넛) 차트' 표시
-import { TagCloud } from 'react-tagcloud';                                                   // react-tagcloud 모듈: '태그(워드) 클라우드' 기능 -> '글자'를 '구름' 형태로 표현
-                                                                                             // - TagCloud 컴포넌트: '태그(워드) 클라우드' 표시
 
 // 1-4. '비동기 통신'을 위한 라이브러리 및 컴포넌트 추가
 import api from "../utils/api";                                                              // api 컴포넌트: '인터셉터' 기능
@@ -54,6 +52,7 @@ const Comments = ({ product_id, productPositive }) => {                         
     const [ commentList, setCommentList ] = useState([]);                                      // '댓글 리스트' 상태 관리 -> commenstList 변수: '댓글 리스트' 저장, setCommentList 함수: '댓글 리스트' 조작
     const [ content, setCommentContent ] = useState("");                                       // '댓글 내용' 상태 관리 -> comment_content 변수: '댓글 내용' 저장, setCommentContent 함수: '댓글 내용' 조작
     const [ comment_id, setCommentId ] = useState("");                                         // '댓글 아이디' 상태 관리 -> comment_id 변수: '댓글 아이디' 저장, setCommentId 함수: '댓글 아이디' 조작
+    const [ writerIm, setWriterIm ] = useState("");
 
     // [1-2] '내 정보 데이터' 관리
     const [ userId, setUserId ] = useState("");                                                // '회원(구매자) 아이디' 상태 관리 -> userId 변수: '회원 아이디' 저장, setUserId 함수: '회원 아이디' 조작
@@ -72,11 +71,6 @@ const Comments = ({ product_id, productPositive }) => {                         
     // [2] 변수 설정
     const token = useSelector(state => state.Auth.token);  // token 변수: 'redux store'에서 '토큰'을 받아 저장    
     const id = useSelector(state => state.Id.id);          // id 변수: 'redux store'에서 'id'를 받아 저장
-
-    const options = {
-        luminosity: 'light',
-        hue: 'blue',
-    }
 
     // [3] 함수 설정
     // location 함수: '이용자가 현재 머물러있는 페이지에 대한 정보'를 알려주는 기능 저장 -> 로그인 후 '현재 경로'로 돌아오기 위함
@@ -105,16 +99,16 @@ const Comments = ({ product_id, productPositive }) => {                         
 
     // submit 함수: '비동기(async)' 함수, '댓글 데이터'를 '서버'에 송신
     const submit = useCallback(async () => {
-        // (1) '서버'에 '댓글 내용' 송신
-        await api.post(`/products/${product_id}/comments`, {'content': content}, { headers: { "Content-Type": "application/json"}}); // api.post 메소드: '서버'에 '데이터' 송신 -> '댓글 내용 데이터'를 '서버'에 송신
-                                                                                                                                     //                  : comment_content
-
-                                                                                                                      
-        // (2) '댓글 등록 완료' 알림창 표시
+        // (1) '댓글 등록 완료' 알림창 표시
         alert("댓글 등록 완료");   // alert 메소드: '알림창' 표시
 
-        // (3) 페이지 새로고침
-        window.location.reload();  // location.reload 메소드: '현재 페이지'를 '새로고침'하여 페이지를 다시 불러옴
+        // (2) 페이지 새로고침
+         window.location.reload();  // location.reload 메소드: '현재 페이지'를 '새로고침'하여 페이지를 다시 불러옴
+
+        // (3) '서버'에 '댓글 내용' 송신
+        await api.post(`/products/${product_id}/comments`, {'content': content}, { headers: { "Content-Type": "application/json"}}); // api.post 메소드: '서버'에 '데이터' 송신 -> '댓글 내용 데이터'를 '서버'에 송신
+                                                                                                                                     //                  : comment_content
+                                                                                                                  
     }, [ content ]);
 
     // goLogin 함수: '로그인 후' 돌아올 수 있게 '현재 경로' 설정
@@ -212,7 +206,7 @@ const Comments = ({ product_id, productPositive }) => {                         
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
                 {
-                    positiveChart && 
+                    positiveChart &&
                     <PieChart 
                         data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
                             {
@@ -314,6 +308,11 @@ const Comments = ({ product_id, productPositive }) => {                         
                 }
             </div>
 
+            <div className = "comments-count">
+                <img className = "comments-list_icon" src = "../../image/comment-list_icon.png"/>
+                <p className = "comments-list_length">작성한 댓글 수: { commentList.length }</p>
+            </div>
+
             <div className = "comments-body">
                 { commentList.map((item, index) => (
                     <div key = { index } className = "comments-comment">
@@ -326,7 +325,7 @@ const Comments = ({ product_id, productPositive }) => {                         
                         <div className = "comment-content">{ item.content }</div>
 
                         <div className = "comment-username_date">
-                            <div className = "comment_date">{  moment(item.createdDate).format('YYYY년 MM월 DD일') }</div>
+                            <div className = "comment_date">{ moment(item.createdDate).format('YYYY년 MM월 DD일 hh:mm:ss') }</div>
                         </div>
 
                         {
@@ -415,11 +414,11 @@ const Comments = ({ product_id, productPositive }) => {                         
                                 onClick = { async () => { 
                                     setDeleteCommentModalShow(false);
 
-                                    await api.delete(`/products/${product_id}/comments/${comment_id}`);
-
                                     alert("해당 댓글이 삭제되었습니다.");
 
                                     window.location.href = `/productdetail/${product_id}`;
+
+                                    await api.delete(`/products/${product_id}/comments/${comment_id}`);
                                 }}>
                                  예
                             </Button>

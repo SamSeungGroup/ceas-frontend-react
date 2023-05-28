@@ -64,6 +64,23 @@
         font-size: 1.1rem;
       }
     }
+
+    .comments-count{
+      font-weight: 600;
+
+      margin-left: -10px;
+    }
+
+    .comments-list_icon{
+      box-sizing: content-box;
+      width: 30px;
+      height: 30px;
+    }
+
+    .comments-list_length{
+      margin-top: -35px;
+      margin-left: 35px;
+    }
   
     .comments-body {
       .comments-comment {
@@ -81,7 +98,7 @@
           height: 100px;
         
           border-radius: 0.5rem;
-          margin-left: 20px;
+          margin-left: 25px;
         
           img{
             width: 70px;
@@ -108,9 +125,9 @@
   
         .comment-username_date {
           box-sizing: content-box;
-          width: 180px;
+          width: 190px;
 
-          margin-top: 50px;
+          margin-top: 70px;
 
           display: flex;
           align-items: baseline;
