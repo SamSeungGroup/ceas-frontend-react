@@ -6,9 +6,10 @@
 import "./headermenu.scss";                                   // header.scss 모듈: '메인 페이지'의 '메뉴 헤더' 스타일링
 
 // 1-2. 'use 훅' 컴포넌트 추가
-import { useEffect, useState } from "react";                  // React 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
+import { useEffect, useState, useMemo } from "react";         // React 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
                                                               // - useEffect 컴포넌트: '비동기 통신'
                                                               // - useState 컴포넌트: '상태 관리'
+                                                              // - useMemo 훅 컴포넌트: '기능 재사용'
 import { useNavigate } from "react-router-dom";               // react-router-dom 모듈: '웹'에서의 '라우팅' 
                                                               // - useNavigate 훅 컴포넌트: '페이지 이동'
 // 1-3. '페이지 이동' 컴포넌트 추가
@@ -72,19 +73,25 @@ const HeaderMenu = () => {
         const { data } = await api.get(`http://localhost:8080/users/${id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '내 프로필 이미지 데이터' 수신: userImage
 
         return data;
-    }
+      }
 
-    // (2) '내 정보 데이터 중 내 프로필 이미지'를 'setUserImage' 함수에 설정
-    getUser().then((response) => {
-        setUserImage( `http://localhost:8080/images/user/${id}`);
-    });
+      // (2) '내 정보 데이터 중 내 프로필 이미지'를 'setUserImage' 함수에 설정
+      getUser().then((response) => {
+          // (2-1) '내 프로필 이미지'에 '설정된 이미지'가 없을 경우
+          if(response.data.userImage === null){
+              setUserImage("../../image/default_image.png");           // '기본 이미지'로 표시
+          }
+          // (2-2) '내 프로필 이미지'에 '설정된 이미지'가 있을 경우
+          else{
+              setUserImage(`http://localhost:8080/images/user/${id}`); // '설정된 이미지' 표시
+          }
+       });
     }
 
     // catch -> '내 정보 데이터 수신 실패' 처리
     catch(e){
-
     }
-  },[])
+  }, [])
 
   // [4] 함수 설정
   // dispatch 함수: 'redux store'에 '변경된 값'을 저장하기 위한 기능 저장
@@ -123,6 +130,7 @@ const HeaderMenu = () => {
           isAuth ? ( 
           <>
             <img className = "headermenu-menu_image" src = { userImage }/>
+
             <div className = "myinformation_link">
               <Link to = {`/myinformation/${id}`}>
               내 정보 수정
