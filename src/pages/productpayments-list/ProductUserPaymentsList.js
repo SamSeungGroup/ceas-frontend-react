@@ -14,9 +14,11 @@ import { useParams } from "react-router-dom";                           // react
     
 // 1-2. '비동기 통신'을 위한 모듈 추가
 import api from "../../utils/api";                                       // api 컴포넌트: '비동기 HTTP 통신' 이용 - REST API 호출 + '인터셉터' 기능
+import axios from "axios";                                               // axios 모듈: '비동기 HTTP 통신' 이용 -> 'REST API' 호출
 
 // 1-3. '날짜 표현' 모듈 추가 
 import moment from "moment";                                             // moment 컴포넌트: '날짜' 변환
+
 
 // 1-4. 'SCSS' 모듈 추가
 import "./productuserpaymentslist.scss";                                 // productuesrpaymentslist.scss 모듈: '상품 결제 관리' 스타일링
@@ -33,6 +35,27 @@ const ProductUserPaymentsList = () => {
     // [1-2] 'redux store'에서 데이터 가져오기
     const id = useSelector(state => state.Id.id);                // userId 변수: 'redux store'에서 'userId'를 받아 저장
     const { product_id } = useParams();                          // product_id 필드: 'useParams 훅'을 이용해 '상품 상세 정보' 페이지의 'URL 파라미터'인 '상품 상세 정보 아이디(product_id)'를 받아옴
+
+    // [2] 함수 설정
+    // purchaseCancel 함수: '결제 취소' 버튼을 누를 시, '결제 취소' 진행
+    const purchaseCancel = () => {
+        // (1) '결제 취소'
+        axios({
+            url: `http://localhost:3000/productuserpaymentslist/${product_id}`, // url 필드: '환불 요청'을 받을 '서비스 URL'
+            method: "POST",                                                     // method 필드: '통신 방법'
+            headers: {                                                          // headers 필드: '헤더'
+              "Content-Type": "application/json"                                // - Content-Type 필드: '전송 데이터 형식'
+            },
+            data: {                                                             // data 필드: 송신할 데이터
+              merchant_uid: "imp_213001182382",                                 // - merchant_uid 필드: '주문 번호'
+              cancel_request_amount: 100,                                       // - cancel_request_amount 필드: '결제 취소 금액'
+              reason: "구매자 결제 취소 요청",                                  // - reason 필드: '구매자 결제 취소 이유'
+            }
+          });
+
+          // (2) '결제 취소' 알림창
+          alert("결제가 취소되었습니다.");
+    }
     
     // [3] 처리
     // [3-1] '내 결제 목록 데이터'를 '서버'로부터 수신
