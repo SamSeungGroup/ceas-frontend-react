@@ -3,7 +3,7 @@
 
 /* 1. 모듈/라이브러리 및 컴포넌트 추가 */
 // 1-1. 'React 라이브러리' 추가
-import React from "react";                                                                 // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
+import React from "react";                                                                  // react 라이브러리: '메타'에서 개발한 '오픈 소스 자바스크립트 라이브러리'
 
 // 1-2. '페이지 이동'을 위한 컴포넌트 추가
 import { Routes, Route, useLocation } from "react-router-dom"                               // react-router-dom 모듈: '웹'에서의 '라우팅'  
@@ -20,7 +20,7 @@ import MyProductList from "./pages/myproduct-list/Myproduct-list";              
 import MyPurchaseList from "./pages/mypurchase-list/MypurchaseList";                        // 'MyProductList(내 상품 관리)' 페이지 추가
 import ProductList from "./pages/product-list/ProductList";                                 // 'ProductList(상품 목록)' 페이지 추가
 import ProductDetail from "./pages/product-detail/ProductDetail";                           // 'ProductDetail(상품 상세)' 페이지 추가
-import ProductUserPaymentsList from "./pages/productpayments-list/ProductUserPaymentsList"; // 'ProductUserPayments(상품 결제 관리)' 페이지 추가
+import ProductPurchase from "./pages/product-purchase/ProductPurchase";                     // 'ProductPurchase(상품 구매)' 페이지 추가
 import EnquiryToSeller from "./pages/enquiry-to-seller/Enquiry-To-Seller";                  // 'EnquiryToSeller(판매자 1:1 문의)' 페이지 추가
 import EditProduct from "./pages/edit-product/EditProduct";                                 // 'Edit-Product(상품 수정)' 페이지 추가
 import MyInformation from "./pages/myInformation/MyInformation";                            // 'MyInformation(내 정보 관리)' 페이지 추가
@@ -60,7 +60,8 @@ const App = () => {
         <Route path = "/myInformation/:id" element = { <MyInformation /> } />
         <Route path = "/changepassword/:id" element = { <ChangePassword />} />
         <Route path = "/productdetail/:product_id" element = { <ProductDetail /> }/>
-        <Route path = "/productuserpaymentslist/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { ProductUserPaymentsList } /> }/>
+        <Route path = "/mypurchase-list" element = { <PrivateRoute path = {`${location.pathname}`} component = { MyPurchaseList } /> }/>
+        <Route path = "/product-purchase/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { ProductPurchase } /> }/>
         <Route path = "/enquiry-to-seller/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EnquiryToSeller } /> }/> 
         <Route path = "/edit-product/:product_id" element = { <PrivateRoute path = {`${location.pathname}`} component = { EditProduct } /> }/>
         <Route path = "/mypurchase-list" element = { <PrivateRoute path = {`${location.pathname}`} component = { MyPurchaseList } /> }/>
