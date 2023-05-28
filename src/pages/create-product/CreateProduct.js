@@ -48,7 +48,8 @@ const CreateProduct = () => {
     });
 
     // [3] 함수 설정
-    const navigate = useNavigate(); // navigate 함수: '페이지 이동' 기능 설정
+    // navigate 함수: '페이지 이동' 기능 설정
+    const navigate = useNavigate(); 
 
     // [4] 함수 재랜더링 관리
     // canSubmit 함수: '상품 정보 데이터'를 서버에 '송신'할 수 있는지 검사 -> '입력란'이 '공백'이 아닌지 검사
@@ -92,8 +93,8 @@ const CreateProduct = () => {
         }
     },[ canSubmit ]);
     
-    // [3] 처리
-    // [3-1] 화면 렌더링
+    // [5] 처리
+    // [5-1] 화면 렌더링
     return (
         <div className = "createproduct_wrapper">
             <ToastContainer/>
