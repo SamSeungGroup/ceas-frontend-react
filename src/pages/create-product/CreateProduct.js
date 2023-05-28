@@ -117,6 +117,7 @@ const CreateProduct = () => {
                     <Button 
                         className = "disable_button" 
                         variant = "outlined" 
+                        disabled = { true }
                         size = "large">
                         모든 정보를 입력해 주세요.
                     </Button>
