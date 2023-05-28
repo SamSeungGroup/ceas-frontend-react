@@ -22,7 +22,6 @@ import { Button, Dialog, DialogContent, IconButton } from "@mui/material";      
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";                           // - BuildOutlinedIcon 컴포넌트: '수정' 아이콘
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';           // - DeleteForeverOutlinedIcon 컴포넌트: '삭제' 아이콘
 import DisabledByDefaultOutlinedIcon from "@mui/icons-material/DisabledByDefaultOutlined";   // - DisabledByDefaultOutlinedIcon 컴포넌트: '창 닫기' 아이콘
-import ListAltIcon from '@mui/icons-material/ListAlt';                                       // - ListAltIcon 컴포넌트: '상품 결제 관리' 아이콘
 
 // 1-3. '비동기 통신'을 위한 모듈 및 컴포넌트 추가
 import api from "../../utils/api";                                                           // api 컴포넌트:  '비동기 HTTP 통신' 이용 -> REST API 호출 + '인터셉터' 기능
@@ -46,7 +45,7 @@ const ProductDetail = () => {
     // [2] 상태 관리
     // [2-1] '상품 상세 정보 데이터' 관리
     const [ productDetail, setProductDetail ] = useState([]);                          // '상품 상세 정보' 상태 관리 -> productDetail 변수: '상품 상세 정보' 저장, setProductDetail 함수: '상품 상세 정보' 데이터 조작
-    const [ seller, setSeller ] = useState({});
+    const [ seller, setSeller ] = useState({});                                        // '판매자 정보' 상태 관리 -> seller 변수: '판매자 정보' 저장, setSeller 함수: '판매자 정보' 조작
     const [ isLoaded, setIsLoaded ] = useState(false);                                 // '상품 상세 정보 표시 여부' 상태 관리 -> isLoaded 변수: '상품 상세 정보 표시' 여부 저장, setIsLoaded 함수: '상품 상세 정보 표시 여부 조작
     const [ productDeleteModalShow, setProductdDeleteModalShow ] = useState(false);    // '상품 삭제 모달창' 표시 여부 상태 관리 -> productDeleteModalShow 변수: '모달창이 표시'되었는지 여부 저장, setProductDeleteModalShow 함수: '모달창 표시 여부' 조작 
 
@@ -54,39 +53,6 @@ const ProductDetail = () => {
     // navigate 함수: '페이지 이동' 기능 설정
     const navigate = useNavigate();         
 
-    // [4] 처리
-    // [4-1] '상품 상세 정보 데이터'를 '서버'로부터 수신
-    useEffect(() => {
-        // try -> '상품 상세 정보 데이터 수신 성공' 처리
-        try{
-            // (1) '상품 상세 정보 데이터'를 '서버'로부터 수신
-            // getProductDetail 함수: '비동기(async)' 함수, '상품 상세 정보 데이터' 저장
-            const getProductDetail = async () => {
-                const { data } = await api.get(`/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 상세 정보 데이터' 수신
-                                                                           //                    : product_id, product_name, product_img, product_price, product_description, product_price,
-                                                                           //                      product_description, product_createDate, userId, product_positive 
-                console.log(data);  
-                                                                                             
-                return data;
-            }
-
-            // (2) '상품 상세 정보 데이터'를 'setProductDetail' 함수에 적용 + '상품이 로드'되었다고 설정
-            getProductDetail().then((response) => {
-                setProductDetail(response.data);
-                setSeller(response.data.seller);
-            });
-            
-            setIsLoaded(true);
-        }
-
-        // catch -> '상품 상세 정보 데이터 수신 실패' 처리
-        // (1) '상품 상세 정보 데이터'가 로드되지 않았다고 설정
-        catch(e){
-            setIsLoaded(false);
-        }
-    }, []);
-
-    // [4-2] '상품 상세 정보 데이터'를 '결제 정보'에 등록
     // loadPayment 함수: '결제 정보' 등록 + '결제창'을 화면에 표시
     const loadPayment =  () => {
         // (1) 변수 설정
@@ -96,20 +62,24 @@ const ProductDetail = () => {
         // (2) 처리
         // (2-1) '가맹점 식별코드' 설정
         // init 메소드: '가맹점 식별코드' 초기화
-        IMP.init("imp34677742");                                           // init 메소드 매개변수: '본인고유가맹점번호' // ---> IMP.init(productDetail.IMP)      
+        IMP.init(seller.impId);                                           // init 메소드 매개변수: '본인고유가맹점번호'    
 
         // (2-2) '결제할 상품 정보 데이터' 설정
         // purchase_data 객체: '결제할 상품 정보 데이터' 저장
         const purchaseData = {
-            pg: "html5_inicis.INIpayTest",                                 // pg 필드: PG사(필수 항목)                   // ---> pg: productDetail.PG
+            pg: seller.pgId,                                               // pg 필드: PG사(필수 항목)                  
             pay_method: "card",                                            // pay_method 필드: 결제 수단(필수 항목)
             merchant_uid: new Date().getTime().toString(),                 // merchant_uid 필드: 결제 번호
             name: productDetail.productName,                               // name 필드: 결제 상품 이름
             amount: productDetail.productPrice,                            // amount 필드: 결제 상품 금액(필수 항목)
-            buyer_name: userName,                                          // buyer_name 필드: 구매자 이름
-            buyer_email: "sjw9664@naver.com", // userEmail,                // buyer_email 필드: 구매자 이메일 주소
+            //buyer_name: buyerName,                                         // buyer_name 필드: 구매자 이름
+            //buyer_email: userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
+            //buyer_tel: buyerPhoneNumber,                                   // buyer_tel 필드: 구매자 전화번호
+           // buyer_addr: buyerAddress,                                      // buyer_addr 필드: 구매자 구매 주소
             impUid: "",                                                    // impUid 필드: ???
         };
+
+        console.log(purchaseData);
 
         // (2-3) '결제 요청'
         // request_pay 메소드: '결제창 호출' 기능 설정
@@ -123,6 +93,8 @@ const ProductDetail = () => {
                 amount: purchaseData.amount,                               // amount 필드: 결제 상품 금액
                 buyer_name: purchaseData.buyer_name,                       // buyer_name 필드: 구매자 이름
                 buyer_email: purchaseData.buyer_email,                     // buyer_email 필드: 구매자 이메일 주소
+                buyer_tel: purchaseData.buyer_tel,                         // buyer_tel 필드: 구매자 전화번호
+                buyer_addr: purchaseData.buyer_addr,                       // buyer_addr 필드: 구매자 구매 주소
             },
 
             // (2-3-2) '결제' 처리
@@ -155,6 +127,37 @@ const ProductDetail = () => {
         );
     }
 
+    // [4] 처리
+    // [4-1] '상품 상세 정보 데이터'를 '서버'로부터 수신
+    useEffect(() => {
+        // try -> '상품 상세 정보 데이터 수신 성공' 처리
+        try{
+            // (1) '상품 상세 정보 데이터'를 '서버'로부터 수신
+            // getProductDetail 함수: '비동기(async)' 함수, '상품 상세 정보 데이터' 저장
+            const getProductDetail = async () => {
+                const { data } = await api.get(`/products/${product_id}`); // axios.get 메소드: '서버 주소'로부터 '데이터' 수신 -> '상품 상세 정보 데이터' 수신
+                                                                           //                    : product_id, product_name, product_img, product_price, product_description, product_price,
+                                                                           //                      product_description, product_createDate, userId, product_positive 
+                                                                                             
+                return data;
+            }
+
+            // (2) '상품 상세 정보 데이터'를 'setProductDetail' 함수에 적용 + '상품이 로드'되었다고 설정
+            getProductDetail().then((response) => {
+                setProductDetail(response.data);
+                setSeller(response.data.seller);
+            });
+            
+            setIsLoaded(true);
+        }
+
+        // catch -> '상품 상세 정보 데이터 수신 실패' 처리
+        // (1) '상품 상세 정보 데이터'가 로드되지 않았다고 설정
+        catch(e){
+            setIsLoaded(false);
+        }
+    }, []);
+
     // [4-2] 화면 렌더링
     return (
         <React.Fragment>
@@ -163,20 +166,6 @@ const ProductDetail = () => {
                     {
                         jwtUtils.isAuth(token) && id === seller.id &&
                         <div className = "edit-delete_button">  
-                            <Button 
-                                variant = "outlined" 
-                                endIcon = { <ListAltIcon/> } 
-                                style = {{
-                                    fontSize: "13px",
-                                    width: "150px",
-                                    marginRight: "10px",
-                                    color: "green",
-                                    border: "1px solid green",
-                                }}                              
-                                onClick = { () => { navigate(`/productuserpaymentslist/${product_id}`)}}>
-                                상품 결제 관리
-                            </Button>
-
                             <Button 
                                 variant = "outlined" 
                                 endIcon = { <BuildOutlinedIcon/> } 
@@ -266,11 +255,11 @@ const ProductDetail = () => {
                                 onClick = { async () => { 
                                     setProductdDeleteModalShow(false);
 
-                                    await api.delete(`/products/${product_id}`);
-
                                     alert("해당 상품이 삭제되었습니다.");
 
                                     window.location.href = "/product-list";
+
+                                    await api.delete(`/products/${product_id}`);
                                 }}
                             >
                             예
