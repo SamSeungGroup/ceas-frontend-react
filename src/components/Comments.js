@@ -85,11 +85,11 @@ const Comments = ({ product_id, productPositive }) => {                         
         setEditCommentModalShow(false);
         setEditCommentSucessDialogShow(false); 
 
-        await api.put(`products/${product_id}/comments/${comment_id}`, {'content': content});
-                            
         alert("해당 댓글이 수정되었습니다.");
 
         window.location.reload();
+
+        await api.put(`products/${product_id}/comments/${comment_id}`, {'content': content});               
     }; 
 
     // handleCancel 함수: '댓글 수정 완료 모달창'의 'Cancel 버튼'(취소 버튼)
