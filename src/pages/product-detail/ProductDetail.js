@@ -62,7 +62,7 @@ const ProductDetail = () => {
         // (2) 처리
         // (2-1) '가맹점 식별코드' 설정
         // init 메소드: '가맹점 식별코드' 초기화
-        IMP.init(seller.impId);                                           // init 메소드 매개변수: '본인고유가맹점번호'    
+        IMP.init("imp34677742");                                           // init 메소드 매개변수: '본인고유가맹점번호'    
 
         // (2-2) '결제할 상품 정보 데이터' 설정
         // purchase_data 객체: '결제할 상품 정보 데이터' 저장
@@ -75,7 +75,7 @@ const ProductDetail = () => {
             //buyer_name: buyerName,                                         // buyer_name 필드: 구매자 이름
             //buyer_email: userEmail,                                        // buyer_email 필드: 구매자 이메일 주소
             //buyer_tel: buyerPhoneNumber,                                   // buyer_tel 필드: 구매자 전화번호
-           // buyer_addr: buyerAddress,                                      // buyer_addr 필드: 구매자 구매 주소
+            // buyer_addr: buyerAddress,                                      // buyer_addr 필드: 구매자 구매 주소
             impUid: "",                                                    // impUid 필드: ???
         };
 
@@ -91,10 +91,10 @@ const ProductDetail = () => {
                 merchant_uid: purchaseData.merchant_uid,                   // merchant_uid 필드: 결제 번호
                 name: purchaseData.name,                                   // name 필드: 결제 상품 이름
                 amount: purchaseData.amount,                               // amount 필드: 결제 상품 금액
-                buyer_name: purchaseData.buyer_name,                       // buyer_name 필드: 구매자 이름
-                buyer_email: purchaseData.buyer_email,                     // buyer_email 필드: 구매자 이메일 주소
-                buyer_tel: purchaseData.buyer_tel,                         // buyer_tel 필드: 구매자 전화번호
-                buyer_addr: purchaseData.buyer_addr,                       // buyer_addr 필드: 구매자 구매 주소
+                //buyer_name: purchaseData.buyer_name,                       // buyer_name 필드: 구매자 이름
+                //buyer_email: purchaseData.buyer_email,                     // buyer_email 필드: 구매자 이메일 주소
+                //buyer_tel: purchaseData.buyer_tel,                         // buyer_tel 필드: 구매자 전화번호
+                //buyer_addr: purchaseData.buyer_addr,                       // buyer_addr 필드: 구매자 구매 주소
             },
 
             // (2-3-2) '결제' 처리
