@@ -242,7 +242,7 @@ const Comments = ({ product_id, productPositive }) => {                         
 
                 {   negativeChart &&
                     <div className = "negative-chart-comment">
-                        [AI 딥러닝 댓글 문장 종합 분석 결과]<br/>
+                        [AI 딥러닝 댓글 문장 종합 분석 평가 결과]<br/>
                     </div>
                 }
 
