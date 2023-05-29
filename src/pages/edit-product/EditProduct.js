@@ -40,12 +40,12 @@ const EditProduct = () => {
 
     // [2] 상태 관리
     // [2-1] '상품 수정 데이터' 관리
-    const [ product_name, setProductName ] = useState("");               // '상품 이름' 상태 관리 -> product_name 변수: '상품 이름' 저장, setProductName 함수: '상품 이름' 조작
-    const [ product_price, setProductPrice ] = useState("");             // '상품 가격' 상태 관리 -> product_price 변수: '상품 가격' 저장, setProductPrice 함수: '상품 가격' 조작
-    const [ product_description, setProductDescription ] = useState(""); // '상품 설명' 상태 관리 -> product_description 변수: '상품 설명' 저장, setProductDescription 함수: '상품 설명' 조작
-    const [ product_image, setProductImage ] = useState({                // '상품 이미지' 상태 -> product_image 변수: '상품 이미지' 저장, setProductImage 함수: '상품 이미지' 조작
-        image_file: "",                                                  //  - image_file 필드: '파일 탐색기'에서 '선택된 파일' 저장
-        preview_URL: "../../image/default_image.png"                     //  - preview_URL 필드: '기본 이미지 주소' 저장 
+    const [ product_name, setProductName ] = useState("");                // '상품 이름' 상태 관리 -> product_name 변수: '상품 이름' 저장, setProductName 함수: '상품 이름' 조작
+    const [ product_price, setProductPrice ] = useState("");              // '상품 가격' 상태 관리 -> product_price 변수: '상품 가격' 저장, setProductPrice 함수: '상품 가격' 조작
+    const [ product_description, setProductDescription ] = useState("");  // '상품 설명' 상태 관리 -> product_description 변수: '상품 설명' 저장, setProductDescription 함수: '상품 설명' 조작
+    const [ product_image, setProductImage ] = useState({                 // '상품 이미지' 상태 -> product_image 변수: '상품 이미지' 저장, setProductImage 함수: '상품 이미지' 조작
+        image_file: `http://localhost:8080/images/product/${product_id}`, //  - image_file 필드: '파일 탐색기'에서 '선택된 파일' 저장
+        preview_URL: "../../image/default_image.png"                      //  - preview_URL 필드: '기본 이미지 주소' 저장 
     });
 
     // [3] 처리
@@ -80,7 +80,7 @@ const EditProduct = () => {
     // canSubmit 함수: '상품 상세 정보 데이터'를 서버에 '제출'할 수 있는지 검사
     //                 -> '상품 상세 정보 데이터 목록: '상품 이미지', '상품 이름', '상품 가격', '상품 설명' 
     const canSubmit = useCallback(() => {
-        return product_image.image_file !== "" &&  product_name !== "" && product_price !== "" && product_description !== "" ;
+        return product_image.image_file !== "" &&  product_name !== "" && product_price !== "" && product_description !== "";
     },[ product_image, product_name, product_price, product_description ]);
     
     // handleSubmit 함수: '비동기(async)' 함수, '상품 상세 정보 데이터'를 '서버'에 송신('상품 상세 정보 데이터' 수정)
@@ -110,10 +110,10 @@ const EditProduct = () => {
             window.location.href = "/product-list";                                                                // location.href 필드: '페이지 이동' -> '상품 목록 페이지'로 이동
         }
 
-        // catch -> '상품 등록 실패' 처리
+        // catch -> '상품 수정 실패' 처리
         catch (e) {
             // (2-1-1) '서버'로부터 받은 '에러' 알림창 표시
-            toast.error("상품 등록에 실패하였습니다.", {
+            toast.error("상품 수정에 실패하였습니다.", {
                 position: "top-center"                                                                             // position 필드: toast 메시지 '위치' 설정 -> '상단 가운데'로 조정
             });
         }
@@ -140,8 +140,9 @@ const EditProduct = () => {
                     <Button 
                         className = "disable_button" 
                         variant = "outlined" 
+                        disabled = { true }
                         size = "large">
-                        모든 정보를 입력해 주세요.
+                        새로운 정보를 입력해 주세요.
                     </Button>
                 )}
             </div>
