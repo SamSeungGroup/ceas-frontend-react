@@ -97,6 +97,7 @@ const MyInformation = () => {
           if(response.status === 400){
             setUserImage({...userImage, preview_URL: "../../image/default_image.png"});            // '기본 이미지'로 표시
           }
+
           // (2-2) '내 프로필 이미지'에 '설정된 이미지'가 있을 경우
           else{
             setUserImage({...userImage, preview_URL: `http://localhost:8080/images/user/${id}`});  // '설정된 이미지'로 표시
@@ -127,9 +128,9 @@ const MyInformation = () => {
             getUser().then((response) => {
                 setUserName(response.data.userName);                                                  // '내 이름' 설정
                 setUserEmail(response.data.userEmail);                                                // '내 이메일 주소' 설정
-                setUserPassword(response.data.userPassword);                                          // '내 비밀번호' 설정
                 setIMP(response.data.impId);                                                          // '내 IMP 코드' 설정
                 setPG(response.data.pgId);                                                            // '내 PG사 코드' 설정
+                // setUserPassword(response.data.userPassword);                                          // '내 비밀번호' 설정
             });
         }
 
@@ -141,9 +142,9 @@ const MyInformation = () => {
 
     // [4-2] 함수 재랜더링 관리
     // canSubmit 함수: '내 정보 데이터'를 서버에 '제출'할 수 있는지 검사
-    //                 -> '내 정보 데이터' 목록: '내 프로필 이미지, '내 이름', '내 이메일 주소'
+    //                 -> '내 정보 데이터' 목록: '내 프로필 이미지, '내 이름', '내 이메일 주소', 'IMP 코드', 'PG사 코드'
     const canSubmit = useCallback(() => {
-        return userImage.image_file !== "" || userName !== "" && userEmail !== "" || IMP !== "" || PG !== ""
+        return  userImage.image_file !== "" && userName !== "" && userEmail !== "" && IMP !== "" && PG !== ""
     },[ userImage, userName, userEmail, IMP, PG ]);
     
     // handleSubmit 함수: '비동기(async) 함수', '내 정보 데이터'를 '서버'에 송신
@@ -205,6 +206,7 @@ const MyInformation = () => {
                     <Button 
                         className = "myinformation-disable_button" 
                         variant = "outlined" 
+                        disabled = { true }
                         size = "large">
                         모든 정보를 입력해 주세요.
                     </Button>
@@ -352,9 +354,9 @@ const MyInformation = () => {
                 <p className = "input-password">비밀번호 입력</p>
 
                 <Input
-                    value = { inputPassword }
+                    value = { userPassword /* inputPassword */ }
                     onChange = {(e) => {
-                        setInputPassword(e.target.value);
+                        setUserPassword(e.target.value);
                     }}
                 />
 
@@ -367,25 +369,29 @@ const MyInformation = () => {
                             marginLeft: "40px"
                         }}
                         onClick = { async () => { 
-                            if(inputPassword === userPassword){
-                                setInputPasswordModalShow(false);
-                                setDeleteUserModalShow(false);
+                            if(userPassword !== ""){                      
+                                await api.delete(`/users/${id}`, { userPassword }).then((response) => {
+                                    if(response.code === "SUCCESS"){
+                                        alert("회원 탈퇴가 완료되었습니다.");
+                                       
+                                        dispatch(setToken(""));  
+                                        dispatch(setId(""));  
+                                        dispatch(setUserId(""));
+    
+                                        window.location.href = "/";
+                                    }
 
-                                await api.delete(`/users/${id}`);
+                                    else{
+                                        alert("비밀번호를 다시 입력해 주세요.");
 
-                                alert("회원탈퇴가 완료되었습니다");
-
-                                await dispatch(setToken(""));  
-                                await dispatch(setId(""));  
-                                await dispatch(setUserId(""));
-
-                                window.location.href = "/";
+                                        setUserPassword("");
+                                    }
+                                }) 
                             } 
-                            else{ 
-                                alert("비밀번호가 일치하지 않습니다.");
-                                
-                                setInputPassword("");
-                            }
+
+                            else{
+                                alert("비밀번호를 입력해 주세요.");
+                            } 
                         }}
                     >
                     회원 탈퇴
