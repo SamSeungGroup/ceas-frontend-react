@@ -44,7 +44,7 @@ import { setId } from "../../redux/reducers/IdReducer";                         
                                                                                               // - setId 컴포넌트: 'id(회원 식별 코드)' 설정
 import { setUserId } from "../../redux/reducers/UserIdReducer";                               // UserIdReducer 모듈: 'userId(회원 아이디)'를 반환하는 'reducer' 생성
                                                                                               // - setUserId 컴포넌트: 'userId(회원 아이디)' 설정
- 
+                                                                                              
 // 1-7. 'SCSS' 모듈 추가
 import "./myinformation.scss";                                                                // myinformation 모듈: '내 정보 수정' 페이지 스타일링과 같이 적용
 
@@ -355,6 +355,7 @@ const MyInformation = () => {
 
                 <Input
                     value = { userPassword /* inputPassword */ }
+                    type = "password" 
                     onChange = {(e) => {
                         setUserPassword(e.target.value);
                     }}
