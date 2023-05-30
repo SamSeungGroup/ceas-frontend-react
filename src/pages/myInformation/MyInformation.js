@@ -78,6 +78,7 @@ const MyInformation = () => {
     // dispatch 함수: 'redux store'에 '변경된 값'을 저장하기 위한 기능 설정
     const dispatch = useDispatch();     
 
+    // userQuit 함수: '회원 탈퇴' 기능 설정
     const userQuit = async () => {           
         if(userPassword !== ""){                      
             await api.delete(`/users/${id}`, { userPassword }).then((response) => {
