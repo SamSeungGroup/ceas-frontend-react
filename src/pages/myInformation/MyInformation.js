@@ -80,8 +80,9 @@ const MyInformation = () => {
 
     // userQuit 함수: '회원 탈퇴' 기능 설정
     const userQuit = async () => {           
-        if(userPassword !== ""){                      
-            await api.delete(`/users/${id}`, { userPassword }, { type: "application/json" }).then((response) => {
+        await api.delete(`/users/${id}`, { userPassword });
+        /* if(userPassword !== ""){                      
+            await api.delete(`/users/${id}`, { userPassword }).then((response) => {
                 if(response.code === "SUCCESS"){
                     alert("회원 탈퇴가 완료되었습니다.");
                    
@@ -103,7 +104,7 @@ const MyInformation = () => {
 
         else{
             alert("비밀번호를 입력해 주세요.");
-        } 
+        } */
     };
 
     // [4] 처리
