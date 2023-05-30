@@ -67,7 +67,7 @@ const MyInformation = () => {
     const [ userPassword, setUserPassword ] = useState("");                        // '회원 비밀번호' 상태 관리 -> userPassword 변수: '회원 비밀번호' 저장, setUserPassword 함수: '회원 비밀번호' 조작
 
     // [2-2] '회원탈퇴 시 입력 데이터' 관리
-    const [ inputPassword, setInputPassword ] = useState("");                      // '회원 탈퇴 비밀번호 입력' 상태 관리 -> inputPassword 변수: '입력된 비밀번호' 저장, setInputPassword 함수: '입력된 비밀번호' 조작
+    // const [ inputPassword, setInputPassword ] = useState("");                      // '회원 탈퇴 비밀번호 입력' 상태 관리 -> inputPassword 변수: '입력된 비밀번호' 저장, setInputPassword 함수: '입력된 비밀번호' 조작
     const [ deleteUserModalShow, setDeleteUserModalShow ] = useState(false);       // '회원 탈퇴 모달창 표시' 상태 관리 -> deleteUserModalShow 변수: '모달창이 표시'되었는지 여부 저장, setdeleteUserModalShow 함수: '모달창이 표시'되었는지 여부 조작
     const [ inputPasswordModalShow, setInputPasswordModalShow ] = useState(false); // '비밀번호 입력 모달창 표시' 상태 관리 -> inputPasswordModalShow 변수: '모달창이 표시'되었는지 여부 저장, setInputPasswordModalShow 함수: '모달창이 표시'되었는지 여부 조작
     
@@ -77,6 +77,33 @@ const MyInformation = () => {
 
     // dispatch 함수: 'redux store'에 '변경된 값'을 저장하기 위한 기능 설정
     const dispatch = useDispatch();     
+
+    const userQuit = async () => {           
+        if(userPassword !== ""){                      
+            await api.delete(`/users/${id}`, { userPassword }).then((response) => {
+                if(response.code === "SUCCESS"){
+                    alert("회원 탈퇴가 완료되었습니다.");
+                   
+                    dispatch(setToken(""));  
+                    dispatch(setId(""));  
+                    dispatch(setUserId(""));
+                    setUserPassword("");
+
+                    window.location.href = "/";
+                }
+
+                else{
+                    alert("비밀번호를 다시 입력해 주세요.");
+
+                    setUserPassword("");
+                }
+            }) 
+        } 
+
+        else{
+            alert("비밀번호를 입력해 주세요.");
+        } 
+    };
 
     // [4] 처리
     // [4-1] '내 프로필 이미지 데이터'를 '서버'로부터 수신
@@ -354,7 +381,7 @@ const MyInformation = () => {
                 <p className = "input-password">비밀번호 입력</p>
 
                 <Input
-                    value = { userPassword /* inputPassword */ }
+                    value = { userPassword }
                     type = "password" 
                     onChange = {(e) => {
                         setUserPassword(e.target.value);
@@ -369,31 +396,7 @@ const MyInformation = () => {
                             marginTop: "10px",
                             marginLeft: "40px"
                         }}
-                        onClick = { async () => { 
-                            if(userPassword !== ""){                      
-                                await api.delete(`/users/${id}`, { userPassword }).then((response) => {
-                                    if(response.code === "SUCCESS"){
-                                        alert("회원 탈퇴가 완료되었습니다.");
-                                       
-                                        dispatch(setToken(""));  
-                                        dispatch(setId(""));  
-                                        dispatch(setUserId(""));
-    
-                                        window.location.href = "/";
-                                    }
-
-                                    else{
-                                        alert("비밀번호를 다시 입력해 주세요.");
-
-                                        setUserPassword("");
-                                    }
-                                }) 
-                            } 
-
-                            else{
-                                alert("비밀번호를 입력해 주세요.");
-                            } 
-                        }}
+                        onClick = { userQuit }
                     >
                     회원 탈퇴
                     </Button>
