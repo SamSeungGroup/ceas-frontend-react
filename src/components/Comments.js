@@ -61,6 +61,7 @@ const Comments = ({ product_id, productPositive }) => {                         
     // [1-3] 'PieChart 긍정/부정 출력 형식' 관리
     const [ positiveChart, setPositiveChart ] = useState(false);                               // '긍정 차트' 상태 관리 -> positiveChart 변수: '긍정 차트' 출력, setPositiveChart 함수: '긍정 차트' 설정 조작
     const [ negativeChart, setNegativeChart ] = useState(false);                               // '부정 차트' 상태 관리 -> negativeChart 변수: '부정 차트' 출력, setNegativeChart 함수: '부정 차트' 설정 조작
+    const [ chartColor, setChartColor ] = useState("");
 
     // [1-4] '모달 출력 여부 데이터' 관리
     const [ logindialog_show, setLoginModalShow ] = useState(false);                           // '로그인 다이얼로그' 표시 여부 상태 관리 -> logindialog_show 변수: '로그인 모달창'이 표시되었는지 여부 저장, setLoginDialogShow 함수: '로그인 모달창 표시 여부' 조작
@@ -179,25 +180,17 @@ const Comments = ({ product_id, productPositive }) => {                         
 
     // [4-3] '긍정/부정 값'에 따른 '차트 출력' 설정
     useMemo(() => {
-        // (1) '상품 긍정도 값'이 '양수'일 경우 -> '긍정 차트' 출력
-        if(productPositive > 0){
-            setPositiveChart(true);
-            setNegativeChart(false);
+        // (1) '상품 긍정도 값'이 '60'이상일 경우 -> '긍정 차트' 출력
+        if(60 <= productPositive*100 && productPositive*100 <= 100){
+            setChartColor("blue");
         }
         // (2) '상품 긍정도 값'이 '0'일 경우 -> '부정 차트' 출력
-        else if(productPositive === 0){
-            setPositiveChart(false);
-            setNegativeChart(true);
+        else if(40 <= productPositive*100 && productPositive*100 < 60){
+            setChartColor("yellow");
         }
         // (3) '상품 긍정도 값'이 없을 경우 -> '부정 차트' 출력
-        else if(productPositive === null){
-            setPositiveChart(false);
-            setNegativeChart(true);
-        }
-        // (4) '상품 긍정도 값'이 '음수'일 경우 -> '부정 차트' 출력
-        else{
-            setPositiveChart(false);
-            setNegativeChart(true);
+        else if(0 <= productPositive*100 && productPositive*100 < 40){
+            setChartColor("red");
         }
     }, [ productPositive ])
 
@@ -205,19 +198,16 @@ const Comments = ({ product_id, productPositive }) => {                         
     return (
         <div className = "comments-wrapper">
             <div className = "positive-chart_wrapper">
-                {   positiveChart &&
                     <div className = "negative-chart-comment">
                         [AI 딥러닝 댓글 문장 종합 분석 결과]<br/>
                     </div>
-                }
 
                 {
-                    positiveChart &&
                     <PieChart 
                         data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
                             {
                                 value: (productPositive*100).toFixed(3),     // value 필드: '비율 표시값'
-                                color: "blue",                               // color 필드: '비율 표시 색상'
+                                color: chartColor,                               // color 필드: '비율 표시 색상'
                                 name: "상품 긍정도",                         // name 필드: '차트 이름'
                             },
                         ]} 
@@ -234,42 +224,7 @@ const Comments = ({ product_id, productPositive }) => {                         
                         label = {({ dataEntry }) => dataEntry.value + '%'}	 // label 속성: '비율 글자 표시' 스타일('가운데에 표시되는 글자')
                         labelStyle = {{                                      // labelStyle 속성: '비율 글자' 스타일
                             fontSize: "15px",                                // fontSize 필드: 비율 글자 '크기'
-                            fill: "blue",                                    // fill 필드: 비율 글자 '색상'
-                        }} 
-                        labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
-                    />
-                }
-
-                {   negativeChart &&
-                    <div className = "negative-chart-comment">
-                        [AI 딥러닝 댓글 문장 종합 분석 평가 결과]<br/>
-                    </div>
-                }
-
-                {
-                    negativeChart && 
-                    <PieChart 
-                        data = {[                                            // data 속성: '차트'에 표시할 '데이터 정보'
-                            {
-                                value: -(productPositive*100).toFixed(3),    // value 필드: '비율 표시값'
-                                color: "red",                                // color 필드: '비율 표시 색상'
-                                name: "상품 긍정도",                         // name 필드: '차트 이름'
-                            },
-                        ]} 
-                        style = {{                                           // style 속성: 차트 '스타일'
-                            width: "100%"                                    // width 필드: '너비' 설정
-                        }}
-                        reveal = { productPositive*100 }                     // reveal 속성: '비율 표시'
-                        lineWidth ={ 18 }                                    // lineWitdth 속성: '도넛 두께'
-                        background = "gray"                                  // background 속성: '비율'이 채워지지 않은 '나머지 부분의 색'
-                        startAngle = { 270 }                                 // startAngle 속성: '비율'이 시작하는 지점
-                        lengthAngle = { 360 }                                // lengthAngle 속성: '최대 비율' 표시 -> '원 모양(360)' 표시
-                        rounded                                              // rounded 속성: '양 끝 모양'이 '동그랗게' 설정
-                        animate                                              // animate 속성: '페이지 입장' 시 '비율 차트'가 채워지는 '애니메이션' 적용
-                        label = {({ dataEntry }) => dataEntry.value + '%'}	 // label 속성: '비율 글자 표시' 스타일('가운데에 표시되는 글자')
-                        labelStyle = {{                                      // labelStyle 속성: '비율 글자' 스타일
-                            fontSize: "15px",                                // fontSize 필드: 비율 글자 '크기'
-                            fill: "red",                                     // fill 필드: 비율 글자 '색상'
+                            fill: chartColor,                                    // fill 필드: 비율 글자 '색상'
                         }} 
                         labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
                     />
