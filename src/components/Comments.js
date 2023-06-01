@@ -62,6 +62,7 @@ const Comments = ({ product_id, productPositive }) => {                         
     const [ positiveChart, setPositiveChart ] = useState(false);                               // '긍정 차트' 상태 관리 -> positiveChart 변수: '긍정 차트' 출력, setPositiveChart 함수: '긍정 차트' 설정 조작
     const [ negativeChart, setNegativeChart ] = useState(false);                               // '부정 차트' 상태 관리 -> negativeChart 변수: '부정 차트' 출력, setNegativeChart 함수: '부정 차트' 설정 조작
     const [ chartColor, setChartColor ] = useState("");
+    const [ label, setLabel] = useState(0);
 
     // [1-4] '모달 출력 여부 데이터' 관리
     const [ logindialog_show, setLoginModalShow ] = useState(false);                           // '로그인 다이얼로그' 표시 여부 상태 관리 -> logindialog_show 변수: '로그인 모달창'이 표시되었는지 여부 저장, setLoginDialogShow 함수: '로그인 모달창 표시 여부' 조작
@@ -180,18 +181,21 @@ const Comments = ({ product_id, productPositive }) => {                         
 
     // [4-3] '긍정/부정 값'에 따른 '차트 출력' 설정
     useMemo(() => {
-        // (1) '상품 긍정도 값'이 '60'이상일 경우 -> '긍정 차트' 출력
         if(60 <= productPositive*100 && productPositive*100 <= 100){
             setChartColor("blue");
         }
-        // (2) '상품 긍정도 값'이 '0'일 경우 -> '부정 차트' 출력
+
         else if(40 <= productPositive*100 && productPositive*100 < 60){
             setChartColor("yellow");
         }
-        // (3) '상품 긍정도 값'이 없을 경우 -> '부정 차트' 출력
+
         else if(0 <= productPositive*100 && productPositive*100 < 40){
             setChartColor("red");
-        }
+
+            if(productPositive === 0){
+                setLabel("50px");
+            }
+        }   
     }, [ productPositive ])
 
     // [4-4] 화면 렌더링
@@ -226,7 +230,7 @@ const Comments = ({ product_id, productPositive }) => {                         
                             fontSize: "15px",                                // fontSize 필드: 비율 글자 '크기'
                             fill: chartColor,                                    // fill 필드: 비율 글자 '색상'
                         }} 
-                        labelPosition = { 0 }                                // labelPosition 속성: 비율 글자 '위치'
+                        labelPosition = { label }                                // labelPosition 속성: 비율 글자 '위치'
                     />
                 }
             </div>
