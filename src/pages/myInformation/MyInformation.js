@@ -80,9 +80,9 @@ const MyInformation = () => {
 
     // userQuit 함수: '회원 탈퇴' 기능 설정
     const userQuit = async () => {           
-        if(userPassword !== ""){                      
+        if(userPassword !== ""){     
             await api.delete(`/users/${id}`, { headers: { "User-password": userPassword }}).then((response) => {
-                if(response.code === "SUCCESS"){
+                if(response.data.code === "SUCCESS"){
                     alert("회원 탈퇴가 완료되었습니다.");
                    
                     dispatch(setToken(""));  
